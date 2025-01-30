@@ -20,7 +20,7 @@ export default function Index() {
 
       {/* Login Button */}
       <Link href="/login">
-        <button className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-lg">
+        <button className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-lg hover:bg-black">
           Go to Login
         </button>
       </Link>
