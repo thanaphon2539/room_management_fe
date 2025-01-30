@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Content from "../components/Content";
+import UserList from "../components/UserList";
 
 export default function HomePage() {
   const [selectedMenu, setSelectedMenu] = useState("home"); // Handle selected menu
