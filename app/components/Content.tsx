@@ -2,6 +2,8 @@ import RoomList from "./RoomList";
 import UserList from "./UserList";
 import WaterBill from "./WaterBill";
 import ElectricityBill from "./ElectricityBill";
+import TestApi from "./TestApi";
+
 import { useState } from "react";
 
 interface ContentProps {
@@ -65,6 +67,7 @@ export default function Content({ selectedMenu }: ContentProps) {
               {selectedMenu === "room-list" && <RoomList />}
               {selectedMenu === "water-bill-list" && <WaterBill />}
               {selectedMenu === "electricity-bill-list" && <ElectricityBill />}
+              {selectedMenu === "setting-list" && <TestApi />}
             </div>
           </div>
         </div>
