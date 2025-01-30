@@ -20,7 +20,7 @@
 }
 
 .base-table {
-  @apply border rounded
+  @apply rounded border border-gray-100
 }
 .base-table table {
   @apply w-full
@@ -29,7 +29,7 @@
   @apply border border-gray-100 p-2 text-center
 }
 .base-table th {
-  @apply border border-gray-100 p-2
+  @apply border border-gray-100 p-2 bg-gray-50
 }
 
 .input-select {
@@ -37,4 +37,11 @@
 }
 .input-text {
   @apply rounded w-full border border-gray-100 p-2 mb-2
+}
+
+.container {
+  @apply flex justify-center h-screen w-full
+}
+.card {
+  @apply w-full bg-white p-6 rounded-lg shadow max-h-[calc(100vh-100px)]
 }
