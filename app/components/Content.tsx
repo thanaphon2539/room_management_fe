@@ -1,3 +1,4 @@
+import RoomList from "./RoomList";
 import UserList from "./UserList";
 
 interface ContentProps {
@@ -14,6 +15,7 @@ export default function Content({ selectedMenu }: ContentProps) {
       )}
       <div className="w-full">
         {selectedMenu === "user-list" && <UserList />}
+        {selectedMenu === "room-list" && <RoomList />}
       </div>
     </div>
   );

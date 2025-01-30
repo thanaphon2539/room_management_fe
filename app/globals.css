@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-base {
+  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-blue-500 hover:bg-blue-600 text-white flex text-center items-center
+}
+
+.btn-warning {
+  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-yellow-500 hover:bg-yellow-600 text-white flex text-center items-center
+}
+.btn-danger {
+  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-red-500 hover:bg-red-600 text-white flex text-center items-center
+}
+.btn-green {
+  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-green-500 hover:bg-green-600 text-white flex text-center items-center
+}
+.btn-gray {
+  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-gray-500 hover:bg-gray-600 text-white flex text-center items-center
+}
+
+.base-table {
+  @apply border rounded
+}
+.base-table table {
+  @apply w-full
+}
+.base-table td {
+  @apply border border-gray-100 p-2 text-center
+}
+.base-table th {
+  @apply border border-gray-100 p-2
+}
+
+.input-select {
+  @apply rounded w-full border border-gray-100 p-2 mb-2
+}
+.input-text {
+  @apply rounded w-full border border-gray-100 p-2 mb-2
+}

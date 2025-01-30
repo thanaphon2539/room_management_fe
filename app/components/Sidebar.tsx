@@ -5,6 +5,8 @@ interface SidebarProps {
   setSelectedMenu: (menu: string) => void;
 }
 
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 export default function Sidebar({
   selectedMenu,
   setSelectedMenu,
@@ -22,7 +24,7 @@ export default function Sidebar({
             selectedMenu === "home" ? "bg-gray-700" : "hover:bg-gray-700"
           }`}
         >
-          🏠 หน้าหลัก
+          <i className="bi bi-house-fill" /> หน้าหลัก
         </button>
 
         {/* ✅ เมนู User List */}
@@ -32,8 +34,45 @@ export default function Sidebar({
             selectedMenu === "user-list" ? "bg-gray-700" : "hover:bg-gray-700"
           }`}
         >
-          👤 จัดการผู้ใช้งาน
+          <i className="bi bi-person-fill" /> จัดการผู้ใช้งาน
         </button>
+
+        <button
+          onClick={() => setSelectedMenu("room-list")}
+          className={`block px-4 py-2 rounded w-full text-left ${
+            selectedMenu === "room-list" ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
+          <i className="bi bi-house-gear" /> จัดการห้องเช่า
+        </button>
+
+        <button
+          onClick={() => setSelectedMenu("water-bill-list")}
+          className={`block px-4 py-2 rounded w-full text-left ${
+            selectedMenu === "water-bill-list" ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
+          <i className='bi bi-droplet-fill' /> จัดการค่าน้ำ
+        </button>
+
+        <button
+          onClick={() => setSelectedMenu("electricity-bill-list")}
+          className={`block px-4 py-2 rounded w-full text-left ${
+            selectedMenu === "electricity-bill-list" ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
+          <i className='bi bi-lightbulb-fill' /> จัดการค่าไฟ
+        </button>
+        
+        <button
+          onClick={() => setSelectedMenu("setting-list")}
+          className={`block px-4 py-2 rounded w-full text-left ${
+            selectedMenu === "setting-list" ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
+          <i className='bi bi-gear' /> จัดการตั้งค่า
+        </button>
+
       </nav>
     </aside>
   );
