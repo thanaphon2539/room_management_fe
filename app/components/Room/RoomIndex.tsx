@@ -1,4 +1,7 @@
 import "./RoomIndex.css";
+import RoomIcon from "./RoomIcon";
+import ModalDelete from "../ModalDelete";
+import { useState } from "react";
 
 export default function RoomIndex() {
   const header = [
@@ -8,39 +11,70 @@ export default function RoomIndex() {
     "ข้อมูลผู้ติดต่อ",
     "ระบุวันที่เข้าพัก",
     "วันที่ออก",
+    "ค่าเช่า",
+    "ค่าบริการ",
+    "จัดการ",
   ];
   const items = [
     {
       id: "1",
       name: "John Doe",
       status: "avalible",
-      userTypu: "person",
+      userType: "person",
       contact: "",
       checkin: "12/12/2568",
       checkout: "12/12/2568",
+      rent: 2000,
+      serviceFee: 2000,
     },
     {
       id: "2",
       name: "Jane Smith",
       status: "notAvalible",
-      userTypu: "legalEntity",
+      userType: "legalEntity",
       contact: "",
       checkin: "12/12/2568",
       checkout: "12/12/2568",
+      rent: 2000,
+      serviceFee: 2000,
     },
     {
       id: "3",
       name: "HAN.co.th",
       status: "book",
-      userTypu: "",
+      userType: "",
       contact: "",
       checkin: "12/12/2568",
       checkout: "12/12/2568",
+      rent: 2000,
+      serviceFee: 2000,
     },
   ];
+  const [showDelete, setShowDelete] = useState(false);
+  const onDelete = (value: boolean) => {
+    setShowDelete(false);
+  };
   return (
-    <div className="card">
-      <h3 className="text-lg text-dark-base">จัดการห้องเช่า</h3>
+    <div className="card space-y-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">จัดการห้องเช่า</h2>
+        <button className="btn btn-primary">
+          <i className="bi bi-plus" /> <p>สร้างห้องเช่า</p>
+        </button>
+      </div>
+
+      <div className="flex space-x-2">
+        <input
+          type="text"
+          name="search"
+          className="input-text !w-2/4"
+          placeholder="ค้นหา"
+        />
+        <button className="btn btn-dark text-nowrap h-fit">
+          <i className="bi bi-search" />
+          <p>ค้าหา</p>
+        </button>
+      </div>
 
       <table className="table">
         <thead>
@@ -55,17 +89,45 @@ export default function RoomIndex() {
             <tbody>
               <tr className="">
                 <td className="">{element.name}</td>
-                <td className="">{element.status}</td>
-                <td className="">{element.userType}</td>
+                <td className="">
+                  <RoomIcon item={element.status} />
+                </td>
+                <td className="">
+                  <RoomIcon item={element.userType} />
+                </td>
                 <td className="">{element.contact}</td>
                 <td className="">{element.checkin}</td>
                 <td className="">{element.checkout}</td>
+                <td className="">{element.rent}</td>
+                <td className="">{element.serviceFee}</td>
+                <td>
+                  <div className="flex justify-center">
+                    <button className="btn btn-warning">
+                      <i className="bi bi-pencil-fill" />
+                      <p>แก้ไข</p>
+                    </button>
+                    <button
+                      className="btn btn-error"
+                      onClick={() => setShowDelete(true)}
+                    >
+                      <i className="bi bi-trash" />
+                      <p>ลบ</p>
+                    </button>
+                  </div>
+                </td>
               </tr>
               <tr className="h-2" />
             </tbody>
           );
         })}
       </table>
+
+      {showDelete && (
+        <ModalDelete
+          title="Are you sure you want to delete this Room?"
+          onConfirm={onDelete}
+        />
+      )}
     </div>
   );
 }
