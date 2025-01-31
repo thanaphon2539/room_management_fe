@@ -1,21 +1,76 @@
 import RoomList from "./RoomList";
 import UserList from "./UserList";
+import WaterBill from "./WaterBill";
+import ElectricityBill from "./ElectricityBill";
+import TestApi from "./TestApi";
+
+import { useState } from "react";
 
 interface ContentProps {
   selectedMenu: string;
 }
 
+interface User {
+  id: number;
+  name: string;
+  status: string;
+  userType: string;
+  waterBill: number;
+  electricityBill: number;
+}
+
 export default function Content({ selectedMenu }: ContentProps) {
+  const [bills, setBills] = useState<User[]>([
+    {
+      id: 1,
+      name: "John Doe",
+      status: "",
+      userType: "legalEntity",
+      waterBill: 0,
+      electricityBill: 0,
+    },
+  ]);
   return (
-    <div className="w-full">
-      {selectedMenu === "home" && (
-        <h1 className="text-4xl font-bold text-center">
-          Welcome to the Home Page!
-        </h1>
-      )}
+    <div className="container">
       <div className="w-full">
-        {selectedMenu === "user-list" && <UserList />}
-        {selectedMenu === "room-list" && <RoomList />}
+        <div className="flex justify-between items-center mb-4">
+          <div className="w-full">
+            {selectedMenu === "home" && (
+              <div className="card h-[100vh]"><div className="base-table">
+                <table className="base-table">
+                  <thead>
+                    <tr>
+                      <th>ชื่อห้อง</th>
+                      <th>สถานะ</th>
+                      <th>ประเภท</th>
+                      <th>ค่าน้ำ</th>
+                      <th>ค่าไฟ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bills.map((row) => (
+                      <tr key={row.id}>
+                        <td>{row.name}</td>
+                        <td>{row.status}</td>
+                        <td>{row.userType}</td>
+                        <td>{row.waterBill}</td>
+                        <td>{row.electricityBill}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div></div>
+              
+            )}
+            <div className="w-full">
+              {selectedMenu === "user-list" && <UserList />}
+              {selectedMenu === "room-list" && <RoomList />}
+              {selectedMenu === "water-bill-list" && <WaterBill />}
+              {selectedMenu === "electricity-bill-list" && <ElectricityBill />}
+              {selectedMenu === "setting-list" && <TestApi />}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

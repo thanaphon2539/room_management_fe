@@ -19,7 +19,7 @@ export default function HomePage() {
       <Sidebar selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-between bg-white p-6 relative">
+      <main className="flex-1 flex flex-col items-center justify-between bg-gray-50 p-6 relative">
         {/* Top bar with profile button */}
         <div className="w-full flex justify-end mb-4 relative">
           <button

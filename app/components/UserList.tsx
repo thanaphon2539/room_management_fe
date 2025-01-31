@@ -44,14 +44,14 @@ export default function UserList() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-full -translate-y-16">
-      <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-lg">
+    <div className="container">
+      <div className="card">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">รายการผู้ใช้งานระบบ</h2>
           {!editingUser && !showCreateForm && (
             <button
               onClick={() => setShowCreateForm(true)}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="btn-base"
             >
               + สร้างผู้ใช้งาน
             </button>
@@ -77,16 +77,16 @@ export default function UserList() {
                   <span className="font-semibold">{user.name}</span> -{" "}
                   {user.email}
                 </div>
-                <div>
+                <div className="flex">
                   <button
                     onClick={() => setEditingUser(user)}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 hover:bg-yellow-600"
+                    className="btn-warning"
                   >
                     แก้ไข
                   </button>
                   <button
                     onClick={() => confirmDeleteUser(user.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                    className="btn-danger"
                   >
                     ลบ
                   </button>
@@ -106,13 +106,13 @@ export default function UserList() {
             <div className="flex justify-end mt-4">
               <button
                 onClick={() => setDeleteUserId(null)}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mr-2"
+                className="btn-gray"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                className="btn-danger"
               >
                 Delete
               </button>
@@ -155,13 +155,13 @@ function EditUser({
       <div className="flex space-x-2">
         <button
           onClick={() => updateUser({ ...user, name, email })}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          className="btn-green"
         >
           บันทึก
         </button>
         <button
           onClick={() => setEditingUser(null)}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          className="btn-gray"
         >
           ย้อนกลับ
         </button>
