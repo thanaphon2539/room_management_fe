@@ -51,7 +51,7 @@ export default function UserList() {
           {!editingUser && !showCreateForm && (
             <button
               onClick={() => setShowCreateForm(true)}
-              className="btn-base"
+              className="btn-primary"
             >
               + สร้างผู้ใช้งาน
             </button>
@@ -86,7 +86,7 @@ export default function UserList() {
                   </button>
                   <button
                     onClick={() => confirmDeleteUser(user.id)}
-                    className="btn-danger"
+                    className="btn-error"
                   >
                     ลบ
                   </button>
@@ -112,7 +112,7 @@ export default function UserList() {
               </button>
               <button
                 onClick={handleDelete}
-                className="btn-danger"
+                className="btn-error"
               >
                 Delete
               </button>
@@ -155,7 +155,7 @@ function EditUser({
       <div className="flex space-x-2">
         <button
           onClick={() => updateUser({ ...user, name, email })}
-          className="btn-green"
+          className="btn-success"
         >
           บันทึก
         </button>

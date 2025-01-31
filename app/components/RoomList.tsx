@@ -68,9 +68,9 @@ export default function RoomList() {
           {!editingRoom && !showCreateForm && (
             <button
               onClick={() => setShowCreateForm(true)}
-              className="btn-base"
+              className="btn btn-primary"
             >
-              <i className="bi bi-plus" /> สร้างห้องเช่า
+              <i className="bi bi-plus" /> <p>สร้างห้องเช่า</p>
             </button>
           )}
         </div>
@@ -189,7 +189,7 @@ function EditRoom({
       <div className="flex space-x-2">
         <button
           onClick={() => updateRoom({ ...room, name, id: 0 })}
-          className="btn-green"
+          className="btn-success"
         >
           บันทึก
         </button>

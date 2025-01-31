@@ -2,21 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-.btn-base {
-  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-blue-500 hover:bg-blue-600 text-white flex text-center items-center
+:root {
+  --base-gray-lighten: #E8E8E8;
 }
 
+.btn {
+  @apply rounded-lg px-3 py-2 m-0.5 flex items-center transition duration-150 ease-in-out space-x-1 text-white hover:scale-[1.02]
+}
+.btn-primary {
+  @apply bg-primary-base hover:bg-primary-base/85
+}
 .btn-warning {
-  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-yellow-500 hover:bg-yellow-600 text-white flex text-center items-center
+  @apply  bg-warning-base hover:bg-warning-base/85
 }
-.btn-danger {
-  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-red-500 hover:bg-red-600 text-white flex text-center items-center
+.btn-error {
+  @apply  bg-error-base hover:bg-error-base/85
 }
-.btn-green {
-  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-green-500 hover:bg-green-600 text-white flex text-center items-center
+.btn-success {
+  @apply  bg-success-base hover:bg-success-base/85
+}
+.btn-jeans {
+  @apply  bg-jeans-base hover:bg-jeans-base/85
 }
 .btn-gray {
-  @apply rounded min-h-11 px-2 py-1 m-0.5 bg-gray-500 hover:bg-gray-600 text-white flex text-center items-center
+  @apply  bg-dark-light
 }
 
 .base-table {
@@ -43,5 +52,5 @@
   @apply flex justify-center h-screen w-full
 }
 .card {
-  @apply w-full bg-white p-6 rounded-lg shadow max-h-[calc(100vh-100px)]
+  @apply w-full bg-base-pannel p-6 rounded-lg shadow max-h-[calc(100vh-100px)]
 }

@@ -66,7 +66,7 @@ export default function BillList() {
           {!editingBill && !showCreateForm && (
             <button
               onClick={() => setShowCreateForm(true)}
-              className="btn-base"
+              className="btn-primary"
             >
               <i className="bi bi-plus" /> สร้างห้องเช่า
             </button>
@@ -174,7 +174,7 @@ function EditBill({
       <div className="flex space-x-2">
         <button
           onClick={() => updateBill({ ...bill, name, id: 0 })}
-          className="btn-green"
+          className="btn-success"
         >
           บันทึก
         </button>

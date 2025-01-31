@@ -3,6 +3,7 @@ import UserList from "./UserList";
 import WaterBill from "./WaterBill";
 import ElectricityBill from "./ElectricityBill";
 import TestApi from "./TestApi";
+import RoomIndex from "./Room//RoomIndex"
 
 import { useState } from "react";
 
@@ -67,7 +68,7 @@ export default function Content({ selectedMenu }: ContentProps) {
               {selectedMenu === "room-list" && <RoomList />}
               {selectedMenu === "water-bill-list" && <WaterBill />}
               {selectedMenu === "electricity-bill-list" && <ElectricityBill />}
-              {selectedMenu === "setting-list" && <TestApi />}
+              {selectedMenu === "setting-list" && <RoomIndex />}
             </div>
           </div>
         </div>
