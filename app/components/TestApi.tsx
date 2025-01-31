@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import userRepository from "../../src/api/repository"; // นำเข้า Repository
+import useRepository from "../../src/api/repository"; // นำเข้า Repository
 
 function UserList() {
   const [users, setUsers] = useState([]);
@@ -8,7 +8,7 @@ function UserList() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const data = await userRepository.getAllUsers(); // เรียก API จาก Repository
+        const data = await useRepository.getAllUsers(); // เรียก API จาก Repository
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
