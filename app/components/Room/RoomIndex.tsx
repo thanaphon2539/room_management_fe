@@ -2,6 +2,7 @@ import "./RoomIndex.css";
 import RoomIcon from "./RoomIcon";
 import ModalDelete from "../ModalDelete";
 import { useState } from "react";
+import CreateRoom from "./CreateRoom";
 
 export default function RoomIndex() {
   const header = [
@@ -51,14 +52,24 @@ export default function RoomIndex() {
     },
   ];
   const [showDelete, setShowDelete] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [dataEdit, setDataEdit] = useState();
+
   const onDelete = (value: boolean) => {
     setShowDelete(false);
+  };
+  const onCreate = (value: boolean) => {
+    setShowCreate(false);
+  };
+  const onEdit = (value: boolean) => {
+    setShowEdit(false);
   };
   return (
     <div className="card space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">จัดการห้องเช่า</h2>
-        <button className="btn btn-primary">
+        <button className="btn btn-primary" onClick={() => setShowCreate(true)}>
           <i className="bi bi-plus" /> <p>สร้างห้องเช่า</p>
         </button>
       </div>
@@ -102,7 +113,13 @@ export default function RoomIndex() {
                 <td className="">{element.serviceFee}</td>
                 <td>
                   <div className="flex justify-center">
-                    <button className="btn btn-warning">
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => {
+                        setShowEdit(true);
+                        setDataEdit(element);
+                      }}
+                    >
                       <i className="bi bi-pencil-fill" />
                       <p>แก้ไข</p>
                     </button>
@@ -126,6 +143,22 @@ export default function RoomIndex() {
         <ModalDelete
           title="Are you sure you want to delete this Room?"
           onConfirm={onDelete}
+        />
+      )}
+      {showCreate && (
+        <CreateRoom
+          onAddItem={onCreate}
+          onCancel={setShowCreate}
+          data={undefined}
+          state={"create"}
+        />
+      )}
+      {showEdit && (
+        <CreateRoom
+          onAddItem={onEdit}
+          onCancel={setShowEdit}
+          data={dataEdit}
+          state={"Edit"}
         />
       )}
     </div>

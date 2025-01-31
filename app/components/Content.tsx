@@ -64,7 +64,7 @@ export default function Content({ selectedMenu }: ContentProps) {
             )}
             <div className="w-full">
               {selectedMenu === "user-list" && <UserList />}
-              {selectedMenu === "room-list" && <RoomList />}
+              {selectedMenu === "room-list" && <RoomIndex />}
               {selectedMenu === "water-bill-list" && <WaterBill />}
               {selectedMenu === "electricity-bill-list" && <ElectricityBill />}
               {selectedMenu === "setting-list" && <RoomIndex />}
