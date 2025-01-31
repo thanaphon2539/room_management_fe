@@ -12,7 +12,7 @@ const Login = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload on form submission
 
-    if (username === 'admin' && password === 'password') {
+    if (username === 'admin' && password === '1') {
       // Clear error and redirect to /home
       setError('');
       router.push('/home'); // Redirect to /home

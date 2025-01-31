@@ -42,9 +42,8 @@ export default function Content({ selectedMenu }: ContentProps) {
                     <tr>
                       <th>ชื่อห้อง</th>
                       <th>สถานะ</th>
-                      <th>ประเภท</th>
-                      <th>ค่าน้ำ</th>
-                      <th>ค่าไฟ</th>
+                      <th>วันที่เข้าพัก</th>
+                      <th>วันที่ออก</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -52,9 +51,8 @@ export default function Content({ selectedMenu }: ContentProps) {
                       <tr key={row.id}>
                         <td>{row.name}</td>
                         <td>{row.status}</td>
-                        <td>{row.userType}</td>
-                        <td>{row.waterBill}</td>
-                        <td>{row.electricityBill}</td>
+                        <td>{'31/01/2568'}</td>
+                        <td>{'31/03/2568'}</td>
                       </tr>
                     ))}
                   </tbody>

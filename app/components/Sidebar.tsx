@@ -5,7 +5,7 @@ interface SidebarProps {
   setSelectedMenu: (menu: string) => void;
 }
 
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function Sidebar({
   selectedMenu,
@@ -27,16 +27,6 @@ export default function Sidebar({
           <i className="bi bi-house-fill" /> หน้าหลัก
         </button>
 
-        {/* ✅ เมนู User List */}
-        <button
-          onClick={() => setSelectedMenu("user-list")}
-          className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "user-list" ? "bg-gray-700" : "hover:bg-gray-700"
-          }`}
-        >
-          <i className="bi bi-person-fill" /> จัดการผู้ใช้งาน
-        </button>
-
         <button
           onClick={() => setSelectedMenu("room-list")}
           className={`block px-4 py-2 rounded w-full text-left ${
@@ -49,30 +39,45 @@ export default function Sidebar({
         <button
           onClick={() => setSelectedMenu("water-bill-list")}
           className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "water-bill-list" ? "bg-gray-700" : "hover:bg-gray-700"
+            selectedMenu === "water-bill-list"
+              ? "bg-gray-700"
+              : "hover:bg-gray-700"
           }`}
         >
-          <i className='bi bi-droplet-fill' /> จัดการค่าน้ำ
+          <i className="bi bi-droplet-fill" /> จัดการค่าน้ำ
         </button>
 
         <button
           onClick={() => setSelectedMenu("electricity-bill-list")}
           className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "electricity-bill-list" ? "bg-gray-700" : "hover:bg-gray-700"
+            selectedMenu === "electricity-bill-list"
+              ? "bg-gray-700"
+              : "hover:bg-gray-700"
           }`}
         >
-          <i className='bi bi-lightbulb-fill' /> จัดการค่าไฟ
+          <i className="bi bi-lightbulb-fill" /> จัดการค่าไฟ
         </button>
-        
+
+        {/* ✅ เมนู User List */}
+        <button
+          onClick={() => setSelectedMenu("user-list")}
+          className={`block px-4 py-2 rounded w-full text-left ${
+            selectedMenu === "user-list" ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
+          <i className="bi bi-person-fill" /> จัดการผู้ใช้งาน
+        </button>
+
         <button
           onClick={() => setSelectedMenu("setting-list")}
           className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "setting-list" ? "bg-gray-700" : "hover:bg-gray-700"
+            selectedMenu === "setting-list"
+              ? "bg-gray-700"
+              : "hover:bg-gray-700"
           }`}
         >
-          <i className='bi bi-gear' /> จัดการตั้งค่า
+          <i className="bi bi-gear" /> จัดการตั้งค่า
         </button>
-
       </nav>
     </aside>
   );

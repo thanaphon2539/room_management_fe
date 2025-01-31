@@ -91,6 +91,11 @@ export default function RoomList() {
                   <th>ชื่อห้อง</th>
                   <th>สถานะ</th>
                   <th>ประเภท</th>
+                  <th>ชื่อผู้เช่า</th>
+                  <th>ชื่อบริษัท</th>
+                  <th>ชื่อบริษัท</th>
+                  <th>วันที่เข้าพัก</th>
+                  <th>วันที่ออก</th>
                   <th>จัดการ</th>
                 </tr>
               </thead>
@@ -99,6 +104,11 @@ export default function RoomList() {
                   <tr key={row.id}>
                     <td>{row.name}</td>
                     <td>{row.status}</td>
+                    <td>{row.userType}</td>
+                    <td>{row.userType}</td>
+                    <td>{row.userType}</td>
+                    <td>{row.userType}</td>
+                    <td>{row.userType}</td>
                     <td>{row.userType}</td>
                     <td>
                       <div className="flex justify-center">
