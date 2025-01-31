@@ -57,6 +57,8 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
         ...prev,
         userType: value, // เปลี่ยนค่า selected ตาม div ที่คลิก
         roomTotal: value === "person" ? 1 : prev.roomTotal,
+        arrRoom:
+          value === "person" ? [...prev.arrRoom].slice(0, 1) : prev.arrRoom,
       }));
     }
     if (state === "roomTotal") {

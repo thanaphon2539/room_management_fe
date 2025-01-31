@@ -51,7 +51,7 @@ export default function UserList() {
           {!editingUser && !showCreateForm && (
             <button
               onClick={() => setShowCreateForm(true)}
-              className="btn-primary"
+              className="btn btn-primary"
             >
               + สร้างผู้ใช้งาน
             </button>
@@ -80,13 +80,13 @@ export default function UserList() {
                 <div className="flex">
                   <button
                     onClick={() => setEditingUser(user)}
-                    className="btn-warning"
+                    className="btn btn-warning"
                   >
                     แก้ไข
                   </button>
                   <button
                     onClick={() => confirmDeleteUser(user.id)}
-                    className="btn-error"
+                    className="btn btn-error"
                   >
                     ลบ
                   </button>
@@ -110,10 +110,7 @@ export default function UserList() {
               >
                 Cancel
               </button>
-              <button
-                onClick={handleDelete}
-                className="btn-error"
-              >
+              <button onClick={handleDelete} className="btn-error">
                 Delete
               </button>
             </div>
@@ -159,10 +156,7 @@ function EditUser({
         >
           บันทึก
         </button>
-        <button
-          onClick={() => setEditingUser(null)}
-          className="btn-gray"
-        >
+        <button onClick={() => setEditingUser(null)} className="btn-gray">
           ย้อนกลับ
         </button>
       </div>

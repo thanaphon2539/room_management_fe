@@ -56,8 +56,8 @@
 }
 
 .container {
-  @apply flex justify-center h-screen w-full
+  @apply flex justify-center h-[calc(100vh-100px)] w-full
 }
 .card {
-  @apply w-full bg-base-pannel p-6 rounded-lg shadow max-h-[calc(100vh-100px)]
+  @apply w-full bg-white p-6 rounded-lg shadow max-h-[calc(100vh-100px)]
 }

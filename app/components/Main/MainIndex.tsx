@@ -1,6 +1,5 @@
 import "../Room/RoomIndex.css";
 import RoomIcon from "./../Room/RoomIcon";
-import { useState } from "react";
 
 export default function MainIndex() {
   const header = ["ห้อง", "สถานะ", "วันที่เข้าพัก", "วันที่ออก"];
@@ -45,20 +44,7 @@ export default function MainIndex() {
       serviceFee: [{ name: "ค่าบริการ", amount: 2000 }],
     },
   ];
-  const [showDelete, setShowDelete] = useState(false);
-  const [showCreate, setShowCreate] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const [dataEdit, setDataEdit] = useState();
 
-  const onDelete = (value: boolean) => {
-    setShowDelete(false);
-  };
-  const onCreate = (value: boolean) => {
-    setShowCreate(false);
-  };
-  const onEdit = (value: boolean) => {
-    setShowEdit(false);
-  };
   return (
     <div className="container">
       <div className="card space-y-4">

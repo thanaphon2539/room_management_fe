@@ -1,19 +1,16 @@
-import "./RoomIndex.css";
-import RoomIcon from "./RoomIcon";
-import ModalDelete from "../ModalDelete";
+import "../Room/RoomIndex.css";
+import RoomIcon from "./../Room/RoomIcon";
 import { useState } from "react";
-import CreateRoom from "./CreateRoom";
+import EditBill from "./EditBill";
 
-export default function RoomIndex() {
+export default function BillIndex() {
   const header = [
     "ห้อง",
     "สถานะ",
     "ประเภทลูกค้า",
-    "ข้อมูลผู้ติดต่อ",
-    "ระบุวันที่เข้าพัก",
-    "วันที่ออก",
-    "ค่าเช่า",
-    "ค่าบริการ",
+    "ค่าไฟเดือนที่แล้ว",
+    "ค่าไฟเดือนปัจจุบัน",
+    "หน่วยที่ใช้",
     "จัดการ",
   ];
   const items = [
@@ -30,6 +27,10 @@ export default function RoomIndex() {
         { name: "ค่าเช่า", amount: 2000 },
       ],
       serviceFee: [{ name: "ค่าบริการ", amount: 2000 }],
+      bill: {
+        old: 10,
+        new: 20,
+      },
     },
     {
       id: "2",
@@ -44,6 +45,10 @@ export default function RoomIndex() {
         { name: "ค่าบริการ", amount: 2000 },
         { name: "ค่าบริการ", amount: 2000 },
       ],
+      bill: {
+        old: 30,
+        new: 40,
+      },
     },
     {
       id: "3",
@@ -55,42 +60,26 @@ export default function RoomIndex() {
       checkout: "12/12/2568",
       rent: [{ name: "ค่าเช่า", amount: 2000 }],
       serviceFee: [{ name: "ค่าบริการ", amount: 2000 }],
+      bill: {
+        old: 50,
+        new: 60,
+      },
     },
   ];
-  const [showDelete, setShowDelete] = useState(false);
-  const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [dataEdit, setDataEdit] = useState();
-
-  const onDelete = (value: boolean) => {
-    setShowDelete(false);
-  };
-  const onCreate = (value: boolean) => {
-    setShowCreate(false);
-  };
   const onEdit = (value: boolean) => {
     setShowEdit(false);
   };
   return (
     <div className="container">
-      <div className="card">
+      <div className="card space-y-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">จัดการห้องเช่า</h2>
-          <button
-            className="btn btn-primary"
-            onClick={() => setShowCreate(true)}
-          >
-            <i className="bi bi-plus" /> <p>สร้างห้องเช่า</p>
-          </button>
+          <h2 className="text-2xl font-bold">จัดการค่าไฟ</h2>
         </div>
 
-        <div className="flex space-x-2 mb-4">
-          <input
-            type="text"
-            name="search"
-            className="input-text !w-2/4"
-            placeholder="ค้นหา"
-          />
+        <div className="flex space-x-2">
+          <input type="date" name="search" className="input-text !w-1/4" />
           <button className="btn btn-dark text-nowrap h-fit">
             <i className="bi bi-search" />
             <p>ค้าหา</p>
@@ -116,27 +105,21 @@ export default function RoomIndex() {
                   <td>
                     <RoomIcon item={element.userType} />
                   </td>
-                  <td>{element.contact}</td>
-                  <td>{element.checkin}</td>
-                  <td>{element.checkout}</td>
-                  <td>
-                    {element.rent.map((rent: any) => {
-                      return (
-                        <p>
-                          {rent.name} {rent.amount}
-                        </p>
-                      );
-                    })}
+                  <td>{element.bill.old}</td>
+                  <td className="text-error-base font-bold">
+                    {element.bill.new}
                   </td>
-                  <td>
-                    {element.serviceFee.map((serviceFee: any) => {
-                      return (
-                        <p>
-                          {serviceFee.name} {serviceFee.amount}
-                        </p>
-                      );
-                    })}
-                  </td>
+                  {/* {!showEdit && <td>{element.bill.new}</td>}
+                  {showEdit && (
+                    <td>
+                      <input
+                        type="text"
+                        className="input-text text-center !border-primary-medium !mb-0"
+                        value={element.bill.new}
+                      />
+                    </td>
+                  )} */}
+                  <td>{element.bill.new - element.bill.old}</td>
                   <td>
                     <div className="flex justify-center">
                       <button
@@ -149,13 +132,29 @@ export default function RoomIndex() {
                         <i className="bi bi-pencil-fill" />
                         <p>แก้ไข</p>
                       </button>
-                      <button
-                        className="btn btn-error"
-                        onClick={() => setShowDelete(true)}
-                      >
-                        <i className="bi bi-trash" />
-                        <p>ลบ</p>
-                      </button>
+                      {/* {!showEdit && (
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => {
+                            setShowEdit(true);
+                            setDataEdit(element);
+                          }}
+                        >
+                          <i className="bi bi-pencil-fill" />
+                          <p>แก้ไข</p>
+                        </button>
+                      )}
+                      {showEdit && (
+                        <button
+                          className="btn btn-success"
+                          onClick={() => {
+                            setShowEdit(false);
+                            setDataEdit(element);
+                          }}
+                        >
+                          <p>เสร็สิ้น</p>
+                        </button>
+                      )} */}
                     </div>
                   </td>
                 </tr>
@@ -164,30 +163,16 @@ export default function RoomIndex() {
             );
           })}
         </table>
-
-        {showDelete && (
-          <ModalDelete
-            title="Are you sure you want to delete this Room?"
-            onConfirm={onDelete}
-          />
-        )}
-        {showCreate && (
-          <CreateRoom
-            onAddItem={onCreate}
-            onCancel={setShowCreate}
-            data={undefined}
-            state={"create"}
-          />
-        )}
-        {showEdit && (
-          <CreateRoom
-            onAddItem={onEdit}
-            onCancel={setShowEdit}
-            data={dataEdit}
-            state={"Edit"}
-          />
-        )}
       </div>
+
+      {showEdit && (
+        <EditBill
+          onAddItem={onEdit}
+          onCancel={setShowEdit}
+          data={dataEdit}
+          state={"Edit"}
+        />
+      )}
     </div>
   );
 }
