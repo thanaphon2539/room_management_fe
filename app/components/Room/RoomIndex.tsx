@@ -8,7 +8,7 @@ export default function RoomIndex() {
   const header = [
     "ห้อง",
     "สถานะ",
-    "ลูกค้า",
+    "ประเภทลูกค้า",
     "ข้อมูลผู้ติดต่อ",
     "ระบุวันที่เข้าพัก",
     "วันที่ออก",
@@ -72,117 +72,122 @@ export default function RoomIndex() {
     setShowEdit(false);
   };
   return (
-    <div className="card space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">จัดการห้องเช่า</h2>
-        <button className="btn btn-primary" onClick={() => setShowCreate(true)}>
-          <i className="bi bi-plus" /> <p>สร้างห้องเช่า</p>
-        </button>
+    <div className="container">
+      <div className="card space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold">จัดการห้องเช่า</h2>
+          <button
+            className="btn btn-primary"
+            onClick={() => setShowCreate(true)}
+          >
+            <i className="bi bi-plus" /> <p>สร้างห้องเช่า</p>
+          </button>
+        </div>
+
+        <div className="flex space-x-2">
+          <input
+            type="text"
+            name="search"
+            className="input-text !w-2/4"
+            placeholder="ค้นหา"
+          />
+          <button className="btn btn-dark text-nowrap h-fit">
+            <i className="bi bi-search" />
+            <p>ค้าหา</p>
+          </button>
+        </div>
+
+        <table className="table">
+          <thead>
+            <tr>
+              {header.map((element: any) => {
+                return <th>{element}</th>;
+              })}
+            </tr>
+          </thead>
+          {items.map((element: any) => {
+            return (
+              <tbody>
+                <tr>
+                  <td>{element.name}</td>
+                  <td>
+                    <RoomIcon item={element.status} />
+                  </td>
+                  <td>
+                    <RoomIcon item={element.userType} />
+                  </td>
+                  <td>{element.contact}</td>
+                  <td>{element.checkin}</td>
+                  <td>{element.checkout}</td>
+                  <td>
+                    {element.rent.map((rent: any) => {
+                      return (
+                        <p>
+                          {rent.name} {rent.amount}
+                        </p>
+                      );
+                    })}
+                  </td>
+                  <td>
+                    {element.serviceFee.map((serviceFee: any) => {
+                      return (
+                        <p>
+                          {serviceFee.name} {serviceFee.amount}
+                        </p>
+                      );
+                    })}
+                  </td>
+                  <td>
+                    <div className="flex justify-center">
+                      <button
+                        className="btn btn-warning"
+                        onClick={() => {
+                          setShowEdit(true);
+                          setDataEdit(element);
+                        }}
+                      >
+                        <i className="bi bi-pencil-fill" />
+                        <p>แก้ไข</p>
+                      </button>
+                      <button
+                        className="btn btn-error"
+                        onClick={() => setShowDelete(true)}
+                      >
+                        <i className="bi bi-trash" />
+                        <p>ลบ</p>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="h-2" />
+              </tbody>
+            );
+          })}
+        </table>
+
+        {showDelete && (
+          <ModalDelete
+            title="Are you sure you want to delete this Room?"
+            onConfirm={onDelete}
+          />
+        )}
+        {showCreate && (
+          <CreateRoom
+            onAddItem={onCreate}
+            onCancel={setShowCreate}
+            data={undefined}
+            state={"create"}
+          />
+        )}
+        {showEdit && (
+          <CreateRoom
+            onAddItem={onEdit}
+            onCancel={setShowEdit}
+            data={dataEdit}
+            state={"Edit"}
+          />
+        )}
       </div>
-
-      <div className="flex space-x-2">
-        <input
-          type="text"
-          name="search"
-          className="input-text !w-2/4"
-          placeholder="ค้นหา"
-        />
-        <button className="btn btn-dark text-nowrap h-fit">
-          <i className="bi bi-search" />
-          <p>ค้าหา</p>
-        </button>
-      </div>
-
-      <table className="table">
-        <thead>
-          <tr>
-            {header.map((element: any) => {
-              return <th>{element}</th>;
-            })}
-          </tr>
-        </thead>
-        {items.map((element: any) => {
-          return (
-            <tbody>
-              <tr>
-                <td>{element.name}</td>
-                <td>
-                  <RoomIcon item={element.status} />
-                </td>
-                <td>
-                  <RoomIcon item={element.userType} />
-                </td>
-                <td>{element.contact}</td>
-                <td>{element.checkin}</td>
-                <td>{element.checkout}</td>
-                <td>
-                  {element.rent.map((rent: any) => {
-                    return (
-                      <p>
-                        {rent.name} {rent.amount}
-                      </p>
-                    );
-                  })}
-                </td>
-                <td>
-                  {element.serviceFee.map((serviceFee: any) => {
-                    return (
-                      <p>
-                        {serviceFee.name} {serviceFee.amount}
-                      </p>
-                    );
-                  })}
-                </td>
-                <td>
-                  <div className="flex justify-center">
-                    <button
-                      className="btn btn-warning"
-                      onClick={() => {
-                        setShowEdit(true);
-                        setDataEdit(element);
-                      }}
-                    >
-                      <i className="bi bi-pencil-fill" />
-                      <p>แก้ไข</p>
-                    </button>
-                    <button
-                      className="btn btn-error"
-                      onClick={() => setShowDelete(true)}
-                    >
-                      <i className="bi bi-trash" />
-                      <p>ลบ</p>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr className="h-2" />
-            </tbody>
-          );
-        })}
-      </table>
-
-      {showDelete && (
-        <ModalDelete
-          title="Are you sure you want to delete this Room?"
-          onConfirm={onDelete}
-        />
-      )}
-      {showCreate && (
-        <CreateRoom
-          onAddItem={onCreate}
-          onCancel={setShowCreate}
-          data={undefined}
-          state={"create"}
-        />
-      )}
-      {showEdit && (
-        <CreateRoom
-          onAddItem={onEdit}
-          onCancel={setShowEdit}
-          data={dataEdit}
-          state={"Edit"}
-        />
-      )}
     </div>
   );
 }

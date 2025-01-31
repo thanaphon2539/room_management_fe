@@ -1,10 +1,9 @@
-import RoomList from "./RoomList";
 import UserList from "./UserList";
 import WaterBill from "./WaterBill";
 import ElectricityBill from "./ElectricityBill";
 import TestApi from "./TestApi";
 import RoomIndex from "./Room/RoomIndex";
-
+import MainIndex from "./Main/MainIndex";
 import { useState } from "react";
 
 interface ContentProps {
@@ -36,7 +35,7 @@ export default function Content({ selectedMenu }: ContentProps) {
       <div className="w-full">
         <div className="flex justify-between items-center mb-4">
           <div className="w-full">
-            {selectedMenu === "home" && (
+            {/* {selectedMenu === "home" && (
               <div className="card h-[100vh]">
                 <div className="base-table">
                   <table className="base-table">
@@ -61,7 +60,8 @@ export default function Content({ selectedMenu }: ContentProps) {
                   </table>
                 </div>
               </div>
-            )}
+            )} */}
+            {selectedMenu === "home" && <MainIndex />}
             <div className="w-full">
               {selectedMenu === "user-list" && <UserList />}
               {selectedMenu === "room-list" && <RoomIndex />}

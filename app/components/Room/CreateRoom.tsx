@@ -122,12 +122,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
               </h1>
               <div className="col-span-2">
                 <label className="block mb-2 text-gray-700">ชื่อ</label>
-                <input
-                  type="text"
-                  name="name"
-                  className="input-text"
-                  required
-                />
+                <input type="text" name="name" className="input-text" />
               </div>
               <div>
                 <label className="block mb-2 text-gray-700">เบอร์โทร</label>
@@ -152,12 +147,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                 </h1>
                 <div className="col-span-2">
                   <label className="block mb-2 text-gray-700">ชื่อบริษัท</label>
-                  <input
-                    type="text"
-                    name="name"
-                    className="input-text"
-                    required
-                  />
+                  <input type="text" name="name" className="input-text" />
                 </div>
                 <div>
                   <label className="block mb-2 text-gray-700">เบอร์โทร</label>
@@ -204,7 +194,6 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                     name="name"
                     value={element.name}
                     className="input-text"
-                    required
                     placeholder="ชื่อห้อง"
                   />
 
@@ -248,23 +237,13 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                       <label className="block mb-2 text-gray-700">
                         วันที่เข้าพัก
                       </label>
-                      <input
-                        type="date"
-                        name="name"
-                        className="input-text"
-                        required
-                      />
+                      <input type="date" name="name" className="input-text" />
                     </div>
                     <div>
                       <label className="block mb-2 text-gray-700">
                         วันที่ออก
                       </label>
-                      <input
-                        type="date"
-                        name="name"
-                        className="input-text"
-                        required
-                      />
+                      <input type="date" name="name" className="input-text" />
                     </div>
                   </div>
 
