@@ -25,8 +25,11 @@ export default function RoomIndex() {
       contact: "",
       checkin: "12/12/2568",
       checkout: "12/12/2568",
-      rent: 2000,
-      serviceFee: 2000,
+      rent: [
+        { name: "ค่าเช่า", amount: 2000 },
+        { name: "ค่าเช่า", amount: 2000 },
+      ],
+      serviceFee: [{ name: "ค่าบริการ", amount: 2000 }],
     },
     {
       id: "2",
@@ -36,8 +39,11 @@ export default function RoomIndex() {
       contact: "",
       checkin: "12/12/2568",
       checkout: "12/12/2568",
-      rent: 2000,
-      serviceFee: 2000,
+      rent: [{ name: "ค่าเช่า", amount: 2000 }],
+      serviceFee: [
+        { name: "ค่าบริการ", amount: 2000 },
+        { name: "ค่าบริการ", amount: 2000 },
+      ],
     },
     {
       id: "3",
@@ -47,8 +53,8 @@ export default function RoomIndex() {
       contact: "",
       checkin: "12/12/2568",
       checkout: "12/12/2568",
-      rent: 2000,
-      serviceFee: 2000,
+      rent: [{ name: "ค่าเช่า", amount: 2000 }],
+      serviceFee: [{ name: "ค่าบริการ", amount: 2000 }],
     },
   ];
   const [showDelete, setShowDelete] = useState(false);
@@ -89,28 +95,44 @@ export default function RoomIndex() {
 
       <table className="table">
         <thead>
-          <tr className="">
+          <tr>
             {header.map((element: any) => {
-              return <th className="">{element}</th>;
+              return <th>{element}</th>;
             })}
           </tr>
         </thead>
         {items.map((element: any) => {
           return (
             <tbody>
-              <tr className="">
-                <td className="">{element.name}</td>
-                <td className="">
+              <tr>
+                <td>{element.name}</td>
+                <td>
                   <RoomIcon item={element.status} />
                 </td>
-                <td className="">
+                <td>
                   <RoomIcon item={element.userType} />
                 </td>
-                <td className="">{element.contact}</td>
-                <td className="">{element.checkin}</td>
-                <td className="">{element.checkout}</td>
-                <td className="">{element.rent}</td>
-                <td className="">{element.serviceFee}</td>
+                <td>{element.contact}</td>
+                <td>{element.checkin}</td>
+                <td>{element.checkout}</td>
+                <td>
+                  {element.rent.map((rent: any) => {
+                    return (
+                      <p>
+                        {rent.name} {rent.amount}
+                      </p>
+                    );
+                  })}
+                </td>
+                <td>
+                  {element.serviceFee.map((serviceFee: any) => {
+                    return (
+                      <p>
+                        {serviceFee.name} {serviceFee.amount}
+                      </p>
+                    );
+                  })}
+                </td>
                 <td>
                   <div className="flex justify-center">
                     <button

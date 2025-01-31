@@ -49,3 +49,13 @@ tr:nth-child(2) td:first-child {
   border-bottom-right-radius: 0px !important;
   border-bottom-left-radius: 0px !important;
 }
+
+.div-box {
+  @apply border border-base-border rounded-lg p-2 w-full flex gap-3 cursor-pointer hover:border-primary-base
+}
+.div-card {
+  @apply border border-base-border rounded-lg p-2 w-full
+}
+.div-box.active {
+  @apply border-primary-base ring-primary-medium ring-1
+}
