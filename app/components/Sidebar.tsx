@@ -123,7 +123,7 @@ export default function Sidebar({
                 key={element.name}
                 onClick={() => setSelectedSubMenu(element.name)}
                 className={`menu-nav ${
-                  selectedSubMenu === element.name ? "active" : ""
+                  selectedSubMenu === element.name && showSubBar ? "active" : ""
                 }`}
               >
                 {element.title}
