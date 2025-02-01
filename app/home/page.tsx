@@ -48,7 +48,10 @@ export default function HomePage() {
         </div>
 
         {/* Main content */}
-        <Content selectedMenu={selectedMenu} />
+        <Content
+          selectedMenu={selectedMenu}
+          selectedSubMenu={selectedSubMenu}
+        />
       </main>
     </div>
   );

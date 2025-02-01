@@ -81,7 +81,7 @@ export default function RoomIndex() {
             className="btn btn-primary"
             onClick={() => setShowCreate(true)}
           >
-            <i className="bi bi-plus" /> <p>สร้างห้องเช่า</p>
+            <i className="bi bi-plus-lg" /> <p>สร้างห้องเช่า</p>
           </button>
         </div>
 

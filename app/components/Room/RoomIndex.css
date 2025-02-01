@@ -44,12 +44,6 @@ tr:nth-child(2) td:first-child {
   border-right: solid 1px var(--base-border);
 }
 
-.open-sub-tr td {
-  border-bottom: none !important;
-  border-bottom-right-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
-}
-
 .div-box {
   @apply border border-base-border rounded-lg p-2 w-full flex gap-3 cursor-pointer hover:border-primary-base
 }

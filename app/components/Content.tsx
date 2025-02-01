@@ -11,9 +11,13 @@ import { useState } from "react";
 
 interface ContentProps {
   selectedMenu: string;
+  selectedSubMenu: string;
 }
 
-export default function Content({ selectedMenu }: ContentProps) {
+export default function Content({
+  selectedMenu,
+  selectedSubMenu,
+}: ContentProps) {
   return (
     <div className="container">
       <div className="w-full">
@@ -25,7 +29,9 @@ export default function Content({ selectedMenu }: ContentProps) {
             {selectedMenu === "water-bill-list" && <WaterBill />}
             {selectedMenu === "electricity-bill-list" && <ElectricityBill />}
             {selectedMenu === "setting-list" && <SettingIndex />}
-            {selectedMenu === "report-list" && <ReportIndex />}
+            {selectedMenu === "report-list" && (
+              <ReportIndex selectedSubMenu={selectedSubMenu} />
+            )}
           </div>
         </div>
       </div>

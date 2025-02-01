@@ -44,7 +44,7 @@ export default function UserIndex() {
             className="btn btn-primary"
             onClick={() => setShowCreate(true)}
           >
-            <i className="bi bi-plus" /> <p>สร้างผู้ใช้งาน</p>
+            <i className="bi bi-plus-lg" /> <p>สร้างผู้ใช้งาน</p>
           </button>
         </div>
 

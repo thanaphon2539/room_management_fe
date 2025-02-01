@@ -53,7 +53,7 @@ export default function UserList() {
               onClick={() => setShowCreateForm(true)}
               className="btn btn-primary"
             >
-              <i className="bi bi-plus" /> <p>สร้างผู้ใช้งาน</p>
+              <i className="bi bi-plus-lg" /> <p>สร้างผู้ใช้งาน</p>
             </button>
           )}
         </div>

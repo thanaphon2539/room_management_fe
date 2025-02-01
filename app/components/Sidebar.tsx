@@ -82,7 +82,7 @@ export default function Sidebar({
     },
     {
       name: "report-water",
-      title: "รายการการน้ำ",
+      title: "รายงานการใช้น้ำ",
     },
   ];
   return (

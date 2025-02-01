@@ -22,9 +22,6 @@
 .btn-success {
   @apply  bg-success-base hover:bg-success-base/85
 }
-.btn-jeans {
-  @apply  bg-jeans-base hover:bg-jeans-base/85
-}
 .btn-dark {
   @apply  bg-dark-base hover:bg-dark-base/85
 }
@@ -33,19 +30,6 @@
 }
 .btn-base {
   @apply  bg-white border border-base-border !text-dark-base
-}
-
-.base-table {
-  @apply rounded border border-gray-100
-}
-.base-table table {
-  @apply w-full
-}
-.base-table td {
-  @apply border border-gray-100 p-2 text-center
-}
-.base-table th {
-  @apply border border-gray-100 p-2 bg-gray-50
 }
 
 .input-select {
