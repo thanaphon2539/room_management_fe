@@ -1,4 +1,6 @@
 import { useState } from "react";
+import EditSetting from "./Edit";
+import EditUnit from "./EditUnit";
 
 export default function RoomIndex() {
   const data = {
@@ -14,8 +16,13 @@ export default function RoomIndex() {
     },
   };
   const [showEdit, setShowEdit] = useState(false);
-  const [dataEdit, setDataEdit] = useState();
+  const [showEditUnit, setShowEditUnit] = useState(false);
+  const [dataEdit, setDataEdit] = useState({});
+  const [dataEditUnit, setDataEditUnit] = useState({});
   const onEdit = (value: boolean) => {
+    setShowEdit(false);
+  };
+  const onEditUnit = (value: boolean) => {
     setShowEdit(false);
   };
 
@@ -24,6 +31,16 @@ export default function RoomIndex() {
       <div className="card space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold">จัดการตั้งค่า</h2>
+          <button
+            className="btn btn-warning"
+            onClick={() => {
+              setShowEditUnit(true);
+              setDataEditUnit(data);
+            }}
+          >
+            <i className="bi bi-pencil-fill" />
+            <p>แก้ไขหน่วย</p>
+          </button>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -46,7 +63,19 @@ export default function RoomIndex() {
           </div>
 
           <div className="card border border-base-border col-span-2">
-            <h1 className="font-bold mb-4">ข้อมูลผู้ติดต่อ</h1>
+            <h1 className="font-bold flex justify-between">
+              ข้อมูลผู้ติดต่อ
+              <button
+                className="btn btn-warning"
+                onClick={() => {
+                  setShowEdit(true);
+                  setDataEdit(data);
+                }}
+              >
+                <i className="bi bi-pencil-fill" />
+                <p>แก้ไข</p>
+              </button>
+            </h1>
             <div className="ms-5">
               <p>{data.contact.name}</p>
               <p>โทร: {data.contact.phone}</p>
@@ -58,6 +87,23 @@ export default function RoomIndex() {
           </div>
         </div>
       </div>
+
+      {showEdit && (
+        <EditSetting
+          onAddItem={onEdit}
+          onCancel={setShowEdit}
+          data={dataEdit}
+          state={"Edit"}
+        />
+      )}
+      {showEditUnit && (
+        <EditUnit
+          onAddItem={onEditUnit}
+          onCancel={setShowEditUnit}
+          data={dataEdit}
+          state={"Edit"}
+        />
+      )}
     </div>
   );
 }

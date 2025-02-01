@@ -1,5 +1,6 @@
 import { useState } from "react";
 import RoomIcon from "./RoomIcon";
+import { v4 as uuidv4 } from "uuid";
 
 const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
@@ -256,7 +257,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
 
             {room.arrRoom.map((element: any, index: number) => {
               return (
-                <div className="div-card space-y-2 ">
+                <div key={uuidv4()} className="div-card space-y-2 ">
                   <p className="font-bold">ห้องที่ {index + 1}</p>
                   <label className="block mb-2 text-gray-700">ชื่อห้อง</label>
                   <input
@@ -321,7 +322,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                     <label className="block mb-2 text-gray-700">ค่าเช่า</label>
                     {element.rent.map((rent: any, i: number) => {
                       return (
-                        <div className="flex gap-2">
+                        <div key={uuidv4()} className="flex gap-2">
                           <input
                             type="text"
                             className="input-text !mb-0"
@@ -359,7 +360,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                     </label>
                     {element.serviceFee.map((rent: any, i: number) => {
                       return (
-                        <div className="flex gap-2">
+                        <div key={uuidv4()} className="flex gap-2">
                           <input
                             type="text"
                             className="input-text !mb-0"

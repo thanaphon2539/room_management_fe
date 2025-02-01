@@ -1,5 +1,6 @@
 import "../Room/RoomIndex.css";
 import RoomIcon from "./../Room/RoomIcon";
+import { v4 as uuidv4 } from "uuid";
 
 export default function MainIndex() {
   const header = ["ห้อง", "สถานะ", "วันที่เข้าพัก", "วันที่ออก"];
@@ -57,7 +58,10 @@ export default function MainIndex() {
             <tr>
               {header.map((element: any) => {
                 return (
-                  <td className="!bg-primary-light !text-primary-base font-bold">
+                  <td
+                    key={uuidv4()}
+                    className="!bg-primary-light !text-primary-base font-bold"
+                  >
                     {element}
                   </td>
                 );
@@ -67,7 +71,7 @@ export default function MainIndex() {
           </thead>
           {items.map((element: any) => {
             return (
-              <tbody>
+              <tbody key={uuidv4()}>
                 <tr>
                   <td>{element.name}</td>
                   <td>

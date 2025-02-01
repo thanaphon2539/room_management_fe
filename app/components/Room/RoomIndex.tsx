@@ -3,6 +3,7 @@ import RoomIcon from "./RoomIcon";
 import ModalDelete from "../ModalDelete";
 import { useState } from "react";
 import CreateRoom from "./CreateRoom";
+import { v4 as uuidv4 } from "uuid";
 
 export default function RoomIndex() {
   const header = [
@@ -101,13 +102,13 @@ export default function RoomIndex() {
           <thead>
             <tr>
               {header.map((element: any) => {
-                return <th>{element}</th>;
+                return <th key={uuidv4()}>{element}</th>;
               })}
             </tr>
           </thead>
           {items.map((element: any) => {
             return (
-              <tbody>
+              <tbody key={uuidv4()}>
                 <tr>
                   <td>{element.name}</td>
                   <td>
@@ -122,7 +123,7 @@ export default function RoomIndex() {
                   <td>
                     {element.rent.map((rent: any) => {
                       return (
-                        <p>
+                        <p key={uuidv4()}>
                           {rent.name} {rent.amount}
                         </p>
                       );
@@ -131,7 +132,7 @@ export default function RoomIndex() {
                   <td>
                     {element.serviceFee.map((serviceFee: any) => {
                       return (
-                        <p>
+                        <p key={uuidv4()}>
                           {serviceFee.name} {serviceFee.amount}
                         </p>
                       );

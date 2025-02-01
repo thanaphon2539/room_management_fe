@@ -2,6 +2,7 @@ import "../Room/RoomIndex.css";
 import RoomIcon from "./../Room/RoomIcon";
 import { useState } from "react";
 import EditBill from "./EditBill";
+import { v4 as uuidv4 } from "uuid";
 
 export default function BillIndex() {
   const header = [
@@ -132,13 +133,13 @@ export default function BillIndex() {
           <thead>
             <tr>
               {header.map((element: any) => {
-                return <th>{element}</th>;
+                return <th key={uuidv4()}>{element}</th>;
               })}
             </tr>
           </thead>
           {items.map((element: any) => {
             return (
-              <tbody>
+              <tbody key={uuidv4()}>
                 <tr>
                   <td>{element.name}</td>
                   <td>
