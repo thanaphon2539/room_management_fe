@@ -118,8 +118,8 @@ export default function Sidebar({
         </nav>
 
         <nav
-          className={`flex-1 p-4 space-y-4 border-s border-dark-medium h-screen transition duration-300 overflow-hidden ${
-            showSubBar ? "w-48 opacity-100" : "w-0 opacity-0"
+          className={`flex-1 p-4 space-y-4 border-s border-dark-medium h-[calc(100vh-65px)] transition duration-300 overflow-hidden ${
+            showSubBar ? "w-48 opacity-100" : "w-0 opacity-0 h-[0px]"
           }`}
         >
           {subMenuReport.map((element: any) => {
