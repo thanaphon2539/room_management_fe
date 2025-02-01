@@ -152,16 +152,6 @@ export default function BillIndex() {
                   <td className="text-error-base font-bold">
                     {element.bill.new}
                   </td>
-                  {/* {!showEdit && <td>{element.bill.new}</td>}
-                  {showEdit && (
-                    <td>
-                      <input
-                        type="text"
-                        className="input-text text-center !border-primary-medium !mb-0"
-                        value={element.bill.new}
-                      />
-                    </td>
-                  )} */}
                   <td>{element.bill.new - element.bill.old}</td>
                   <td>
                     <div className="flex justify-center">
@@ -175,29 +165,6 @@ export default function BillIndex() {
                         <i className="bi bi-pencil-fill" />
                         <p>แก้ไข</p>
                       </button>
-                      {/* {!showEdit && (
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => {
-                            setShowEdit(true);
-                            setDataEdit(element);
-                          }}
-                        >
-                          <i className="bi bi-pencil-fill" />
-                          <p>แก้ไข</p>
-                        </button>
-                      )}
-                      {showEdit && (
-                        <button
-                          className="btn btn-success"
-                          onClick={() => {
-                            setShowEdit(false);
-                            setDataEdit(element);
-                          }}
-                        >
-                          <p>เสร็สิ้น</p>
-                        </button>
-                      )} */}
                     </div>
                   </td>
                 </tr>

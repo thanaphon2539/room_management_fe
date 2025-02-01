@@ -186,8 +186,6 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
               </div>
             </div>
 
-            {/* {showEdit && ()} */}
-
             <div className="grid grid-cols-2 gap-2">
               <h1 className="block text-gray-700 col-span-2 font-bold">
                 ข้อมูลผู้ติดต่อ

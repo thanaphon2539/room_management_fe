@@ -36,7 +36,7 @@ export default function Sidebar({
     {
       name: "water-bill-list",
       title: "จัดการค่าน้ำ",
-      icon: "bi bi-droplet-fill",
+      icon: "bi bi-droplet-half",
     },
     {
       name: "electricity-bill-list",
@@ -52,6 +52,11 @@ export default function Sidebar({
       name: "setting-list",
       title: "จัดการตั้งค่า",
       icon: "bi bi-gear",
+    },
+    {
+      name: "bill-list",
+      title: "จัดการบิล",
+      icon: "bi bi-receipt",
     },
     {
       name: "report-list",
