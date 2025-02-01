@@ -22,10 +22,7 @@ export default function HomePage() {
       <main className="flex-1 flex flex-col items-center justify-between bg-base-main p-6 relative">
         {/* Top bar with profile button */}
         <div className="w-full flex justify-end mb-4 relative">
-          <button
-            onClick={toggleMenu}
-            className="flex items-center px-4 py-2 text-white bg-blue-500 rounded-lg"
-          >
+          <button onClick={toggleMenu} className="btn btn-primary">
             <span className="mr-2">Admin</span>
             <img
               src="/profile.jpg" // Path to your image file
@@ -36,12 +33,6 @@ export default function HomePage() {
           {menuOpen && (
             <div className="absolute top-12 right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
               <ul>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Profile
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Settings
-                </li>
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                   Logout
                 </li>
