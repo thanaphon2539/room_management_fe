@@ -81,6 +81,75 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
     }
   };
 
+  const addBill = (type: string, roomindex: number, index: number) => {
+    if (type === "addrent") {
+      setRoom((prev) => ({
+        ...prev,
+        arrRoom: prev.arrRoom.map((room, i) =>
+          i === roomindex
+            ? {
+                ...room,
+                rent: [
+                  ...room.rent.slice(0, index + 1),
+                  { name: "", amount: 0 },
+                  ...room.rent.slice(index + 1),
+                ],
+              }
+            : room
+        ),
+      }));
+    }
+    if (type === "deleterent") {
+      setRoom((prev) => ({
+        ...prev,
+        arrRoom: prev.arrRoom.map((room, i) =>
+          i === roomindex
+            ? {
+                ...room,
+                rent:
+                  room.rent.length > 1
+                    ? room.rent.filter((_: any, i: number) => i !== index)
+                    : room.rent,
+              }
+            : room
+        ),
+      }));
+    }
+    if (type === "addservice") {
+      setRoom((prev) => ({
+        ...prev,
+        arrRoom: prev.arrRoom.map((room, i) =>
+          i === roomindex
+            ? {
+                ...room,
+                serviceFee: [
+                  ...room.serviceFee.slice(0, index + 1),
+                  { name: "", amount: 0 },
+                  ...room.serviceFee.slice(index + 1),
+                ],
+              }
+            : room
+        ),
+      }));
+    }
+    if (type === "deleteservice") {
+      setRoom((prev) => ({
+        ...prev,
+        arrRoom: prev.arrRoom.map((room, i) =>
+          i === roomindex
+            ? {
+                ...room,
+                serviceFee:
+                  room.serviceFee.length > 1
+                    ? room.serviceFee.filter((_: any, i: number) => i !== index)
+                    : room.serviceFee,
+              }
+            : room
+        ),
+      }));
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-dark-base">
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
@@ -188,8 +257,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
             {room.arrRoom.map((element: any, index: number) => {
               return (
                 <div className="div-card space-y-2 ">
-                  {/* {element} */}
-                  <p>ห้องที่ {index + 1}</p>
+                  <p className="font-bold">ห้องที่ {index + 1}</p>
                   <label className="block mb-2 text-gray-700">ชื่อห้อง</label>
                   <input
                     type="text"
@@ -251,24 +319,32 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
 
                   <div className="space-y-2">
                     <label className="block mb-2 text-gray-700">ค่าเช่า</label>
-                    {element.rent.map((rant: any) => {
+                    {element.rent.map((rent: any, i: number) => {
                       return (
                         <div className="flex gap-2">
                           <input
                             type="text"
                             className="input-text !mb-0"
                             placeholder="ค่าเช่า"
+                            value={rent.name}
                           />
                           <input
                             type="text"
                             className="input-text !mb-0"
                             placeholder="จำนวน"
+                            value={rent.amount}
                           />
                           <div className="flex space-x-2 ms-2">
-                            <button className="btn btn-base">
+                            <button
+                              className="btn btn-base"
+                              onClick={() => addBill("deleterent", index, i)}
+                            >
                               <i className="bi bi-dash-lg" />
                             </button>
-                            <button className="btn btn-base">
+                            <button
+                              className="btn btn-base"
+                              onClick={() => addBill("addrent", index, i)}
+                            >
                               <i className="bi bi-plus-lg" />
                             </button>
                           </div>
@@ -281,24 +357,32 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                     <label className="block mb-2 text-gray-700">
                       ค่าบริการ
                     </label>
-                    {element.serviceFee.map((rant: any) => {
+                    {element.serviceFee.map((rent: any, i: number) => {
                       return (
                         <div className="flex gap-2">
                           <input
                             type="text"
                             className="input-text !mb-0"
                             placeholder="ค่าบริการ"
+                            value={rent.name}
                           />
                           <input
                             type="text"
                             className="input-text !mb-0"
                             placeholder="จำนวน"
+                            value={rent.amount}
                           />
                           <div className="flex space-x-2 ms-2">
-                            <button className="btn btn-base">
+                            <button
+                              className="btn btn-base"
+                              onClick={() => addBill("deleteservice", index, i)}
+                            >
                               <i className="bi bi-dash-lg" />
                             </button>
-                            <button className="btn btn-base">
+                            <button
+                              className="btn btn-base"
+                              onClick={() => addBill("addservice", index, i)}
+                            >
                               <i className="bi bi-plus-lg" />
                             </button>
                           </div>
