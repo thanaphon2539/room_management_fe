@@ -78,6 +78,15 @@ export default function Sidebar({
         >
           <i className="bi bi-gear" /> จัดการตั้งค่า
         </button>
+
+        <button
+          onClick={() => setSelectedMenu("report-list")}
+          className={`block px-4 py-2 rounded w-full text-left ${
+            selectedMenu === "report-list" ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
+          <i className="bi bi-file-earmark-bar-graph-fill" /> รายงาน
+        </button>
       </nav>
     </aside>
   );

@@ -3,6 +3,7 @@ import WaterBill from "./WaterBill/BillIndex";
 import ElectricityBill from "./ElectricityBill/BillIndex";
 import RoomIndex from "./Room/RoomIndex";
 import MainIndex from "./Main/MainIndex";
+import SettingIndex from "./Setting/SettingIndex";
 import { useState } from "react";
 
 interface ContentProps {
@@ -20,6 +21,7 @@ export default function Content({ selectedMenu }: ContentProps) {
             {selectedMenu === "room-list" && <RoomIndex />}
             {selectedMenu === "water-bill-list" && <WaterBill />}
             {selectedMenu === "electricity-bill-list" && <ElectricityBill />}
+            {selectedMenu === "setting-list" && <SettingIndex />}
           </div>
         </div>
       </div>

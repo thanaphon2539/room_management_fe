@@ -53,7 +53,7 @@ export default function UserList() {
               onClick={() => setShowCreateForm(true)}
               className="btn btn-primary"
             >
-              + สร้างผู้ใช้งาน
+              <i className="bi bi-plus" /> <p>สร้างผู้ใช้งาน</p>
             </button>
           )}
         </div>
@@ -82,13 +82,15 @@ export default function UserList() {
                     onClick={() => setEditingUser(user)}
                     className="btn btn-warning"
                   >
-                    แก้ไข
+                    <i className="bi bi-pencil-fill" />
+                    <p>แก้ไข</p>
                   </button>
                   <button
                     onClick={() => confirmDeleteUser(user.id)}
                     className="btn btn-error"
                   >
-                    ลบ
+                    <i className="bi bi-trash" />
+                    <p>ลบ</p>
                   </button>
                 </div>
               </li>
