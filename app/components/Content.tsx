@@ -5,6 +5,7 @@ import RoomIndex from "./Room/RoomIndex";
 import MainIndex from "./Main/MainIndex";
 import SettingIndex from "./Setting/SettingIndex";
 import UserIndex from "./User/UserIndex";
+import ReportIndex from "./Report/ReportIndex";
 
 import { useState } from "react";
 
@@ -24,6 +25,7 @@ export default function Content({ selectedMenu }: ContentProps) {
             {selectedMenu === "water-bill-list" && <WaterBill />}
             {selectedMenu === "electricity-bill-list" && <ElectricityBill />}
             {selectedMenu === "setting-list" && <SettingIndex />}
+            {selectedMenu === "report-list" && <ReportIndex />}
           </div>
         </div>
       </div>

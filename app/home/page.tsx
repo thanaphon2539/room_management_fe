@@ -7,6 +7,7 @@ import UserList from "../components/UserList";
 
 export default function HomePage() {
   const [selectedMenu, setSelectedMenu] = useState("home"); // Handle selected menu
+  const [selectedSubMenu, setSelectedSubMenu] = useState("report-rent"); // Handle selected menu
   const [menuOpen, setMenuOpen] = useState(false); // Handle dropdown menu for the profile button
 
   const toggleMenu = () => {
@@ -16,7 +17,12 @@ export default function HomePage() {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <Sidebar selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
+      <Sidebar
+        selectedMenu={selectedMenu}
+        setSelectedMenu={setSelectedMenu}
+        setSelectedSubMenu={setSelectedSubMenu}
+        selectedSubMenu={selectedSubMenu}
+      />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-between bg-base-main p-6 relative">

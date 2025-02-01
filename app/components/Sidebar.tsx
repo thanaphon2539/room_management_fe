@@ -1,93 +1,137 @@
 "use client";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { useEffect, useState } from "react";
 
 interface SidebarProps {
   selectedMenu: string;
   setSelectedMenu: (menu: string) => void;
+  selectedSubMenu: string;
+  setSelectedSubMenu: (menu: string) => void;
 }
-
-import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function Sidebar({
   selectedMenu,
   setSelectedMenu,
+  selectedSubMenu,
+  setSelectedSubMenu,
 }: SidebarProps) {
+  const [showSubBar, setShowSubBar] = useState(false);
+
+  useEffect(() => {
+    if (selectedMenu === "report-list") setShowSubBar(true);
+    else setShowSubBar(false);
+  }, [selectedMenu]);
+
+  const menu = [
+    {
+      name: "home",
+      title: "หน้าหลัก",
+      icon: "bi bi-house-fill",
+    },
+    {
+      name: "room-list",
+      title: "จัดการห้องเช่า",
+      icon: "bi bi-house-gear",
+    },
+    {
+      name: "water-bill-list",
+      title: "จัดการค่าน้ำ",
+      icon: "bi bi-droplet-fill",
+    },
+    {
+      name: "electricity-bill-list",
+      title: "จัดการค่าไฟ",
+      icon: "bi bi-lightbulb-fill",
+    },
+    {
+      name: "user-list",
+      title: "จัดการผู้ใช้งาน",
+      icon: "bi bi-person-fill",
+    },
+    {
+      name: "setting-list",
+      title: "จัดการตั้งค่า",
+      icon: "bi bi-gear",
+    },
+    {
+      name: "report-list",
+      title: "รายงาน",
+      icon: "bi bi-file-earmark-bar-graph-fill",
+    },
+  ];
+  const subMenuReport = [
+    {
+      name: "report-rent",
+      title: "รายงานบิลค่าเช่ารายเดือน",
+    },
+    {
+      name: "report-in",
+      title: "รายงานย้ายเข้ารายเดือน",
+    },
+    {
+      name: "report-out",
+      title: "รายงานย้ายออกรายเดือน",
+    },
+    {
+      name: "report-avalible",
+      title: "รายงานห้องว่างรายเดือน",
+    },
+    {
+      name: "report-fire",
+      title: "รายงานการใช้ไฟ",
+    },
+    {
+      name: "report-water",
+      title: "รายการการน้ำ",
+    },
+  ];
   return (
-    <aside className="w-64 bg-gray-800 text-white flex flex-col">
+    <aside
+      className={`${
+        showSubBar ? "w-96" : "w-64"
+      } bg-gray-800 text-white flex flex-col`}
+    >
       <div className="p-4 text-center text-xl font-bold border-b border-gray-700">
         Menu
       </div>
-      <nav className="flex-1 p-4 space-y-4">
-        {/* ✅ เมนู Home */}
-        <button
-          onClick={() => setSelectedMenu("home")}
-          className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "home" ? "bg-gray-700" : "hover:bg-gray-700"
-          }`}
-        >
-          <i className="bi bi-house-fill" /> หน้าหลัก
-        </button>
+      <div className={`${showSubBar ? "grid grid-cols-2" : ""}`}>
+        <nav className="flex-1 p-4 space-y-4">
+          {/* ✅ เมนู Home */}
+          {menu.map((element: any) => {
+            return (
+              <button
+                key={element.name}
+                onClick={() => setSelectedMenu(element.name)}
+                className={`menu-nav ${
+                  selectedMenu === element.name ? "active" : ""
+                }`}
+              >
+                <i className={element.icon} /> {element.title}
+              </button>
+            );
+          })}
+        </nav>
 
-        <button
-          onClick={() => setSelectedMenu("room-list")}
-          className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "room-list" ? "bg-gray-700" : "hover:bg-gray-700"
+        <nav
+          className={`flex-1 p-4 space-y-4 border-s border-dark-medium h-screen transition duration-300 overflow-hidden ${
+            showSubBar ? "w-48 opacity-100" : "w-0 opacity-0"
           }`}
         >
-          <i className="bi bi-house-gear" /> จัดการห้องเช่า
-        </button>
-
-        <button
-          onClick={() => setSelectedMenu("water-bill-list")}
-          className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "water-bill-list"
-              ? "bg-gray-700"
-              : "hover:bg-gray-700"
-          }`}
-        >
-          <i className="bi bi-droplet-fill" /> จัดการค่าน้ำ
-        </button>
-
-        <button
-          onClick={() => setSelectedMenu("electricity-bill-list")}
-          className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "electricity-bill-list"
-              ? "bg-gray-700"
-              : "hover:bg-gray-700"
-          }`}
-        >
-          <i className="bi bi-lightbulb-fill" /> จัดการค่าไฟ
-        </button>
-
-        {/* ✅ เมนู User List */}
-        <button
-          onClick={() => setSelectedMenu("user-list")}
-          className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "user-list" ? "bg-gray-700" : "hover:bg-gray-700"
-          }`}
-        >
-          <i className="bi bi-person-fill" /> จัดการผู้ใช้งาน
-        </button>
-
-        <button
-          onClick={() => setSelectedMenu("setting-list")}
-          className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "setting-list"
-              ? "bg-gray-700"
-              : "hover:bg-gray-700"
-          }`}
-        >
-          <i className="bi bi-gear" /> จัดการตั้งค่า
-        </button>
-
-        <button
-          onClick={() => setSelectedMenu("report-list")}
-          className={`block px-4 py-2 rounded w-full text-left ${
-            selectedMenu === "report-list" ? "bg-gray-700" : "hover:bg-gray-700"
-          }`}
-        >
-          <i className="bi bi-file-earmark-bar-graph-fill" /> รายงาน
-        </button>
-      </nav>
+          {subMenuReport.map((element: any) => {
+            return (
+              <button
+                key={element.name}
+                onClick={() => setSelectedSubMenu(element.name)}
+                className={`menu-nav ${
+                  selectedSubMenu === element.name ? "active" : ""
+                }`}
+              >
+                {element.title}
+              </button>
+            );
+          })}
+        </nav>
+      </div>
     </aside>
   );
 }
