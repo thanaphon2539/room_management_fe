@@ -42,11 +42,7 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
 
         <div className="max-h-[calc(80vh)] overflow-y-auto space-y-2">
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-4 gap-2">
-              <div>
-                <label className="block mb-2 text-gray-700">เดือน</label>
-                <input type="date" className="input-text" />
-              </div>
+            <div className="grid grid-cols-3 gap-2">
               <div>
                 <label className="block mb-2 text-gray-700">
                   ค่าน้ำเดือนที่แล้ว

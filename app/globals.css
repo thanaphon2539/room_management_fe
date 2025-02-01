@@ -49,7 +49,7 @@
 }
 
 .input-select {
-  @apply rounded w-full border border-gray-100 p-2 mb-2
+  @apply rounded-lg w-full border border-base-border p-2 mb-2
 }
 .input-text {
   @apply rounded-lg w-full border border-base-border p-2 mb-2

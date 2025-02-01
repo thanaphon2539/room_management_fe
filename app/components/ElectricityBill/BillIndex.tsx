@@ -71,6 +71,27 @@ export default function BillIndex() {
   const onEdit = (value: boolean) => {
     setShowEdit(false);
   };
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
+  const months = [
+    "มกราคม",
+    "กุมภาพันธ์",
+    "มีนาคม",
+    "เมษายน",
+    "พฤษภาคม",
+    "มิถุนายน",
+    "กรกฎาคม",
+    "สิงหาคม",
+    "กันยายน",
+    "ตุลาคม",
+    "พฤศจิกายน",
+    "ธันวาคม",
+  ];
+
+  const [selectedYear, setSelectedYear] = useState(years[0]);
+  const [selectedMonth, setSelectedMonth] = useState(months[0]);
+
   return (
     <div className="container">
       <div className="card space-y-4">
@@ -78,11 +99,32 @@ export default function BillIndex() {
           <h2 className="text-2xl font-bold">จัดการค่าไฟ</h2>
         </div>
 
-        <div className="flex space-x-2">
-          <input type="date" name="search" className="input-text !w-1/4" />
+        <div className="flex space-x-2 !w-1/2">
+          <select
+            value={selectedYear}
+            onChange={(e) => setSelectedYear}
+            className="input-select"
+          >
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+          <select
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth}
+            className="input-select"
+          >
+            {months.map((month, index) => (
+              <option key={index} value={month}>
+                {month}
+              </option>
+            ))}
+          </select>
           <button className="btn btn-dark text-nowrap h-fit">
             <i className="bi bi-search" />
-            <p>ค้าหา</p>
+            <p>ค้นหา</p>
           </button>
         </div>
 
