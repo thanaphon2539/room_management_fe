@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import Image from 'next/image'; // Optimized image component from Next.js
+import Link from "next/link";
+import Image from "next/image"; // Optimized image component from Next.js
 
 export default function Index() {
   return (
@@ -27,4 +27,3 @@ export default function Index() {
     </main>
   );
 }
-

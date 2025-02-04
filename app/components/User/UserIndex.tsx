@@ -1,8 +1,11 @@
+"use client";
+
 import "./../Room/RoomIndex";
 import ModalDelete from "../ModalDelete";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CreateUser from "./CreateUser";
 import { v4 as uuidv4 } from "uuid";
+import { userList } from "@/pages/api/user";
 
 interface User {
   id: number;
@@ -20,6 +23,18 @@ export default function UserIndex() {
   const [showEdit, setShowEdit] = useState(false);
   const [dataEdit, setDataEdit] = useState();
   const [deleteUserId, setDeleteUserId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const data = await userList();
+      setUsers(data);
+      setLoading(false);
+    };
+    fetchUser();
+  }, []); // ใช้ [] เพื่อให้ useEffect ถูกเรียกแค่ครั้งเดียว
+
+  if (loading) return <p>Loading...</p>;
 
   const onDelete = (value: boolean) => {
     setShowDelete(false);
@@ -49,7 +64,7 @@ export default function UserIndex() {
         </div>
 
         <table className="table mt-4">
-          {users.map((element: any) => {
+          {users.map((element: User) => {
             return (
               <tbody key={uuidv4()}>
                 <tr>

@@ -1,4 +1,3 @@
-import UserList from "./UserList";
 import WaterBill from "./WaterBill/BillIndex";
 import ElectricityBill from "./ElectricityBill/BillIndex";
 import RoomIndex from "./Room/RoomIndex";
@@ -6,8 +5,6 @@ import MainIndex from "./Main/MainIndex";
 import SettingIndex from "./Setting/SettingIndex";
 import UserIndex from "./User/UserIndex";
 import ReportIndex from "./Report/ReportIndex";
-
-import { useState } from "react";
 
 interface ContentProps {
   selectedMenu: string;

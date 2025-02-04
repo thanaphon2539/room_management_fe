@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
+// import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Content from "../components/Content";
-import UserList from "../components/UserList";
 
-export default function HomePage() {
+const HomePage = () => {
   const [selectedMenu, setSelectedMenu] = useState("home"); // Handle selected menu
   const [selectedSubMenu, setSelectedSubMenu] = useState("report-rent"); // Handle selected menu
   const [menuOpen, setMenuOpen] = useState(false); // Handle dropdown menu for the profile button
@@ -13,7 +13,6 @@ export default function HomePage() {
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
-
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -55,4 +54,6 @@ export default function HomePage() {
       </main>
     </div>
   );
-}
+};
+
+export default HomePage;
