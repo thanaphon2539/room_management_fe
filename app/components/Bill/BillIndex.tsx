@@ -1,19 +1,10 @@
 import "../Room/RoomIndex.css";
 import RoomIcon from "./../Room/RoomIcon";
 import { useState } from "react";
-import EditBill from "./EditBill";
 import { v4 as uuidv4 } from "uuid";
 
-export default function RoomIndex() {
-  const header = [
-    "ห้อง",
-    "สถานะ",
-    "ประเภทลูกค้า",
-    "ค่าน้ำเดือนที่แล้ว",
-    "ค่าน้ำเดือนปัจจุบัน",
-    "หน่วยที่ใช้",
-    "จัดการ",
-  ];
+export default function BillIndex() {
+  const header = ["ห้อง", "สถานะ", "ประเภทลูกค้า", "จัดการ"];
   const items = [
     {
       id: "1",
@@ -67,11 +58,6 @@ export default function RoomIndex() {
       },
     },
   ];
-  const [showEdit, setShowEdit] = useState(false);
-  const [dataEdit, setDataEdit] = useState();
-  const onEdit = (value: boolean) => {
-    setShowEdit(false);
-  };
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
@@ -97,7 +83,7 @@ export default function RoomIndex() {
     <div className="container">
       <div className="card space-y-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">จัดการค่าน้ำ</h2>
+          <h2 className="text-2xl font-bold">จัดการบิล</h2>
         </div>
 
         <div className="flex space-x-2 !w-1/2">
@@ -148,22 +134,11 @@ export default function RoomIndex() {
                   <td>
                     <RoomIcon item={element.userType} />
                   </td>
-                  <td>{element.bill.old}</td>
-                  <td className="text-primary-base font-bold">
-                    {element.bill.new}
-                  </td>
-                  <td>{element.bill.new - element.bill.old}</td>
                   <td>
                     <div className="flex justify-center">
-                      <button
-                        className="btn btn-warning"
-                        onClick={() => {
-                          setShowEdit(true);
-                          setDataEdit(element);
-                        }}
-                      >
-                        <i className="bi bi-pencil-fill" />
-                        <p>แก้ไข</p>
+                      <button className="btn btn-primary">
+                        <i className="bi bi-receipt-cutoff" />
+                        <p>สร้างบิล</p>
                       </button>
                     </div>
                   </td>
@@ -174,15 +149,6 @@ export default function RoomIndex() {
           })}
         </table>
       </div>
-
-      {showEdit && (
-        <EditBill
-          onAddItem={onEdit}
-          onCancel={setShowEdit}
-          data={dataEdit}
-          state={"Edit"}
-        />
-      )}
     </div>
   );
 }

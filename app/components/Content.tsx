@@ -5,6 +5,7 @@ import MainIndex from "./Main/MainIndex";
 import SettingIndex from "./Setting/SettingIndex";
 import UserIndex from "./User/UserIndex";
 import ReportIndex from "./Report/ReportIndex";
+import BillIndex from "./Bill/BillIndex";
 
 interface ContentProps {
   selectedMenu: string;
@@ -26,6 +27,7 @@ export default function Content({
             {selectedMenu === "water-bill-list" && <WaterBill />}
             {selectedMenu === "electricity-bill-list" && <ElectricityBill />}
             {selectedMenu === "setting-list" && <SettingIndex />}
+            {selectedMenu === "bill-list" && <BillIndex />}
             {selectedMenu === "report-list" && (
               <ReportIndex selectedSubMenu={selectedSubMenu} />
             )}
