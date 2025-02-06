@@ -2,19 +2,14 @@
 
 import "./../Room/RoomIndex";
 import ModalDelete from "../ModalDelete";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateUser from "./CreateUser";
 import { v4 as uuidv4 } from "uuid";
-import { userList } from "@/pages/api/user";
-
-interface User {
-  id: number;
-  name: string;
-  username: string;
-}
+import { ResponseUser, userList } from "@/pages/api/user";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function UserIndex() {
-  const [users, setUsers] = useState<User[]>([
+  const [users, setUsers] = useState<ResponseUser[]>([
     { id: 1, name: "John Doe", username: "john@example.com" },
     { id: 2, name: "Jane Smith", username: "jane@example.com" },
   ]);
@@ -64,12 +59,23 @@ export default function UserIndex() {
         </div>
 
         <table className="table mt-4">
-          {users.map((element: User) => {
+          {users.map((element: User, key: Number) => {
             return (
               <tbody key={uuidv4()}>
                 <tr>
+                  <td className="!text-start">{key + 1}</td>
                   <td className="!text-start">{element.name}</td>
-                  <td className="!text-start">{element.username}</td>
+                  <td className="!text-start">
+                    <i
+                      className="mx-2 bi bi-check-circle-fill"
+                      style={{
+                        color:
+                          element.isActive === "เปิดใช้งาน" ? "green" : "gray",
+                      }}
+                    ></i>
+                    {element.isActive}
+                  </td>
+                  <td className="!text-start">{element.updatedAt}</td>
                   <td>
                     <div className="flex justify-end">
                       <button

@@ -1,3 +1,4 @@
+import { updateUser } from "@/pages/api/user";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -30,24 +31,43 @@ const CreateUser = (props: { [x: string]: any; data: any; state: string }) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (user.name && user.username) {
-      if (state === "create") {
-        props.onAddItem({
-          id: Date.now(),
-          name: user.name,
-          username: user.username,
-          password: user.password,
-        });
-      }
-      if (state === "edit") {
-        props.onEditItem({
-          id: user.id,
-          name: user.name,
-          username: user.username,
-          password: user.password,
-        });
+    if (user.name || user.username) {
+      try {
+        let response;
+        if (state === "create") {
+          response = await fetch("http://localhost:8080/user", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: user.id,
+              name: user.name,
+              username: user.username,
+              password: user.password,
+            }),
+          });
+        } else if (state === "edit") {
+          console.log("edit >>>", user);
+          await updateUser(user.id, user.name);
+        }
+        if (state === "create") {
+          props.onAddItem({
+            name: user.name,
+            username: user.username,
+            password: user.password,
+          });
+        } else {
+          props.onEditItem({
+            id: user.id,
+            name: user.name,
+          });
+        }
+
+        cancel();
+        window.location.reload();
+      } catch (error) {
+        console.error("Error saving user:", error);
       }
     }
   };
@@ -57,7 +77,7 @@ const CreateUser = (props: { [x: string]: any; data: any; state: string }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
         <div className="flex justify-between">
           <h2 className="text-xl font-bold text-end capitalize">
-            {state} User
+            {state === "create" ? "สร้าง" : "แก้ไข"}ผู้ใช้งาน
           </h2>
           <button className="btn !text-dark-base" onClick={() => cancel()}>
             <i className="bi bi-x-lg" />
@@ -77,16 +97,18 @@ const CreateUser = (props: { [x: string]: any; data: any; state: string }) => {
                   onChange={handleChange}
                 />
               </div>
-              <div>
-                <label className="block mb-2 text-gray-700">Username</label>
-                <input
-                  type="text"
-                  name="username"
-                  className="input-text"
-                  value={user.username}
-                  onChange={handleChange}
-                />
-              </div>
+              {state === "create" && (
+                <div>
+                  <label className="block mb-2 text-gray-700">Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    className="input-text"
+                    value={user.username}
+                    onChange={handleChange}
+                  />
+                </div>
+              )}
               {state === "create" && (
                 <div>
                   <label className="block mb-2 text-gray-700">Password</label>

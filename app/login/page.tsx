@@ -1,23 +1,25 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { saveToken } from "./cookie";
+import { loginApi } from "@/pages/api/login";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page reload on form submission
-
-    if (username === 'admin' && password === '1') {
-      // Clear error and redirect to /home
-      setError('');
-      router.push('/home'); // Redirect to /home
+    const { meta, data } = await loginApi(username, password);
+    if (meta.code === 200) {
+      saveToken(data.accessToken.token);
+      setError("");
+      router.push("/home");
     } else {
-      setError('Invalid username or password');
+      setError(meta.message);
     }
   };
 
