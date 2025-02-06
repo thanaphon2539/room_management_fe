@@ -1,4 +1,4 @@
-import { updateUser } from "@/pages/api/user";
+import { createUser, updateUser } from "@/pages/api/user";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -21,6 +21,8 @@ const CreateUser = (props: { [x: string]: any; data: any; state: string }) => {
     name: data?.name ? data?.name : "",
     username: data?.username ? data?.username : "",
     password: data?.password ? data?.password : "",
+    isActive: data?.isActive ? data?.isActive : "",
+    updatedAt: data?.updatedAt ? data?.updatedAt : "",
   });
 
   const cancel = () => {
@@ -35,17 +37,12 @@ const CreateUser = (props: { [x: string]: any; data: any; state: string }) => {
     e.preventDefault();
     if (user.name || user.username) {
       try {
-        let response;
         if (state === "create") {
-          response = await fetch("http://localhost:8080/user", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id: user.id,
-              name: user.name,
-              username: user.username,
-              password: user.password,
-            }),
+          console.log("create >>>", user);
+          await createUser({
+            name: user.name,
+            username: user.username,
+            password: user.password,
           });
         } else if (state === "edit") {
           console.log("edit >>>", user);
@@ -54,8 +51,8 @@ const CreateUser = (props: { [x: string]: any; data: any; state: string }) => {
         if (state === "create") {
           props.onAddItem({
             name: user.name,
-            username: user.username,
-            password: user.password,
+            isActive: user.isActive,
+            updatedAt: user.updatedAt,
           });
         } else {
           props.onEditItem({

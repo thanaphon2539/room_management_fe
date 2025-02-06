@@ -5,10 +5,11 @@ import ModalDelete from "../ModalDelete";
 import React, { useEffect, useState } from "react";
 import CreateUser from "./CreateUser";
 import { v4 as uuidv4 } from "uuid";
-import { ResponseUser, userList } from "@/pages/api/user";
+import { deleteUser, ResponseUser, userList } from "@/pages/api/user";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function UserIndex() {
+  const header = ["ลำดับ", "ชื่อ", "สถานะ", "อัพเดทล่าสุด"];
   const [users, setUsers] = useState<ResponseUser[]>([
     { id: 1, name: "John Doe", username: "john@example.com" },
     { id: 2, name: "Jane Smith", username: "jane@example.com" },
@@ -31,10 +32,13 @@ export default function UserIndex() {
 
   if (loading) return <p>Loading...</p>;
 
-  const onDelete = (value: boolean) => {
-    setShowDelete(false);
-    if (deleteUserId !== null && value) {
-      setUsers(users.filter((user) => user.id !== deleteUserId));
+  const onDelete = async () => {
+    if (deleteUserId !== null) {
+      const success = await deleteUser(deleteUserId);
+      if (success) {
+        setUsers(users.filter((user) => user.id !== deleteUserId));
+      }
+      setShowDelete(false);
       setDeleteUserId(null);
     }
   };
@@ -59,6 +63,13 @@ export default function UserIndex() {
         </div>
 
         <table className="table mt-4">
+          <thead>
+            <tr>
+              {header.map((element: any) => {
+                return <th key={uuidv4()}>{element}</th>;
+              })}
+            </tr>
+          </thead>
           {users.map((element: User, key: Number) => {
             return (
               <tbody key={uuidv4()}>
@@ -109,8 +120,9 @@ export default function UserIndex() {
 
         {showDelete && (
           <ModalDelete
-            title="Are you sure you want to delete this User?"
+            title="คุณแน่ใจหรือไม่ว่าต้องการลบสิ่งนี้?"
             onConfirm={onDelete}
+            onCancel={() => setShowDelete(false)}
           />
         )}
         {showCreate && (
