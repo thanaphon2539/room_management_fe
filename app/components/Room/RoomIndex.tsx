@@ -94,7 +94,7 @@ export default function RoomIndex() {
           />
           <button className="btn btn-dark text-nowrap h-fit">
             <i className="bi bi-search" />
-            <p>ค้าหา</p>
+            <p>ค้นหา</p>
           </button>
         </div>
 

@@ -58,16 +58,12 @@ export default function MainIndex() {
             <tr>
               {header.map((element: any) => {
                 return (
-                  <td
-                    key={uuidv4()}
-                    className="!bg-primary-light !text-primary-base font-bold"
-                  >
+                  <th key={uuidv4()} className="font-bold">
                     {element}
-                  </td>
+                  </th>
                 );
               })}
             </tr>
-            <tr className="h-2" />
           </thead>
           {items.map((element: any) => {
             return (

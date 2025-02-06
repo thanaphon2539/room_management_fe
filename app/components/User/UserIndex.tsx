@@ -62,6 +62,19 @@ export default function UserIndex() {
           </button>
         </div>
 
+        <div className="flex space-x-2 mb-4">
+          <input
+            type="text"
+            name="search"
+            className="input-text !w-2/4"
+            placeholder="ค้นหา"
+          />
+          <button className="btn btn-dark text-nowrap h-fit">
+            <i className="bi bi-search" />
+            <p>ค้นหา</p>
+          </button>
+        </div>
+
         <table className="table mt-4">
           <thead>
             <tr>
@@ -74,19 +87,19 @@ export default function UserIndex() {
             return (
               <tbody key={uuidv4()}>
                 <tr>
-                  <td className="!text-start">{key + 1}</td>
-                  <td className="!text-start">{element.name}</td>
-                  <td className="!text-start">
+                  <td>{key + 1}</td>
+                  <td>{element.name}</td>
+                  <td>
                     <i
-                      className="mx-2 bi bi-check-circle-fill"
-                      style={{
-                        color:
-                          element.isActive === "เปิดใช้งาน" ? "green" : "gray",
-                      }}
+                      className={`mx-2 bi bi-check-circle-fill ${
+                        element.isActive === "เปิดใช้งาน"
+                          ? "text-success-base"
+                          : "text-dark-light"
+                      }`}
                     ></i>
                     {element.isActive}
                   </td>
-                  <td className="!text-start">{element.updatedAt}</td>
+                  <td>{element.updatedAt}</td>
                   <td>
                     <div className="flex justify-end">
                       <button

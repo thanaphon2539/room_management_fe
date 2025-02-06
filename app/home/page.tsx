@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Content from "../components/Content";
@@ -13,6 +13,20 @@ const HomePage = () => {
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
+
+  const params = new URLSearchParams(window.location.search);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      let menu = params.get("menu") || "home";
+      setSelectedMenu(menu);
+      let subMenu = params.get("subMenu") || "report-rent";
+      setSelectedSubMenu(subMenu);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}

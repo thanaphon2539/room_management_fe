@@ -1,5 +1,6 @@
 "use client";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface SidebarProps {
@@ -90,6 +91,15 @@ export default function Sidebar({
       title: "รายงานการใช้น้ำ",
     },
   ];
+
+  const router = useRouter();
+  const setQueryMenu = (menu: string) => {
+    router.push(`/home?menu=${menu}`);
+  };
+  const setQuerySubMenu = (menu: string, subMenu: string) => {
+    router.push(`/home?menu=${menu}&subMenu=${subMenu}`);
+  };
+
   return (
     <aside
       className={`${
@@ -106,7 +116,9 @@ export default function Sidebar({
             return (
               <button
                 key={element.name}
-                onClick={() => setSelectedMenu(element.name)}
+                onClick={() => (
+                  setSelectedMenu(element.name), setQueryMenu(element.name)
+                )}
                 className={`menu-nav ${
                   selectedMenu === element.name ? "active" : ""
                 }`}
@@ -119,14 +131,17 @@ export default function Sidebar({
 
         <nav
           className={`flex-1 p-4 space-y-4 border-s border-dark-medium h-[calc(100vh-65px)] transition duration-300 overflow-hidden ${
-            showSubBar ? "w-48 opacity-100" : "w-0 opacity-0 h-[0px]"
+            showSubBar ? "w-48 opacity-100" : "opacity-0 !w-0 !h-0"
           }`}
         >
           {subMenuReport.map((element: any) => {
             return (
               <button
                 key={element.name}
-                onClick={() => setSelectedSubMenu(element.name)}
+                onClick={() => (
+                  setSelectedSubMenu(element.name),
+                  setQuerySubMenu("report-list", element.name)
+                )}
                 className={`menu-nav ${
                   selectedSubMenu === element.name && showSubBar ? "active" : ""
                 }`}
