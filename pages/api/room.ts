@@ -58,6 +58,7 @@ interface IRoom {
 }
 
 export interface ResponseRoom {
+  pageCount: number;
   id: number;
   nameRoom: string;
   type: typeRoom;
@@ -70,9 +71,25 @@ export interface ResponseRoom {
   serviceFee: ServiceFee[];
 }
 
+export interface ResponseRoomWaterUnitAndElectricityUnit {
+  id: number;
+  nameRoom: string;
+  type: typeRoom;
+  status: statusRoom;
+  month: number;
+  year: number;
+  unitBefor: number;
+  unitAfter: number;
+}
+
 const roomList = async (params?: {
   keyword?: string;
-}): Promise<ResponseRoom[]> => {
+  page?: number;
+  limit?: number;
+}): Promise<{
+  pageCount: number;
+  data: ResponseRoom[];
+}> => {
   const token = getToken();
   if (!token) {
     throw new Error("ไม่พบข้อมูล Token");
@@ -92,21 +109,24 @@ const roomList = async (params?: {
     .get(`${apiUrl}/room`, config)
     .then((response) => {
       console.log("response >>> ", response);
-      const { data } = response.data;
+      const { meta, data } = response.data;
       if (data.length === 0) {
-        return [];
+        return null;
       }
-      return data.map((el: IRoom) => {
-        return {
-          ...el,
-          dateOfStay: el.dateOfStay
-            ? dayjs(el.dateOfStay).format("DD/MM/YYYY")
-            : null,
-          issueDate: el.issueDate
-            ? dayjs(el.issueDate).format("DD/MM/YYYY")
-            : null,
-        };
-      });
+      return {
+        pageCount: Number(meta.pageCount),
+        data: data.map((el: IRoom) => {
+          return {
+            ...el,
+            dateOfStay: el.dateOfStay
+              ? dayjs(el.dateOfStay).format("DD/MM/YYYY")
+              : null,
+            issueDate: el.issueDate
+              ? dayjs(el.issueDate).format("DD/MM/YYYY")
+              : null,
+          };
+        }),
+      };
     })
     .catch((error) => {
       console.error("Axios error:", error);
@@ -121,4 +141,90 @@ const roomList = async (params?: {
   // console.log("result >>>", result);
   return Promise.resolve(result);
 };
-export { roomList };
+
+const findWaterUnit = async (params: {
+  month: number;
+  year: number;
+}): Promise<ResponseRoomWaterUnitAndElectricityUnit[]> => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("ไม่พบข้อมูล Token");
+  }
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "ngrok-skip-browser-warning": "69420",
+    },
+  };
+  if (params) {
+    Object.assign(config, {
+      params: params,
+    });
+  }
+  const result = await axios
+    .get(`${apiUrl}/room/waterunit`, config)
+    .then((response) => {
+      console.log("response >>> ", response);
+      const { data } = response.data;
+      if (data.length === 0) {
+        return [];
+      }
+      return data;
+    })
+    .catch((error) => {
+      console.error("Axios error:", error);
+      if (error.response) {
+        console.log("Response Data:", error.response.data);
+        // console.log("Response Status:", error.response.status);
+        // console.log("Response Headers:", error.response.headers);
+        const { meta } = error.response.data;
+        alert(meta.message); // แสดง alert เมื่อเกิดข้อผิดพลาด
+      }
+    });
+  // console.log("result >>>", result);
+  return Promise.resolve(result);
+};
+
+const findElectricityUnit = async (params: {
+  month: number;
+  year: number;
+}): Promise<ResponseRoomWaterUnitAndElectricityUnit[]> => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("ไม่พบข้อมูล Token");
+  }
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "ngrok-skip-browser-warning": "69420",
+    },
+  };
+  if (params) {
+    Object.assign(config, {
+      params: params,
+    });
+  }
+  const result = await axios
+    .get(`${apiUrl}/room/electricityunit`, config)
+    .then((response) => {
+      console.log("response >>> ", response);
+      const { data } = response.data;
+      if (data.length === 0) {
+        return [];
+      }
+      return data;
+    })
+    .catch((error) => {
+      console.error("Axios error:", error);
+      if (error.response) {
+        console.log("Response Data:", error.response.data);
+        // console.log("Response Status:", error.response.status);
+        // console.log("Response Headers:", error.response.headers);
+        const { meta } = error.response.data;
+        alert(meta.message); // แสดง alert เมื่อเกิดข้อผิดพลาด
+      }
+    });
+  // console.log("result >>>", result);
+  return Promise.resolve(result);
+};
+export { roomList, findWaterUnit, findElectricityUnit };

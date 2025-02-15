@@ -28,8 +28,8 @@ export default function RoomIndex() {
 
   useEffect(() => {
     const fetchRoom = async () => {
-      const data = await roomList();
-      setItem(data);
+      const response = await roomList();
+      setItem(response.data);
       setLoading(false);
     };
     fetchRoom();
@@ -58,8 +58,8 @@ export default function RoomIndex() {
           keyword: searchQuery,
         });
       }
-      const data = await roomList(filter);
-      setItem(data);
+      const response = await roomList(filter);
+      setItem(response.data);
     } catch (error) {
       console.log("error >>>", error);
       setItem([]);

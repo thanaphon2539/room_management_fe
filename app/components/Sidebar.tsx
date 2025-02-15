@@ -45,16 +45,6 @@ export default function Sidebar({
       icon: "bi bi-lightbulb-fill",
     },
     {
-      name: "user-list",
-      title: "จัดการผู้ใช้งาน",
-      icon: "bi bi-person-fill",
-    },
-    {
-      name: "setting-list",
-      title: "จัดการตั้งค่า",
-      icon: "bi bi-gear",
-    },
-    {
       name: "bill-list",
       title: "จัดการบิล",
       icon: "bi bi-receipt",
@@ -63,6 +53,16 @@ export default function Sidebar({
       name: "report-list",
       title: "รายงาน",
       icon: "bi bi-file-earmark-bar-graph-fill",
+    },
+    {
+      name: "user-list",
+      title: "จัดการผู้ใช้งาน",
+      icon: "bi bi-person-fill",
+    },
+    {
+      name: "setting-list",
+      title: "จัดการตั้งค่า",
+      icon: "bi bi-gear",
     },
   ];
   const subMenuReport = [
