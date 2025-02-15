@@ -99,8 +99,12 @@ const roomList = async (params?: {
       return data.map((el: IRoom) => {
         return {
           ...el,
-          dateOfStay: el.dateOfStay ? dayjs(el.dateOfStay) : null,
-          issueDate: el.issueDate ? dayjs(el.issueDate) : null,
+          dateOfStay: el.dateOfStay
+            ? dayjs(el.dateOfStay).format("DD/MM/YYYY")
+            : null,
+          issueDate: el.issueDate
+            ? dayjs(el.issueDate).format("DD/MM/YYYY")
+            : null,
         };
       });
     })
