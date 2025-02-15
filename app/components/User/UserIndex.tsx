@@ -9,7 +9,7 @@ import { deleteUser, ResponseUser, userList } from "@/pages/api/user";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function UserIndex() {
-  const header = ["ลำดับ", "ชื่อ", "สถานะ", "อัพเดทล่าสุด"];
+  const header = ["ลำดับ", "ชื่อ", "อัพเดทล่าสุด"];
   const [users, setUsers] = useState<ResponseUser[]>([]);
   const [showDelete, setShowDelete] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
@@ -86,16 +86,6 @@ export default function UserIndex() {
                 <tr>
                   <td>{key + 1}</td>
                   <td>{element.name}</td>
-                  <td>
-                    <i
-                      className={`mx-2 bi bi-check-circle-fill ${
-                        element.isActive === "เปิดใช้งาน"
-                          ? "text-success-base"
-                          : "text-dark-light"
-                      }`}
-                    ></i>
-                    {element.isActive}
-                  </td>
                   <td>{element.updatedAt}</td>
                   <td>
                     <div className="flex justify-end">
@@ -155,3 +145,15 @@ export default function UserIndex() {
     </div>
   );
 }
+
+/** เก็บไว้ */
+// <td>
+//   <i
+//     className={`mx-2 bi bi-check-circle-fill ${
+//       element.isActive === "เปิดใช้งาน"
+//         ? "text-success-base"
+//         : "text-dark-light"
+//     }`}
+//   ></i>
+//   {element.isActive}
+// </td>;

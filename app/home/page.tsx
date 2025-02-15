@@ -1,23 +1,30 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Content from "../components/Content";
 import { useRouter } from "next/navigation";
 
 const HomePage = () => {
-  const [selectedMenu, setSelectedMenu] = useState("home"); // Handle selected menu
-  const [selectedSubMenu, setSelectedSubMenu] = useState("report-rent"); // Handle selected menu
-  const [menuOpen, setMenuOpen] = useState(false); // Handle dropdown menu for the profile button
+  const [selectedMenu, setSelectedMenu] = useState("home"); 
+  const [selectedSubMenu, setSelectedSubMenu] = useState("report-rent"); 
+  const [menuOpen, setMenuOpen] = useState(false); 
+  const [isClient, setIsClient] = useState(false); // State to check if it's the client side
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
 
-  const params = new URLSearchParams(window.location.search);
+  useEffect(() => {
+    // Check if it's the client side
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
+    if (!isClient) return; // Only run this on the client side
+
+    const params = new URLSearchParams(window.location.search);
+
     const timer = setTimeout(() => {
       let menu = params.get("menu") || "home";
       setSelectedMenu(menu);
@@ -26,7 +33,7 @@ const HomePage = () => {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isClient]);
 
   const router = useRouter();
 
@@ -51,7 +58,7 @@ const HomePage = () => {
           <button onClick={toggleMenu} className="btn btn-primary">
             <span className="mr-2">Admin</span>
             <img
-              src="/profile.jpg" // Path to your image file
+              src="/profile.jpg"
               alt="Profile Icon"
               className="w-6 h-6 rounded-full"
             />
