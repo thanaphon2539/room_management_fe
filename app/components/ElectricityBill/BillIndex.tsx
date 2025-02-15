@@ -12,7 +12,6 @@ export default function BillIndex() {
     "ค่าไฟเดือนที่แล้ว",
     "ค่าไฟเดือนปัจจุบัน",
     "หน่วยที่ใช้",
-    "จัดการ",
   ];
   const items = [
     {
@@ -100,33 +99,43 @@ export default function BillIndex() {
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold">จัดการค่าไฟ</h2>
         </div>
-
-        <div className="flex space-x-2 !w-1/2">
-          <select
-            value={selectedYear}
-            onChange={() => setSelectedYear}
-            className="input-select"
+        <div className="flex justify-between">
+          <div className="flex space-x-2 !w-1/2">
+            <select
+              value={selectedYear}
+              onChange={() => setSelectedYear}
+              className="input-select"
+            >
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+            <select
+              value={selectedMonth}
+              onChange={() => setSelectedMonth}
+              className="input-select"
+            >
+              {months.map((month, index) => (
+                <option key={index} value={month}>
+                  {month}
+                </option>
+              ))}
+            </select>
+            <button className="btn btn-dark text-nowrap h-fit">
+              <i className="bi bi-search" />
+              <p>ค้นหา</p>
+            </button>
+          </div>
+          <button
+            className="btn btn-warning h-fit ms-auto"
+            onClick={() => {
+              setShowEdit(true);
+            }}
           >
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-          <select
-            value={selectedMonth}
-            onChange={() => setSelectedMonth}
-            className="input-select"
-          >
-            {months.map((month, index) => (
-              <option key={index} value={month}>
-                {month}
-              </option>
-            ))}
-          </select>
-          <button className="btn btn-dark text-nowrap h-fit">
-            <i className="bi bi-search" />
-            <p>ค้นหา</p>
+            <i className="bi bi-pencil-fill" />
+            <p>จัดการ</p>
           </button>
         </div>
 
@@ -155,20 +164,6 @@ export default function BillIndex() {
                       {element.bill.new}
                     </td>
                     <td>{element.bill.new - element.bill.old}</td>
-                    <td>
-                      <div className="flex justify-center">
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => {
-                            setShowEdit(true);
-                            setDataEdit(element);
-                          }}
-                        >
-                          <i className="bi bi-pencil-fill" />
-                          <p>แก้ไข</p>
-                        </button>
-                      </div>
-                    </td>
                   </tr>
                   <tr className="h-2" />
                 </tbody>

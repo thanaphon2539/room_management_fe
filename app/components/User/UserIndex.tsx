@@ -73,7 +73,7 @@ export default function UserIndex() {
         </div>
 
         <div className="table-h">
-          <table className="table mt-4">
+          <table className="table">
             <thead>
               <tr>
                 {header.map((element: any) => {

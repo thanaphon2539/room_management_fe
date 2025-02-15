@@ -78,6 +78,7 @@ export default function BillIndex() {
 
   const [selectedYear, setSelectedYear] = useState(years[0]);
   const [selectedMonth, setSelectedMonth] = useState(months[0]);
+  const [billType, setBillType] = useState("");
 
   return (
     <div className="container">
@@ -86,32 +87,51 @@ export default function BillIndex() {
           <h2 className="text-2xl font-bold">จัดการบิล</h2>
         </div>
 
-        <div className="flex space-x-2 !w-1/2">
-          <select
-            value={selectedYear}
-            onChange={() => setSelectedYear}
-            className="input-select"
+        <div className="flex">
+          <div className="flex space-x-2 !w-1/2">
+            <select
+              value={selectedYear}
+              onChange={() => setSelectedYear}
+              className="input-select"
+            >
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+            <select
+              value={selectedMonth}
+              onChange={() => setSelectedMonth}
+              className="input-select"
+            >
+              {months.map((month, index) => (
+                <option key={index} value={month}>
+                  {month}
+                </option>
+              ))}
+            </select>
+            <button className="btn btn-dark text-nowrap h-fit">
+              <i className="bi bi-search" />
+              <p>ค้นหา</p>
+            </button>
+          </div>
+          <div className="border mx-3" />
+          <button
+            className={`btn text-nowrap h-fit ${
+              billType === "person" ? "btn-success" : "btn-gray"
+            }`}
+            onClick={() => setBillType("person")}
           >
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-          <select
-            value={selectedMonth}
-            onChange={() => setSelectedMonth}
-            className="input-select"
+            <p>บุคคล</p>
+          </button>
+          <button
+            className={`btn text-nowrap h-fit ${
+              billType === "legalEntity" ? "btn-warning" : "btn-gray"
+            }`}
+            onClick={() => setBillType("legalEntity")}
           >
-            {months.map((month, index) => (
-              <option key={index} value={month}>
-                {month}
-              </option>
-            ))}
-          </select>
-          <button className="btn btn-dark text-nowrap h-fit">
-            <i className="bi bi-search" />
-            <p>ค้นหา</p>
+            <p>นิติบุคคล</p>
           </button>
         </div>
 

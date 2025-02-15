@@ -42,7 +42,8 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
 
         <div className="max-h-[calc(80vh)] overflow-y-auto space-y-2">
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-5 gap-2">
+              <div className="pb-2 self-end col-span-2">ชื่อ</div>
               <div>
                 <label className="block mb-2 text-gray-700">
                   ค่าน้ำเดือนที่แล้ว
