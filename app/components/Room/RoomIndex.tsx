@@ -142,7 +142,7 @@ export default function RoomIndex() {
                         className="btn btn-warning"
                         onClick={() => {
                           setShowEdit(true);
-                          setDataEdit(element);
+                          // setDataEdit(element);
                         }}
                       >
                         <i className="bi bi-pencil-fill" />
