@@ -79,8 +79,8 @@ const roomList = async (params?: {
   }
   const config = {
     headers: {
-      // Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "ngrok-skip-browser-warning": "69420",
     },
   };
   if (params) {

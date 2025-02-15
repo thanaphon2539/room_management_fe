@@ -28,6 +28,7 @@ const userList = async (): Promise<ResponseUser[]> => {
     .get(`${apiUrl}/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "69420",
       },
     })
     .then((response) => {

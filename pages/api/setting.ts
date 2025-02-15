@@ -32,6 +32,7 @@ const settingList = async (): Promise<ResponseSetting> => {
     .get(`${apiUrl}/setting/billunit`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "69420",
       },
     })
     .then((response) => {
@@ -54,6 +55,7 @@ const settingList = async (): Promise<ResponseSetting> => {
     .get(`${apiUrl}/setting/contactaddress`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "69420",
       },
     })
     .then((response) => {
