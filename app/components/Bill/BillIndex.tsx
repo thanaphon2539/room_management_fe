@@ -115,39 +115,41 @@ export default function BillIndex() {
           </button>
         </div>
 
-        <table className="table">
-          <thead>
-            <tr>
-              {header.map((element: any) => {
-                return <th key={uuidv4()}>{element}</th>;
-              })}
-            </tr>
-          </thead>
-          {items.map((element: any) => {
-            return (
-              <tbody key={uuidv4()}>
-                <tr>
-                  <td>{element.name}</td>
-                  <td>
-                    <RoomIcon item={element.status} />
-                  </td>
-                  <td>
-                    <RoomIcon item={element.userType} />
-                  </td>
-                  <td>
-                    <div className="flex justify-center">
-                      <button className="btn btn-primary">
-                        <i className="bi bi-receipt-cutoff" />
-                        <p>สร้างบิล</p>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr className="h-2" />
-              </tbody>
-            );
-          })}
-        </table>
+        <div className="table-h">
+          <table className="table">
+            <thead>
+              <tr>
+                {header.map((element: any) => {
+                  return <th key={uuidv4()}>{element}</th>;
+                })}
+              </tr>
+            </thead>
+            {items.map((element: any) => {
+              return (
+                <tbody key={uuidv4()}>
+                  <tr>
+                    <td>{element.name}</td>
+                    <td>
+                      <RoomIcon item={element.status} />
+                    </td>
+                    <td>
+                      <RoomIcon item={element.userType} />
+                    </td>
+                    <td>
+                      <div className="flex justify-center">
+                        <button className="btn btn-primary">
+                          <i className="bi bi-receipt-cutoff" />
+                          <p>สร้างบิล</p>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="h-2" />
+                </tbody>
+              );
+            })}
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -39,7 +39,7 @@ export default function MainIndex() {
           <h2 className="text-2xl font-bold">รายการห้องเช่า</h2>
         </div>
 
-        <div>
+        <div className="table-h">
           <table className="table">
             <thead>
               <tr>

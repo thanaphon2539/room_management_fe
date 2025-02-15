@@ -107,65 +107,67 @@ export default function RoomIndex() {
           </div>
         </form>
 
-        <table className="table">
-          <thead>
-            <tr>
-              {header.map((element: any) => {
-                return <th key={uuidv4()}>{element}</th>;
-              })}
-            </tr>
-          </thead>
-          {items.map((element: ResponseRoom) => {
-            return (
-              <tbody key={uuidv4()}>
-                <tr>
-                  <td>{element.nameRoom}</td>
-                  <td>
-                    <RoomIcon item={element.status} />
-                  </td>
-                  <td>
-                    <RoomIcon item={element.type} />
-                  </td>
-                  <td>{element?.roomContact?.name}</td>
-                  <td>{element.dateOfStay}</td>
-                  <td>{element.issueDate}</td>
-                  <td>
-                    {element?.rent?.map((rent: Rent) => {
-                      return <p key={uuidv4()}>{rent.total}</p>;
-                    })}
-                  </td>
-                  <td>
-                    {element?.serviceFee?.map((serviceFee: ServiceFee) => {
-                      return <p key={uuidv4()}>{serviceFee.total}</p>;
-                    })}
-                  </td>
-                  <td>
-                    <div className="flex justify-center">
-                      <button
-                        className="btn btn-warning"
-                        onClick={() => {
-                          setShowEdit(true);
-                          // setDataEdit(element);
-                        }}
-                      >
-                        <i className="bi bi-pencil-fill" />
-                        <p>แก้ไข</p>
-                      </button>
-                      <button
-                        className="btn btn-error"
-                        onClick={() => setShowDelete(true)}
-                      >
-                        <i className="bi bi-trash" />
-                        <p>ลบ</p>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr className="h-2" />
-              </tbody>
-            );
-          })}
-        </table>
+        <div className="table-h">
+          <table className="table">
+            <thead>
+              <tr>
+                {header.map((element: any) => {
+                  return <th key={uuidv4()}>{element}</th>;
+                })}
+              </tr>
+            </thead>
+            {items.map((element: ResponseRoom) => {
+              return (
+                <tbody key={uuidv4()}>
+                  <tr>
+                    <td>{element.nameRoom}</td>
+                    <td>
+                      <RoomIcon item={element.status} />
+                    </td>
+                    <td>
+                      <RoomIcon item={element.type} />
+                    </td>
+                    <td>{element?.roomContact?.name}</td>
+                    <td>{element.dateOfStay}</td>
+                    <td>{element.issueDate}</td>
+                    <td>
+                      {element?.rent?.map((rent: Rent) => {
+                        return <p key={uuidv4()}>{rent.total}</p>;
+                      })}
+                    </td>
+                    <td>
+                      {element?.serviceFee?.map((serviceFee: ServiceFee) => {
+                        return <p key={uuidv4()}>{serviceFee.total}</p>;
+                      })}
+                    </td>
+                    <td>
+                      <div className="flex justify-center">
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => {
+                            setShowEdit(true);
+                            // setDataEdit(element);
+                          }}
+                        >
+                          <i className="bi bi-pencil-fill" />
+                          <p>แก้ไข</p>
+                        </button>
+                        <button
+                          className="btn btn-error"
+                          onClick={() => setShowDelete(true)}
+                        >
+                          <i className="bi bi-trash" />
+                          <p>ลบ</p>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="h-2" />
+                </tbody>
+              );
+            })}
+          </table>
+        </div>
 
         {showDelete && (
           <ModalDelete

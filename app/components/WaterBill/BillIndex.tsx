@@ -130,50 +130,52 @@ export default function RoomIndex() {
           </button>
         </div>
 
-        <table className="table">
-          <thead>
-            <tr>
-              {header.map((element: any) => {
-                return <th key={uuidv4()}>{element}</th>;
-              })}
-            </tr>
-          </thead>
-          {items.map((element: any) => {
-            return (
-              <tbody key={uuidv4()}>
-                <tr>
-                  <td>{element.name}</td>
-                  <td>
-                    <RoomIcon item={element.status} />
-                  </td>
-                  <td>
-                    <RoomIcon item={element.userType} />
-                  </td>
-                  <td>{element.bill.old}</td>
-                  <td className="text-primary-base font-bold">
-                    {element.bill.new}
-                  </td>
-                  <td>{element.bill.new - element.bill.old}</td>
-                  <td>
-                    <div className="flex justify-center">
-                      <button
-                        className="btn btn-warning"
-                        onClick={() => {
-                          setShowEdit(true);
-                          setDataEdit(element);
-                        }}
-                      >
-                        <i className="bi bi-pencil-fill" />
-                        <p>แก้ไข</p>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr className="h-2" />
-              </tbody>
-            );
-          })}
-        </table>
+        <div className="table-h">
+          <table className="table">
+            <thead>
+              <tr>
+                {header.map((element: any) => {
+                  return <th key={uuidv4()}>{element}</th>;
+                })}
+              </tr>
+            </thead>
+            {items.map((element: any) => {
+              return (
+                <tbody key={uuidv4()}>
+                  <tr>
+                    <td>{element.name}</td>
+                    <td>
+                      <RoomIcon item={element.status} />
+                    </td>
+                    <td>
+                      <RoomIcon item={element.userType} />
+                    </td>
+                    <td>{element.bill.old}</td>
+                    <td className="text-primary-base font-bold">
+                      {element.bill.new}
+                    </td>
+                    <td>{element.bill.new - element.bill.old}</td>
+                    <td>
+                      <div className="flex justify-center">
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => {
+                            setShowEdit(true);
+                            setDataEdit(element);
+                          }}
+                        >
+                          <i className="bi bi-pencil-fill" />
+                          <p>แก้ไข</p>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="h-2" />
+                </tbody>
+              );
+            })}
+          </table>
+        </div>
       </div>
 
       {showEdit && (
