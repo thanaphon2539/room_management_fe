@@ -51,11 +51,14 @@ export default function RoomIndex() {
   };
 
   const handleSearch = async () => {
-    if (!searchQuery) return;
     try {
-      const data = await roomList({
-        keyword: searchQuery,
-      });
+      const filter = {};
+      if (searchQuery) {
+        Object.assign(filter, {
+          keyword: searchQuery,
+        });
+      }
+      const data = await roomList(filter);
       setItem(data);
     } catch (error) {
       console.log("error >>>", error);

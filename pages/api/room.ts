@@ -71,7 +71,7 @@ export interface ResponseRoom {
 }
 
 const roomList = async (params?: {
-  keyword: string;
+  keyword?: string;
 }): Promise<ResponseRoom[]> => {
   const token = getToken();
   if (!token) {
@@ -83,7 +83,9 @@ const roomList = async (params?: {
     },
   };
   if (params) {
-    config["params"] = params;
+    Object.assign(config, {
+      params: params
+    })
   }
   const result = await axios
     .get(`${apiUrl}/room`, config)
