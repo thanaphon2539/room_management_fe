@@ -10,10 +10,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function UserIndex() {
   const header = ["ลำดับ", "ชื่อ", "สถานะ", "อัพเดทล่าสุด"];
-  const [users, setUsers] = useState<ResponseUser[]>([
-    { id: 1, name: "John Doe", username: "john@example.com" },
-    { id: 2, name: "Jane Smith", username: "jane@example.com" },
-  ]);
+  const [users, setUsers] = useState<ResponseUser[]>([]);
   const [showDelete, setShowDelete] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);

@@ -1,9 +1,10 @@
 import "./RoomIndex.css";
 import RoomIcon from "./RoomIcon";
 import ModalDelete from "../ModalDelete";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateRoom from "./CreateRoom";
 import { v4 as uuidv4 } from "uuid";
+import { Rent, ResponseRoom, roomList, ServiceFee } from "@/pages/api/room";
 
 export default function RoomIndex() {
   const header = [
@@ -17,51 +18,24 @@ export default function RoomIndex() {
     "ค่าบริการ",
     "จัดการ",
   ];
-  const items = [
-    {
-      id: "1",
-      name: "John Doe",
-      status: "avalible",
-      userType: "person",
-      contact: "",
-      checkin: "12/12/2568",
-      checkout: "12/12/2568",
-      rent: [
-        { name: "ค่าเช่า", amount: 2000 },
-        { name: "ค่าเช่า", amount: 2000 },
-      ],
-      serviceFee: [{ name: "ค่าบริการ", amount: 2000 }],
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      status: "notAvalible",
-      userType: "legalEntity",
-      contact: "",
-      checkin: "12/12/2568",
-      checkout: "12/12/2568",
-      rent: [{ name: "ค่าเช่า", amount: 2000 }],
-      serviceFee: [
-        { name: "ค่าบริการ", amount: 2000 },
-        { name: "ค่าบริการ", amount: 2000 },
-      ],
-    },
-    {
-      id: "3",
-      name: "HAN.co.th",
-      status: "book",
-      userType: "",
-      contact: "",
-      checkin: "12/12/2568",
-      checkout: "12/12/2568",
-      rent: [{ name: "ค่าเช่า", amount: 2000 }],
-      serviceFee: [{ name: "ค่าบริการ", amount: 2000 }],
-    },
-  ];
   const [showDelete, setShowDelete] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [dataEdit, setDataEdit] = useState();
+  const [loading, setLoading] = useState(true);
+  const [items, setItem] = useState<ResponseRoom[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const fetchRoom = async () => {
+      const data = await roomList();
+      setItem(data);
+      setLoading(false);
+    };
+    fetchRoom();
+  }, []); // ใช้ [] เพื่อให้ useEffect ถูกเรียกแค่ครั้งเดียว
+
+  if (loading) return <p>Loading...</p>;
 
   const onDelete = (value: boolean) => {
     setShowDelete(false);
@@ -72,6 +46,27 @@ export default function RoomIndex() {
   const onEdit = (value: boolean) => {
     setShowEdit(false);
   };
+
+  const handleSearch = async () => {
+    if (!searchQuery) return;
+    try {
+      const data = await roomList({
+        keyword: searchQuery,
+      });
+      setItem(data);
+    } catch (error) {
+      console.log("error >>>", error);
+      setItem([]);
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSearch();
+    }
+  };
+
   return (
     <div className="container">
       <div className="card">
@@ -85,18 +80,26 @@ export default function RoomIndex() {
           </button>
         </div>
 
+        <form onSubmit={(e) => e.preventDefault()}>
         <div className="flex space-x-2 mb-4">
           <input
             type="text"
             name="search"
             className="input-text !w-2/4"
-            placeholder="ค้นหา"
+            placeholder="ค้นหาห้องเช่า"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
-          <button className="btn btn-dark text-nowrap h-fit">
+          <button
+            className="btn btn-dark text-nowrap h-fit"
+            onClick={handleSearch}
+          >
             <i className="bi bi-search" />
             <p>ค้นหา</p>
           </button>
         </div>
+        </form>
 
         <table className="table">
           <thead>
@@ -106,36 +109,28 @@ export default function RoomIndex() {
               })}
             </tr>
           </thead>
-          {items.map((element: any) => {
+          {items.map((element: ResponseRoom) => {
             return (
               <tbody key={uuidv4()}>
                 <tr>
-                  <td>{element.name}</td>
+                  <td>{element.nameRoom}</td>
                   <td>
                     <RoomIcon item={element.status} />
                   </td>
                   <td>
-                    <RoomIcon item={element.userType} />
+                    <RoomIcon item={element.type} />
                   </td>
-                  <td>{element.contact}</td>
-                  <td>{element.checkin}</td>
-                  <td>{element.checkout}</td>
+                  <td>{element?.roomContact?.name}</td>
+                  <td>{element.dateOfStay}</td>
+                  <td>{element.issueDate}</td>
                   <td>
-                    {element.rent.map((rent: any) => {
-                      return (
-                        <p key={uuidv4()}>
-                          {rent.name} {rent.amount}
-                        </p>
-                      );
+                    {element?.rent?.map((rent: Rent) => {
+                      return <p key={uuidv4()}>{rent.total}</p>;
                     })}
                   </td>
                   <td>
-                    {element.serviceFee.map((serviceFee: any) => {
-                      return (
-                        <p key={uuidv4()}>
-                          {serviceFee.name} {serviceFee.amount}
-                        </p>
-                      );
+                    {element?.serviceFee?.map((serviceFee: ServiceFee) => {
+                      return <p key={uuidv4()}>{serviceFee.total}</p>;
                     })}
                   </td>
                   <td>

@@ -1,32 +1,20 @@
+import { ResponseSetting } from "@/pages/api/setting";
 import { useState } from "react";
 
-const EditUnit = (props: { [x: string]: any; data: any; state: string }) => {
+const EditUnit = (props: {
+  [x: string]: any;
+  data: ResponseSetting;
+  state: string;
+}) => {
   const data = props.data;
   const state = props.state;
-  const settingData = {
-    water: 5,
-    electricity: 10,
-    contact: {
-      name: "",
-      phone: "",
-      email: "",
-      address: "",
-      company: "",
-      position: "",
-    },
-  };
-
   const [setting, setSetting] = useState({
-    water: data?.water ? data?.water : 0,
-    electricity: data?.electricity ? data?.electricity : 0,
-    contact: {
-      name: data?.contact?.name ? data?.contact?.name : "",
-      phone: data?.contact?.phone ? data?.contact?.phone : "",
-      email: data?.contact?.email ? data?.contact?.email : "",
-      address: data?.contact?.address ? data?.contact?.address : "",
-      company: data?.contact?.company ? data?.contact?.company : "",
-      position: data?.contact?.position ? data?.contact?.position : "",
-    },
+    billUnit: {
+      waterUnit: data?.billUnit?.waterUnit ? data?.billUnit?.waterUnit : 0,
+      electricityUnit: data?.billUnit?.electricityUnit
+        ? data?.billUnit?.electricityUnit
+        : 0,
+    }
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -47,7 +35,7 @@ const EditUnit = (props: { [x: string]: any; data: any; state: string }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
         <div className="flex justify-between">
           <h2 className="text-xl font-bold text-end capitalize">
-            {state} Setting
+            {state === "Edit" ? "แก้ไขหน่วย" : ""}
           </h2>
           <button className="btn !text-dark-base" onClick={() => cancel()}>
             <i className="bi bi-x-lg" />
@@ -64,7 +52,7 @@ const EditUnit = (props: { [x: string]: any; data: any; state: string }) => {
                 <input
                   type="text"
                   className="input-text"
-                  value={setting.water}
+                  value={setting.billUnit.waterUnit}
                 />
               </div>
               <div>
@@ -74,7 +62,7 @@ const EditUnit = (props: { [x: string]: any; data: any; state: string }) => {
                 <input
                   type="text"
                   className="input-text"
-                  value={setting.electricity}
+                  value={setting.billUnit.electricityUnit}
                 />
               </div>
             </div>

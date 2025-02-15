@@ -1,30 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditSetting from "./Edit";
 import EditUnit from "./EditUnit";
+import { ResponseSetting, settingList } from "@/pages/api/setting";
 
 export default function RoomIndex() {
-  const data = {
-    water: 5,
-    electricity: 10,
-    contact: {
-      name: "Johnathan Carter",
-      phone: "+1-555-123-4567",
-      email: "johnathan.carter@example.com",
-      address: "123 Main Street, Beverly Hills, Los Angeles, CA 90210, USA",
-      company: "Tech Solutions Inc.",
-      position: "Software Engineer",
-    },
-  };
   const [showEdit, setShowEdit] = useState(false);
   const [showEditUnit, setShowEditUnit] = useState(false);
   const [dataEdit, setDataEdit] = useState({});
   const [dataEditUnit, setDataEditUnit] = useState({});
+  const [data, setData] = useState<ResponseSetting>({});
+
   const onEdit = (value: boolean) => {
-    setShowEdit(false);
+    setShowEdit(value); // Set to true or false based on the value passed
   };
+
   const onEditUnit = (value: boolean) => {
-    setShowEdit(false);
+    setShowEditUnit(value); // Set to true or false based on the value passed
   };
+
+  useEffect(() => {
+    const fetchSetting = async () => {
+      const data = await settingList();
+      console.log("data >>>", data);
+      setData(data);
+    };
+    fetchSetting();
+  }, []); // ใช้ [] เพื่อให้ useEffect ถูกเรียกแค่ครั้งเดียว
 
   return (
     <div className="container">
@@ -48,7 +49,7 @@ export default function RoomIndex() {
             <h1 className="font-bold ">หน่วยค่าน้ำ</h1>
             <p className="flex items-end ms-5">
               <span className="flex-1">ราคาต่อหน่วย</span>
-              <span className="px-3 text-3xl">{data.water}</span>
+              <span className="px-3 text-3xl">{data?.billUnit?.waterUnit}</span>
               <span>บาท</span>
             </p>
           </div>
@@ -57,7 +58,9 @@ export default function RoomIndex() {
             <h1 className="font-bold ">หน่วยค่าไฟ</h1>
             <p className="flex items-end ms-5">
               <span className="flex-1">ราคาต่อหน่วย</span>
-              <span className="px-3 text-3xl">{data.electricity}</span>
+              <span className="px-3 text-3xl">
+                {data?.billUnit?.electricityUnit}
+              </span>
               <span>บาท</span>
             </p>
           </div>
@@ -77,12 +80,12 @@ export default function RoomIndex() {
               </button>
             </h1>
             <div className="ms-5">
-              <p>{data.contact.name}</p>
-              <p>โทร: {data.contact.phone}</p>
-              <p>อีเมล: {data.contact.email}</p>
-              <p>ที่อยู่: {data.contact.address}</p>
-              <p>บริษัท: {data.contact.company}</p>
-              <p>ตำแหน่ง: {data.contact.position}</p>
+              <p>{data?.contact?.name}</p>
+              <p>โทร: {data?.contact?.phone}</p>
+              <p>อีเมล: {data?.contact?.email}</p>
+              <p>ที่อยู่: {data?.contact?.address}</p>
+              <p>บริษัท: {data?.contact?.company}</p>
+              <p>ตำแหน่ง: {data?.contact?.position}</p>
             </div>
           </div>
         </div>
@@ -91,7 +94,7 @@ export default function RoomIndex() {
       {showEdit && (
         <EditSetting
           onAddItem={onEdit}
-          onCancel={setShowEdit}
+          onCancel={onEdit}
           data={dataEdit}
           state={"Edit"}
         />
@@ -99,8 +102,8 @@ export default function RoomIndex() {
       {showEditUnit && (
         <EditUnit
           onAddItem={onEditUnit}
-          onCancel={setShowEditUnit}
-          data={dataEdit}
+          onCancel={onEditUnit}
+          data={dataEditUnit}
           state={"Edit"}
         />
       )}

@@ -24,7 +24,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
       {
         id: data?.id ? data.id : "",
         name: data?.name ? data.name : "",
-        status: data?.status ? data.status : "avalible",
+        status: data?.status ? data.status : "blank",
         contact: data?.contact ? data.contact : "",
         checkin: data?.checkin ? data.checkin : "",
         checkout: data?.checkout ? data.checkout : "",
@@ -38,14 +38,38 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // if (room.name && room.status) {
-    //   props.onAddItem({
-    //     id: Date.now(),
-    //     name: room.name,
-    //     status: room.status,
-    //     userType: room.userType,
-    //   });
-    // }
+    if (room.roomTotal) {
+      try {
+        if (state === "create") {
+          console.log("create >>>", room);
+          // await createUser({
+          //   name: user.name,
+          //   username: user.username,
+          //   password: user.password,
+          // });
+        } else if (state === "edit") {
+          console.log("edit >>>", room);
+          // await updateUser(user.id, user.name);
+        }
+        if (state === "create") {
+          // props.onAddItem({
+          //   name: user.name,
+          //   isActive: user.isActive,
+          //   updatedAt: user.updatedAt,
+          // });
+        } else {
+          // props.onEditItem({
+          //   id: user.id,
+          //   name: user.name,
+          // });
+        }
+
+        cancel();
+        window.location.reload();
+      } catch (error) {
+        console.error("Error saving user:", error);
+      }
+    }
   };
 
   const cancel = () => {
@@ -270,33 +294,31 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                   <div className="grid grid-cols-3 gap-2">
                     <div
                       className={`div-box ${
-                        element.status === "avalible" ? "active" : ""
+                        element.status === "blank" ? "active" : ""
                       }`}
-                      onClick={() =>
-                        handleClick("roomStatus", "avalible", index)
-                      }
+                      onClick={() => handleClick("roomStatus", "blank", index)}
                     >
-                      <RoomIcon item={"avalible"} />
+                      <RoomIcon item={"blank"} />
                       <p>ว่าง</p>
                     </div>
                     <div
                       className={`div-box ${
-                        element.status === "notAvalible" ? "active" : ""
+                        element.status === "busy" ? "active" : ""
                       }`}
-                      onClick={() =>
-                        handleClick("roomStatus", "notAvalible", index)
-                      }
+                      onClick={() => handleClick("roomStatus", "busy", index)}
                     >
-                      <RoomIcon item={"notAvalible"} />
+                      <RoomIcon item={"busy"} />
                       <p>ไม่ว่าง</p>
                     </div>
                     <div
                       className={`div-box ${
-                        element.status === "book" ? "active" : ""
+                        element.status === "reserve" ? "active" : ""
                       }`}
-                      onClick={() => handleClick("roomStatus", "book", index)}
+                      onClick={() =>
+                        handleClick("roomStatus", "reserve", index)
+                      }
                     >
-                      <RoomIcon item={"book"} />
+                      <RoomIcon item={"reserve"} />
                       <p>จอง</p>
                     </div>
                   </div>

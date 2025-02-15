@@ -1,50 +1,31 @@
+import { useEffect, useState } from "react";
 import "../Room/RoomIndex.css";
-import RoomIcon from "./../Room/RoomIcon";
+import { ResponseRoom, roomList } from "@/pages/api/room";
+import RoomIcon from "../Room/RoomIcon";
 import { v4 as uuidv4 } from "uuid";
 
 export default function MainIndex() {
-  const header = ["ห้อง", "สถานะ", "วันที่เข้าพัก", "วันที่ออก"];
-  const items = [
-    {
-      id: "1",
-      name: "John Doe",
-      status: "avalible",
-      userType: "person",
-      contact: "",
-      checkin: "12/12/2568",
-      checkout: "12/12/2568",
-      rent: [
-        { name: "ค่าเช่า", amount: 2000 },
-        { name: "ค่าเช่า", amount: 2000 },
-      ],
-      serviceFee: [{ name: "ค่าบริการ", amount: 2000 }],
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      status: "notAvalible",
-      userType: "legalEntity",
-      contact: "",
-      checkin: "12/12/2568",
-      checkout: "12/12/2568",
-      rent: [{ name: "ค่าเช่า", amount: 2000 }],
-      serviceFee: [
-        { name: "ค่าบริการ", amount: 2000 },
-        { name: "ค่าบริการ", amount: 2000 },
-      ],
-    },
-    {
-      id: "3",
-      name: "HAN.co.th",
-      status: "book",
-      userType: "",
-      contact: "",
-      checkin: "12/12/2568",
-      checkout: "12/12/2568",
-      rent: [{ name: "ค่าเช่า", amount: 2000 }],
-      serviceFee: [{ name: "ค่าบริการ", amount: 2000 }],
-    },
+  const header = [
+    "ห้อง",
+    "สถานะ",
+    "ประเภทลูกค้า",
+    "ข้อมูลบริษัท",
+    "วันที่เข้าพัก",
+    "วันที่ออก",
   ];
+  const [loading, setLoading] = useState(true);
+  const [items, setItem] = useState<ResponseRoom[]>([]);
+
+  useEffect(() => {
+    const fetchRoom = async () => {
+      const data = await roomList();
+      setItem(data);
+      setLoading(false);
+    };
+    fetchRoom();
+  }, []); // ใช้ [] เพื่อให้ useEffect ถูกเรียกแค่ครั้งเดียว
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="container">
@@ -65,16 +46,24 @@ export default function MainIndex() {
               })}
             </tr>
           </thead>
-          {items.map((element: any) => {
+          {items.map((element: ResponseRoom) => {
             return (
               <tbody key={uuidv4()}>
                 <tr>
-                  <td>{element.name}</td>
+                  <td>{element.nameRoom}</td>
                   <td>
                     <RoomIcon item={element.status} />
                   </td>
-                  <td>{element.checkin}</td>
-                  <td>{element.checkout}</td>
+                  <td>
+                    <RoomIcon item={element.type} />
+                  </td>
+                  <td>
+                    {element.type === "legalEntity" && element?.roomCompany
+                      ? element.roomCompany?.name
+                      : ""}
+                  </td>
+                  <td>{element.dateOfStay}</td>
+                  <td>{element.issueDate}</td>
                 </tr>
                 <tr className="h-2" />
               </tbody>
