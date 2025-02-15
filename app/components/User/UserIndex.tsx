@@ -72,52 +72,53 @@ export default function UserIndex() {
           </button>
         </div>
 
-        <table className="table mt-4">
-          <thead>
-            <tr>
-              {header.map((element: any) => {
-                return <th key={uuidv4()}>{element}</th>;
-              })}
-            </tr>
-          </thead>
-          {users.map((element: ResponseUser, key: number) => {
-            return (
-              <tbody key={uuidv4()}>
-                <tr>
-                  <td>{key + 1}</td>
-                  <td>{element.name}</td>
-                  <td>{element.updatedAt}</td>
-                  <td>
-                    <div className="flex justify-end">
-                      <button
-                        className="btn btn-warning"
-                        onClick={() => {
-                          setShowEdit(true);
-                          setDataEdit(element);
-                        }}
-                      >
-                        <i className="bi bi-pencil-fill" />
-                        <p>แก้ไข</p>
-                      </button>
-                      <button
-                        className="btn btn-error"
-                        onClick={() => {
-                          setShowDelete(true);
-                          setDeleteUserId(element.id);
-                        }}
-                      >
-                        <i className="bi bi-trash" />
-                        <p>ลบ</p>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr className="h-2" />
-              </tbody>
-            );
-          })}
-        </table>
-
+        <div className="table-h">
+          <table className="table mt-4">
+            <thead>
+              <tr>
+                {header.map((element: any) => {
+                  return <th key={uuidv4()}>{element}</th>;
+                })}
+              </tr>
+            </thead>
+            {users.map((element: ResponseUser, key: number) => {
+              return (
+                <tbody key={uuidv4()}>
+                  <tr>
+                    <td>{key + 1}</td>
+                    <td>{element.name}</td>
+                    <td>{element.updatedAt}</td>
+                    <td>
+                      <div className="flex justify-end">
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => {
+                            setShowEdit(true);
+                            setDataEdit(element);
+                          }}
+                        >
+                          <i className="bi bi-pencil-fill" />
+                          <p>แก้ไข</p>
+                        </button>
+                        <button
+                          className="btn btn-error"
+                          onClick={() => {
+                            setShowDelete(true);
+                            setDeleteUserId(element.id);
+                          }}
+                        >
+                          <i className="bi bi-trash" />
+                          <p>ลบ</p>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="h-2" />
+                </tbody>
+              );
+            })}
+          </table>
+        </div>
         {showDelete && (
           <ModalDelete
             title="คุณแน่ใจหรือไม่ว่าต้องการลบสิ่งนี้?"

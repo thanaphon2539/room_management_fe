@@ -3,6 +3,7 @@ import "../Room/RoomIndex.css";
 import { ResponseRoom, roomList } from "@/pages/api/room";
 import RoomIcon from "../Room/RoomIcon";
 import { v4 as uuidv4 } from "uuid";
+import Pagination from "../Pagination";
 
 export default function MainIndex() {
   const header = [
@@ -25,6 +26,10 @@ export default function MainIndex() {
     fetchRoom();
   }, []); // ใช้ [] เพื่อให้ useEffect ถูกเรียกแค่ครั้งเดียว
 
+  const onchangPage = (page: number) => {
+    console.log(page);
+  };
+
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -34,42 +39,50 @@ export default function MainIndex() {
           <h2 className="text-2xl font-bold">รายการห้องเช่า</h2>
         </div>
 
-        <table className="table">
-          <thead>
-            <tr>
-              {header.map((element: any) => {
-                return (
-                  <th key={uuidv4()} className="font-bold">
-                    {element}
-                  </th>
-                );
-              })}
-            </tr>
-          </thead>
-          {items.map((element: ResponseRoom) => {
-            return (
-              <tbody key={uuidv4()}>
-                <tr>
-                  <td>{element.nameRoom}</td>
-                  <td>
-                    <RoomIcon item={element.status} />
-                  </td>
-                  <td>
-                    <RoomIcon item={element.type} />
-                  </td>
-                  <td>
-                    {element.type === "legalEntity" && element?.roomCompany
-                      ? element.roomCompany?.name
-                      : ""}
-                  </td>
-                  <td>{element.dateOfStay}</td>
-                  <td>{element.issueDate}</td>
-                </tr>
-                <tr className="h-2" />
-              </tbody>
-            );
-          })}
-        </table>
+        <div>
+          <table className="table">
+            <thead>
+              <tr>
+                {header.map((element: any) => {
+                  return (
+                    <th key={uuidv4()} className="font-bold">
+                      {element}
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            {items.map((element: ResponseRoom) => {
+              return (
+                <tbody key={uuidv4()}>
+                  <tr>
+                    <td>{element.nameRoom}</td>
+                    <td>
+                      <RoomIcon item={element.status} />
+                    </td>
+                    <td>
+                      <RoomIcon item={element.type} />
+                    </td>
+                    <td>
+                      {element.type === "legalEntity" && element?.roomCompany
+                        ? element.roomCompany?.name
+                        : ""}
+                    </td>
+                    <td>{element.dateOfStay}</td>
+                    <td>{element.issueDate}</td>
+                  </tr>
+                  <tr className="h-2" />
+                </tbody>
+              );
+            })}
+          </table>
+        </div>
+
+        <Pagination
+          totalPages={10}
+          currentPage={1}
+          onChangePage={onchangPage}
+        />
       </div>
     </div>
   );
