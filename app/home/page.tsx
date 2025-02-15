@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 // import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Content from "../components/Content";
+import { useRouter } from "next/navigation";
 
 const HomePage = () => {
   const [selectedMenu, setSelectedMenu] = useState("home"); // Handle selected menu
@@ -26,6 +27,12 @@ const HomePage = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const router = useRouter();
+
+  const logout = () => {
+    router.push(`/login`);
+  };
 
   return (
     <div className="flex h-screen">
@@ -52,7 +59,10 @@ const HomePage = () => {
           {menuOpen && (
             <div className="absolute top-12 right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
               <ul>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => logout}
+                >
                   Logout
                 </li>
               </ul>
