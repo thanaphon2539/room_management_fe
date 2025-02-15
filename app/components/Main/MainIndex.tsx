@@ -16,18 +16,29 @@ export default function MainIndex() {
   ];
   const [loading, setLoading] = useState(true);
   const [items, setItem] = useState<ResponseRoom[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30;
+  const [totalPages, setTotalPages] = useState(1);
 
+  // ดึงข้อมูลจาก API ตามหน้า
+  const fetchRoom = async (page: number, limit: number) => {
+    setLoading(true);
+    const response = await roomList({ page, limit }); // เรียก API โดยส่ง page และ limit
+    setItem(response.data);
+    setTotalPages(response.pageCount); // สมมติ API ส่งจำนวนหน้าทั้งหมดมา
+    setLoading(false);
+  };
+
+  // โหลดข้อมูลเมื่อเปลี่ยนหน้า
   useEffect(() => {
-    const fetchRoom = async () => {
-      const data = await roomList();
-      setItem(data);
-      setLoading(false);
-    };
-    fetchRoom();
-  }, []); // ใช้ [] เพื่อให้ useEffect ถูกเรียกแค่ครั้งเดียว
+    fetchRoom(currentPage, itemsPerPage);
+  }, [currentPage]); // โหลดใหม่ทุกครั้งที่ currentPage เปลี่ยน
 
-  const onchangPage = (page: number) => {
-    console.log(page);
+  // เปลี่ยนหน้า
+  const onChangePage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -79,9 +90,9 @@ export default function MainIndex() {
         </div>
 
         <Pagination
-          totalPages={10}
-          currentPage={1}
-          onChangePage={onchangPage}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onChangePage={onChangePage}
         />
       </div>
     </div>
