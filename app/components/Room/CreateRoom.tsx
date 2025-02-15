@@ -2,7 +2,7 @@ import { useState } from "react";
 import RoomIcon from "./RoomIcon";
 import { v4 as uuidv4 } from "uuid";
 
-const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
+const CreateRoom = (props: { [x: string]: never; data: never; state: string }) => {
   const data = props.data;
   const state = props.state;
   const roomData = {
@@ -76,7 +76,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
     props.onCancel(false);
   };
 
-  const handleClick = (state: string, value: any, index: number) => {
+  const handleClick = (state: string, value: never, index: number) => {
     if (state === "userType") {
       setRoom((prev) => ({
         ...prev,
@@ -133,7 +133,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                 ...room,
                 rent:
                   room.rent.length > 1
-                    ? room.rent.filter((_: any, i: number) => i !== index)
+                    ? room.rent.filter((_: never, i: number) => i !== index)
                     : room.rent,
               }
             : room
@@ -166,7 +166,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                 ...room,
                 serviceFee:
                   room.serviceFee.length > 1
-                    ? room.serviceFee.filter((_: any, i: number) => i !== index)
+                    ? room.serviceFee.filter((_: never, i: number) => i !== index)
                     : room.serviceFee,
               }
             : room
@@ -277,7 +277,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
               </div>
             )}
 
-            {room.arrRoom.map((element: any, index: number) => {
+            {room.arrRoom.map((element: never, index: number) => {
               return (
                 <div key={uuidv4()} className="div-card space-y-2 ">
                   <p className="font-bold">ห้องที่ {index + 1}</p>
@@ -340,7 +340,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
 
                   <div className="space-y-2">
                     <label className="block mb-2 text-gray-700">ค่าเช่า</label>
-                    {element.rent.map((rent: any, i: number) => {
+                    {element.rent.map((rent: never, i: number) => {
                       return (
                         <div key={uuidv4()} className="flex gap-2">
                           <input
@@ -378,7 +378,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                     <label className="block mb-2 text-gray-700">
                       ค่าบริการ
                     </label>
-                    {element.serviceFee.map((rent: any, i: number) => {
+                    {element.serviceFee.map((rent: never, i: number) => {
                       return (
                         <div key={uuidv4()} className="flex gap-2">
                           <input

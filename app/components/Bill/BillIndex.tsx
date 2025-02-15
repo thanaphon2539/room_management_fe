@@ -100,7 +100,7 @@ export default function BillIndex() {
           </select>
           <select
             value={selectedMonth}
-            onChange={(e) => setSelectedMonth}
+            onChange={() => setSelectedMonth}
             className="input-select"
           >
             {months.map((month, index) => (
@@ -118,12 +118,12 @@ export default function BillIndex() {
         <table className="table">
           <thead>
             <tr>
-              {header.map((element: any) => {
+              {header.map((element: never) => {
                 return <th key={uuidv4()}>{element}</th>;
               })}
             </tr>
           </thead>
-          {items.map((element: any) => {
+          {items.map((element: never) => {
             return (
               <tbody key={uuidv4()}>
                 <tr>
