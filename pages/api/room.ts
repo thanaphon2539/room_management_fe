@@ -79,18 +79,19 @@ const roomList = async (params?: {
   }
   const config = {
     headers: {
-      Authorization: `Bearer ${token}`,
+      // Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
   };
   if (params) {
     Object.assign(config, {
-      params: params
-    })
+      params: params,
+    });
   }
   const result = await axios
     .get(`${apiUrl}/room`, config)
     .then((response) => {
-      console.log(response.data);
+      console.log("response >>> ", response);
       const { data } = response.data;
       if (data.length === 0) {
         return [];

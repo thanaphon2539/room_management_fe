@@ -14,7 +14,7 @@ export default function UserIndex() {
   const [showDelete, setShowDelete] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [dataEdit, setDataEdit] = useState();
+  const [dataEdit, setDataEdit] = useState<ResponseUser>();
   const [deleteUserId, setDeleteUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +39,7 @@ export default function UserIndex() {
       setDeleteUserId(null);
     }
   };
-  const onCreate = (newUser: User) => {
+  const onCreate = (newUser: ResponseUser) => {
     setUsers([...users, newUser]);
     setShowCreate(false);
   };
@@ -80,7 +80,7 @@ export default function UserIndex() {
               })}
             </tr>
           </thead>
-          {users.map((element: User, key: Number) => {
+          {users.map((element: ResponseUser, key: number) => {
             return (
               <tbody key={uuidv4()}>
                 <tr>
