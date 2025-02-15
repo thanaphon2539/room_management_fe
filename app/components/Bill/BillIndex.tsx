@@ -89,7 +89,7 @@ export default function BillIndex() {
         <div className="flex space-x-2 !w-1/2">
           <select
             value={selectedYear}
-            onChange={(e) => setSelectedYear}
+            onChange={() => setSelectedYear}
             className="input-select"
           >
             {years.map((year) => (

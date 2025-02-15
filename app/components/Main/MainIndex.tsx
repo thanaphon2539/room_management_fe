@@ -37,7 +37,7 @@ export default function MainIndex() {
         <table className="table">
           <thead>
             <tr>
-              {header.map((element: any) => {
+              {header.map((element: never) => {
                 return (
                   <th key={uuidv4()} className="font-bold">
                     {element}

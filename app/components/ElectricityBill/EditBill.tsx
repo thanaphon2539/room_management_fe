@@ -1,19 +1,25 @@
-import { useState } from "react";
+// import { useState } from "react";
 
 const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
   const state = props.state;
-  const billData = {
-    id: "",
-    oldBill: "",
-    newBill: "",
-  };
+  // const billData = {
+  //   id: "",
+  //   oldBill: "",
+  //   newBill: "",
+  // };
 
-  const [bill, setBill] = useState({
+  const bill = {
     id: data?.id ? data?.id : "",
     oldBill: data?.bill.old ? data?.bill.old : "",
     newBill: data?.bill.old ? data?.bill.new : "",
-  });
+  };
+
+  // const [bill, setBill] = useState({
+  //   id: data?.id ? data?.id : "",
+  //   oldBill: data?.bill.old ? data?.bill.old : "",
+  //   newBill: data?.bill.old ? data?.bill.new : "",
+  // });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
