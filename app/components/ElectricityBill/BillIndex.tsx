@@ -70,6 +70,7 @@ export default function BillIndex() {
   const [showEdit, setShowEdit] = useState(false);
   const [dataEdit, setDataEdit] = useState();
   const onEdit = (value: boolean) => {
+    console.log(value);
     setShowEdit(false);
   };
 
@@ -103,7 +104,7 @@ export default function BillIndex() {
         <div className="flex space-x-2 !w-1/2">
           <select
             value={selectedYear}
-            onChange={(e) => setSelectedYear}
+            onChange={() => setSelectedYear}
             className="input-select"
           >
             {years.map((year) => (
@@ -114,7 +115,7 @@ export default function BillIndex() {
           </select>
           <select
             value={selectedMonth}
-            onChange={(e) => setSelectedMonth}
+            onChange={() => setSelectedMonth}
             className="input-select"
           >
             {months.map((month, index) => (

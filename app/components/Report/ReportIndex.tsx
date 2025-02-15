@@ -65,7 +65,7 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
           <div className="flex space-x-2">
             <select
               value={selectedYear}
-              onChange={(e) => setSelectedYear}
+              onChange={() => setSelectedYear}
               className="input-select"
             >
               {years.map((year) => (
@@ -76,7 +76,7 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
             </select>
             <select
               value={selectedMonth}
-              onChange={(e) => setSelectedMonth}
+              onChange={() => setSelectedMonth}
               className="input-select"
             >
               {months.map((month, index) => (

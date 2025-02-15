@@ -1,4 +1,4 @@
-const Modal = (props: { [x: string]: never; title: never }) => {
+const Modal = (props: { [x: string]: any; title: any }) => {
   const title = props.title;
 
   const cancel = (event: boolean) => {

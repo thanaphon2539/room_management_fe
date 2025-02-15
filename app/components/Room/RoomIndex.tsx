@@ -38,12 +38,15 @@ export default function RoomIndex() {
   if (loading) return <p>Loading...</p>;
 
   const onDelete = (value: boolean) => {
+    console.log(value);
     setShowDelete(false);
   };
   const onCreate = (value: boolean) => {
+    console.log(value);
     setShowCreate(false);
   };
   const onEdit = (value: boolean) => {
+    console.log(value);
     setShowEdit(false);
   };
 
@@ -81,24 +84,24 @@ export default function RoomIndex() {
         </div>
 
         <form onSubmit={(e) => e.preventDefault()}>
-        <div className="flex space-x-2 mb-4">
-          <input
-            type="text"
-            name="search"
-            className="input-text !w-2/4"
-            placeholder="ค้นหาห้องเช่า"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <button
-            className="btn btn-dark text-nowrap h-fit"
-            onClick={handleSearch}
-          >
-            <i className="bi bi-search" />
-            <p>ค้นหา</p>
-          </button>
-        </div>
+          <div className="flex space-x-2 mb-4">
+            <input
+              type="text"
+              name="search"
+              className="input-text !w-2/4"
+              placeholder="ค้นหาห้องเช่า"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <button
+              className="btn btn-dark text-nowrap h-fit"
+              onClick={handleSearch}
+            >
+              <i className="bi bi-search" />
+              <p>ค้นหา</p>
+            </button>
+          </div>
         </form>
 
         <table className="table">

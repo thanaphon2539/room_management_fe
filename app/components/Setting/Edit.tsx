@@ -1,22 +1,26 @@
-import { useState } from "react";
+// import { useState } from "react";
 
-const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
+const EditSetting = (props: {
+  [x: string]: any;
+  data: any;
+  state: any;
+}) => {
   const data = props.data;
   const state = props.state;
-  const settingData = {
-    water: 5,
-    electricity: 10,
-    contact: {
-      name: "",
-      phone: "",
-      email: "",
-      address: "",
-      company: "",
-      position: "",
-    },
-  };
+  // const settingData = {
+  //   water: 5,
+  //   electricity: 10,
+  //   contact: {
+  //     name: "",
+  //     phone: "",
+  //     email: "",
+  //     address: "",
+  //     company: "",
+  //     position: "",
+  //   },
+  // };
 
-  const [setting, setSetting] = useState({
+  const setting = {
     water: data?.water ? data?.water : 0,
     electricity: data?.electricity ? data?.electricity : 0,
     contact: {
@@ -27,7 +31,19 @@ const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
       company: data?.contact?.company ? data?.contact?.company : "",
       position: data?.contact?.position ? data?.contact?.position : "",
     },
-  });
+  };
+  // const [setting, setSetting] = useState({
+  //   water: data?.water ? data?.water : 0,
+  //   electricity: data?.electricity ? data?.electricity : 0,
+  //   contact: {
+  //     name: data?.contact?.name ? data?.contact?.name : "",
+  //     phone: data?.contact?.phone ? data?.contact?.phone : "",
+  //     email: data?.contact?.email ? data?.contact?.email : "",
+  //     address: data?.contact?.address ? data?.contact?.address : "",
+  //     company: data?.contact?.company ? data?.contact?.company : "",
+  //     position: data?.contact?.position ? data?.contact?.position : "",
+  //   },
+  // });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

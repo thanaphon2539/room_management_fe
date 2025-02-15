@@ -14,7 +14,7 @@ const EditUnit = (props: {
       electricityUnit: data?.billUnit?.electricityUnit
         ? data?.billUnit?.electricityUnit
         : 0,
-    }
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {

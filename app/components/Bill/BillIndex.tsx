@@ -118,12 +118,12 @@ export default function BillIndex() {
         <table className="table">
           <thead>
             <tr>
-              {header.map((element: never) => {
+              {header.map((element: any) => {
                 return <th key={uuidv4()}>{element}</th>;
               })}
             </tr>
           </thead>
-          {items.map((element: never) => {
+          {items.map((element: any) => {
             return (
               <tbody key={uuidv4()}>
                 <tr>
