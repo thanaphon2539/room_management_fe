@@ -1,6 +1,6 @@
 import { useState } from "react";
 import RoomIcon from "./RoomIcon";
-import { v4 as uuidv4 } from "uuid";
+import { createRoom } from "@/pages/api/room";
 
 const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
@@ -47,8 +47,32 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
     ],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (state === "create") {
+      console.log("create >>>", room);
+      let arrRoom = room.arrRoom.map((el) => ({
+        nameRoom: el.name,
+        status: el.status,
+        dateOfStay: el.checkin,
+        issueDate: el.checkout,
+        rent: el.rent.map((e: { name: any; amount: any }) => ({
+          name: e.name,
+          price: Number(e.amount),
+        })),
+        serviceFee: el.serviceFee.map((e: { name: any; amount: any }) => ({
+          name: e.name,
+          price: Number(e.amount),
+        })),
+      }));
+      let data = {
+        type: room.userType,
+        contact: room.contact,
+        company: room.company,
+        room: arrRoom,
+      };
+      await createRoom(data);
+    }
     // if (room.roomTotal) {
     //   try {
     //     if (state === "create") {
