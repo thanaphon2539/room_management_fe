@@ -85,7 +85,6 @@ export default function RoomIndex() {
               <p>อีเมล: {data?.contact?.email}</p>
               <p>ที่อยู่: {data?.contact?.address}</p>
               <p>บริษัท: {data?.contact?.company}</p>
-              <p>ตำแหน่ง: {data?.contact?.position}</p>
             </div>
           </div>
         </div>

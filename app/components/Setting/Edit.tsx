@@ -1,22 +1,11 @@
-// import { useState } from "react";
+import { useState } from "react";
+import { updateContactaddres } from "@/pages/api/setting";
 
 const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
   const state = props.state;
-  // const settingData = {
-  //   water: 5,
-  //   electricity: 10,
-  //   contact: {
-  //     name: "",
-  //     phone: "",
-  //     email: "",
-  //     address: "",
-  //     company: "",
-  //     position: "",
-  //   },
-  // };
 
-  const setting = {
+  const [setting, setSetting] = useState({
     water: data?.water ? data?.water : 0,
     electricity: data?.electricity ? data?.electricity : 0,
     contact: {
@@ -25,33 +14,34 @@ const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
       email: data?.contact?.email ? data?.contact?.email : "",
       address: data?.contact?.address ? data?.contact?.address : "",
       company: data?.contact?.company ? data?.contact?.company : "",
-      position: data?.contact?.position ? data?.contact?.position : "",
     },
-  };
-  // const [setting, setSetting] = useState({
-  //   water: data?.water ? data?.water : 0,
-  //   electricity: data?.electricity ? data?.electricity : 0,
-  //   contact: {
-  //     name: data?.contact?.name ? data?.contact?.name : "",
-  //     phone: data?.contact?.phone ? data?.contact?.phone : "",
-  //     email: data?.contact?.email ? data?.contact?.email : "",
-  //     address: data?.contact?.address ? data?.contact?.address : "",
-  //     company: data?.contact?.company ? data?.contact?.company : "",
-  //     position: data?.contact?.position ? data?.contact?.position : "",
-  //   },
-  // });
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // if (room.name && room.status) {
-    //   props.onAddItem({
-    //     id: Date.now(),
-    //   });
-    // }
+    try {
+      await updateContactaddres(setting.contact);
+      cancel();
+      window.location.reload();
+    } catch (error) {
+      console.error("Error update contact address:", error);
+    }
   };
 
   const cancel = () => {
     props.onCancel(false);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setSetting({
+      ...setting,
+      contact: {
+        ...setting.contact,
+        [e.target.name]: e.target.value,
+      },
+    });
   };
 
   return (
@@ -74,7 +64,9 @@ const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
                 <input
                   type="text"
                   className="input-text"
+                  name="name"
                   value={setting.contact.name}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -82,7 +74,9 @@ const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
                 <input
                   type="text"
                   className="input-text"
+                  name="phone"
                   value={setting.contact.phone}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -90,30 +84,28 @@ const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
                 <input
                   type="text"
                   className="input-text"
+                  name="email"
                   value={setting.contact.email}
+                  onChange={handleChange}
                 />
               </div>
               <div className="col-span-2">
                 <label className="block mb-2 text-gray-700">ที่อยู่</label>
                 <textarea
                   className="input-text"
+                  name="address"
                   value={setting.contact.address}
+                  onChange={handleChange}
                 />
               </div>
-              <div>
+              <div className="col-span-2">
                 <label className="block mb-2 text-gray-700">บริษัท</label>
                 <input
                   type="text"
                   className="input-text"
+                  name="company"
                   value={setting.contact.company}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-gray-700">ตำแหน่ง</label>
-                <input
-                  type="text"
-                  className="input-text"
-                  value={setting.contact.position}
+                  onChange={handleChange}
                 />
               </div>
             </div>

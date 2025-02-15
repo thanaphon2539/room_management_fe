@@ -1,5 +1,6 @@
 import { ResponseSetting } from "@/pages/api/setting";
 import { useState } from "react";
+import { updateUnit } from "@/pages/api/setting";
 
 const EditUnit = (props: {
   [x: string]: any;
@@ -17,17 +18,32 @@ const EditUnit = (props: {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // if (room.name && room.status) {
-    //   props.onAddItem({
-    //     id: Date.now(),
-    //   });
-    // }
+    try {
+      await updateUnit({
+        waterUnit: Number(setting.billUnit.waterUnit),
+        electricityUnit: Number(setting.billUnit.electricityUnit),
+      });
+      cancel();
+      window.location.reload();
+    } catch (error) {
+      console.error("Error update unit:", error);
+    }
   };
 
   const cancel = () => {
     props.onCancel(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSetting({
+      ...setting,
+      billUnit: {
+        ...setting.billUnit,
+        [e.target.name]: e.target.value,
+      },
+    });
   };
 
   return (
@@ -52,7 +68,9 @@ const EditUnit = (props: {
                 <input
                   type="text"
                   className="input-text"
+                  name="waterUnit"
                   value={setting.billUnit.waterUnit}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -62,7 +80,9 @@ const EditUnit = (props: {
                 <input
                   type="text"
                   className="input-text"
+                  name="electricityUnit"
                   value={setting.billUnit.electricityUnit}
+                  onChange={handleChange}
                 />
               </div>
             </div>
