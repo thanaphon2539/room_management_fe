@@ -63,7 +63,7 @@ export default function RoomIndex() {
     }
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: any) => {
     if (event.key === "Enter") {
       event.preventDefault();
       handleSearch();
