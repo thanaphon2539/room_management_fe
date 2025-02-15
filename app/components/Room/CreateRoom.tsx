@@ -20,56 +20,67 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
   const [room, setRoom] = useState({
     roomTotal: 1,
     userType: data?.userType ? data.userType : "person",
+    contact: {
+      name: "",
+      phone: "",
+      idCard: "",
+      address: "",
+    },
+    company: {
+      name: "",
+      phone: "",
+      idTex: "",
+      address: "",
+    },
     arrRoom: [
       {
         id: data?.id ? data.id : "",
-        name: data?.name ? data.name : "",
+        name: data?.name ? data.name : "test",
         status: data?.status ? data.status : "blank",
-        contact: data?.contact ? data.contact : "",
         checkin: data?.checkin ? data.checkin : "",
         checkout: data?.checkout ? data.checkout : "",
-        rent: data?.rent ? data.rent : [{ name: "ค่าเช่า", amount: 0 }],
+        rent: data?.rent ? data.rent : [{ name: "", amount: 0 }],
         serviceFee: data?.serviceFee
           ? data.serviceFee
-          : [{ name: "ค่าบริการ", amount: 0 }],
+          : [{ name: "", amount: 0 }],
       },
     ],
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (room.roomTotal) {
-      try {
-        if (state === "create") {
-          console.log("create >>>", room);
-          // await createUser({
-          //   name: user.name,
-          //   username: user.username,
-          //   password: user.password,
-          // });
-        } else if (state === "edit") {
-          console.log("edit >>>", room);
-          // await updateUser(user.id, user.name);
-        }
-        if (state === "create") {
-          // props.onAddItem({
-          //   name: user.name,
-          //   isActive: user.isActive,
-          //   updatedAt: user.updatedAt,
-          // });
-        } else {
-          // props.onEditItem({
-          //   id: user.id,
-          //   name: user.name,
-          // });
-        }
+    // if (room.roomTotal) {
+    //   try {
+    //     if (state === "create") {
+    //       console.log("create >>>", room);
+    //       // await createUser({
+    //       //   name: user.name,
+    //       //   username: user.username,
+    //       //   password: user.password,
+    //       // });
+    //     } else if (state === "edit") {
+    //       console.log("edit >>>", room);
+    //       // await updateUser(user.id, user.name);
+    //     }
+    //     if (state === "create") {
+    //       // props.onAddItem({
+    //       //   name: user.name,
+    //       //   isActive: user.isActive,
+    //       //   updatedAt: user.updatedAt,
+    //       // });
+    //     } else {
+    //       // props.onEditItem({
+    //       //   id: user.id,
+    //       //   name: user.name,
+    //       // });
+    //     }
 
-        cancel();
-        window.location.reload();
-      } catch (error) {
-        console.error("Error saving user:", error);
-      }
-    }
+    //     cancel();
+    //     // window.location.reload();
+    //   } catch (error) {
+    //     console.error("Error saving user:", error);
+    //   }
+    // }
   };
 
   const cancel = () => {
@@ -89,7 +100,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
     if (state === "roomTotal") {
       setRoom((prev) => ({
         ...prev,
-        roomTotal: prev.roomTotal + value > 0 ? prev.roomTotal + value : 1, // เปลี่ยนค่า selected ตาม div ที่คลิก
+        roomTotal: prev.roomTotal > 0 ? prev.roomTotal + value : 1, // เปลี่ยนค่า selected ตาม div ที่คลิก
         arrRoom:
           prev.roomTotal > 0 && value > 0
             ? [...prev.arrRoom, roomData]
@@ -104,6 +115,29 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
         ),
       }));
     }
+  };
+  const handleChangeContact = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRoom((prev) => ({
+      ...prev,
+      contact: {
+        ...prev.contact,
+        [e.target.name]: e.target.value,
+      },
+    }));
+  };
+
+  const handleChangeCompany = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRoom((prev) => ({
+      ...prev,
+      company: {
+        ...prev.company,
+        [e.target.name]: e.target.value,
+      },
+    }));
   };
 
   const addBill = (type: string, roomindex: number, index: number) => {
@@ -175,6 +209,40 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
     }
   };
 
+  const handleInputChange = (
+    index: number,
+    rentIndex: number,
+    serviceIndex: number,
+    value: any
+  ) => {
+    const updatedData = room.arrRoom.map((prev, i) => {
+      if (index === i) {
+        if (rentIndex > -1) {
+          prev.rent = prev.rent.map((item: any, ii: number) =>
+            ii === rentIndex
+              ? { ...item, [value.target.name]: value.target.value }
+              : item
+          );
+        }
+        if (serviceIndex > -1) {
+          prev.serviceFee = prev.serviceFee.map((item: any, ii: number) =>
+            ii === serviceIndex
+              ? { ...item, [value.target.name]: value.target.value }
+              : item
+          );
+        }
+        if (rentIndex < 0 && serviceIndex < 0) {
+          prev = {
+            ...prev,
+            [value.target.name]: value.target.value,
+          };
+        }
+      }
+      return prev;
+    });
+    setRoom({ ...room, arrRoom: updatedData });
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-dark-base">
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
@@ -216,21 +284,44 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
               </h1>
               <div className="col-span-2">
                 <label className="block mb-2 text-gray-700">ชื่อ</label>
-                <input type="text" name="name" className="input-text" />
+                <input
+                  type="text"
+                  name="name"
+                  value={room.contact.name}
+                  onChange={handleChangeContact}
+                  className="input-text"
+                />
               </div>
               <div>
                 <label className="block mb-2 text-gray-700">เบอร์โทร</label>
-                <input type="text" name="name" className="input-text" />
+                <input
+                  type="text"
+                  name="phone"
+                  value={room.contact.phone}
+                  onChange={handleChangeContact}
+                  className="input-text"
+                />
               </div>
               <div>
                 <label className="block mb-2 text-gray-700">
                   เลขบัตรประชาชน
                 </label>
-                <input type="text" name="name" className="input-text" />
+                <input
+                  type="text"
+                  name="idCard"
+                  value={room.contact.idCard}
+                  onChange={handleChangeContact}
+                  className="input-text"
+                />
               </div>
               <div className="col-span-2">
                 <label className="block mb-2 text-gray-700">ที่อยู่</label>
-                <textarea className="input-text" />
+                <textarea
+                  className="input-text"
+                  name="address"
+                  value={room.contact.address}
+                  onChange={handleChangeContact}
+                />
               </div>
             </div>
 
@@ -241,21 +332,44 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                 </h1>
                 <div className="col-span-2">
                   <label className="block mb-2 text-gray-700">ชื่อบริษัท</label>
-                  <input type="text" name="name" className="input-text" />
+                  <input
+                    type="text"
+                    name="name"
+                    value={room.company.name}
+                    onChange={handleChangeCompany}
+                    className="input-text"
+                  />
                 </div>
                 <div>
                   <label className="block mb-2 text-gray-700">เบอร์โทร</label>
-                  <input type="text" name="name" className="input-text" />
+                  <input
+                    type="text"
+                    name="phone"
+                    value={room.company.phone}
+                    onChange={handleChangeCompany}
+                    className="input-text"
+                  />
                 </div>
                 <div>
                   <label className="block mb-2 text-gray-700">
                     เลขประจำตัวผู้เสียภาษี
                   </label>
-                  <input type="text" name="name" className="input-text" />
+                  <input
+                    type="text"
+                    name="idTex"
+                    value={room.company.idTex}
+                    onChange={handleChangeCompany}
+                    className="input-text"
+                  />
                 </div>
                 <div className="col-span-2">
                   <label className="block mb-2 text-gray-700">ที่อยู่</label>
-                  <textarea className="input-text" />
+                  <textarea
+                    className="input-text"
+                    name="address"
+                    value={room.company.address}
+                    onChange={handleChangeCompany}
+                  />
                 </div>
               </div>
             )}
@@ -279,13 +393,14 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
 
             {room.arrRoom.map((element: any, index: number) => {
               return (
-                <div key={uuidv4()} className="div-card space-y-2 ">
+                <div key={index} className="div-card space-y-2 ">
                   <p className="font-bold">ห้องที่ {index + 1}</p>
                   <label className="block mb-2 text-gray-700">ชื่อห้อง</label>
                   <input
                     type="text"
                     name="name"
                     value={element.name}
+                    onChange={(e) => handleInputChange(index, -1, -1, e)}
                     className="input-text"
                     placeholder="ชื่อห้อง"
                   />
@@ -328,13 +443,25 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                       <label className="block mb-2 text-gray-700">
                         วันที่เข้าพัก
                       </label>
-                      <input type="date" name="name" className="input-text" />
+                      <input
+                        type="date"
+                        name="checkin"
+                        value={element.checkin}
+                        onChange={(e) => handleInputChange(index, -1, -1, e)}
+                        className="input-text"
+                      />
                     </div>
                     <div>
                       <label className="block mb-2 text-gray-700">
                         วันที่ออก
                       </label>
-                      <input type="date" name="name" className="input-text" />
+                      <input
+                        type="date"
+                        name="checkout"
+                        value={element.checkout}
+                        onChange={(e) => handleInputChange(index, -1, -1, e)}
+                        className="input-text"
+                      />
                     </div>
                   </div>
 
@@ -342,18 +469,22 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                     <label className="block mb-2 text-gray-700">ค่าเช่า</label>
                     {element.rent.map((rent: any, i: number) => {
                       return (
-                        <div key={uuidv4()} className="flex gap-2">
+                        <div key={`rent${i}`} className="flex gap-2">
                           <input
                             type="text"
                             className="input-text !mb-0"
                             placeholder="ค่าเช่า"
                             value={rent.name}
+                            name="name"
+                            onChange={(e) => handleInputChange(index, i, -1, e)}
                           />
                           <input
                             type="text"
                             className="input-text !mb-0"
                             placeholder="จำนวน"
                             value={rent.amount}
+                            name="amount"
+                            onChange={(e) => handleInputChange(index, i, -1, e)}
                           />
                           <div className="flex space-x-2 ms-2">
                             <button
@@ -380,18 +511,22 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                     </label>
                     {element.serviceFee.map((rent: any, i: number) => {
                       return (
-                        <div key={uuidv4()} className="flex gap-2">
+                        <div key={`service${i}`} className="flex gap-2">
                           <input
                             type="text"
                             className="input-text !mb-0"
                             placeholder="ค่าบริการ"
                             value={rent.name}
+                            name="name"
+                            onChange={(e) => handleInputChange(index, -1, i, e)}
                           />
                           <input
                             type="text"
                             className="input-text !mb-0"
                             placeholder="จำนวน"
                             value={rent.amount}
+                            name="amount"
+                            onChange={(e) => handleInputChange(index, -1, i, e)}
                           />
                           <div className="flex space-x-2 ms-2">
                             <button
