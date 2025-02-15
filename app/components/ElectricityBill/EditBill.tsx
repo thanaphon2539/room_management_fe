@@ -1,6 +1,6 @@
 // import { useState } from "react";
 
-const EditBill = (props: { [x: string]: any; data: any; state: any }) => {
+const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
   const state = props.state;
   // const billData = {

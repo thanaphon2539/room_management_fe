@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const EditUnit = (props: {
   [x: string]: any;
-  data: ResponseSetting;
+  data?: ResponseSetting;
   state: string;
 }) => {
   const data = props.data;

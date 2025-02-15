@@ -1,10 +1,6 @@
 // import { useState } from "react";
 
-const EditSetting = (props: {
-  [x: string]: any;
-  data: any;
-  state: any;
-}) => {
+const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
   const state = props.state;
   // const settingData = {
