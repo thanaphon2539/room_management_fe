@@ -374,8 +374,8 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                   </label>
                   <input
                     type="text"
-                    name="idTex"
-                    value={room.company.idTex}
+                    name="idTax"
+                    value={room.company.idTax}
                     onChange={handleChangeCompany}
                     className="input-text"
                   />
