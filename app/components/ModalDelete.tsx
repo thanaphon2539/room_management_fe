@@ -1,6 +1,5 @@
 const Modal = (props: { [x: string]: any; title: any }) => {
   const title = props.title;
-
   const cancel = (event: boolean) => {
     props.onCancel(event);
   };

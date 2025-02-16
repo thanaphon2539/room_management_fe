@@ -9,113 +9,114 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
     id: "",
     name: "",
     status: "",
-    userType: "",
+    type: "",
     contact: "",
-    checkin: "",
-    checkout: "",
-    rent: [{ name: "ค่าเช่า", amount: 0 }],
-    serviceFee: [{ name: "ค่าบริการ", amount: 0 }],
+    dateOfStay: "",
+    issueDate: "",
+    rent: [{ name: "ค่าเช่า", price: 0 }],
+    serviceFee: [{ name: "ค่าบริการ", price: 0 }],
   };
 
+  // console.log("data >>>", data);
   const [room, setRoom] = useState({
     roomTotal: 1,
-    userType: data?.userType ? data.userType : "person",
+    type: data?.type || "person",
     contact: {
-      name: "",
-      phone: "",
-      idCard: "",
-      address: "",
+      name: data?.roomContact?.name || "",
+      phone: data?.roomContact?.phone || "",
+      idCard: data?.roomContact?.idCard || "",
+      address: data?.roomContact?.address || "",
     },
     company: {
-      name: "",
-      phone: "",
-      idTex: "",
-      address: "",
+      name: data?.roomCompany?.name || "",
+      phone: data?.roomCompany?.phone || "",
+      idTax: data?.roomCompany?.idTax || "",
+      address: data?.roomCompany?.address || "",
     },
     arrRoom: [
       {
         id: data?.id ? data.id : "",
-        name: data?.name ? data.name : "test",
+        name: data?.nameRoom ? data.nameRoom : "",
         status: data?.status ? data.status : "blank",
-        checkin: data?.checkin ? data.checkin : "",
-        checkout: data?.checkout ? data.checkout : "",
-        rent: data?.rent ? data.rent : [{ name: "", amount: 0 }],
+        dateOfStay: data?.dateOfStay ? data.dateOfStay : "",
+        issueDate: data?.issueDate ? data.issueDate : "",
+        rent: data?.rent ? data.rent : [{ name: "", price: 0 }],
         serviceFee: data?.serviceFee
           ? data.serviceFee
-          : [{ name: "", amount: 0 }],
+          : [{ name: "", price: 0 }],
       },
     ],
   });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (state === "create") {
-      console.log("create >>>", room);
-      let arrRoom = room.arrRoom.map((el) => ({
-        nameRoom: el.name,
-        status: el.status,
-        dateOfStay: el.checkin,
-        issueDate: el.checkout,
-        rent: el.rent.map((e: { name: any; amount: any }) => ({
-          name: e.name,
-          price: Number(e.amount),
-        })),
-        serviceFee: el.serviceFee.map((e: { name: any; amount: any }) => ({
-          name: e.name,
-          price: Number(e.amount),
-        })),
-      }));
-      let data = {
-        type: room.userType,
-        contact: room.contact,
-        company: room.company,
-        room: arrRoom,
-      };
-      await createRoom(data);
-    }
-    // if (room.roomTotal) {
-    //   try {
-    //     if (state === "create") {
-    //       console.log("create >>>", room);
-    //       // await createUser({
-    //       //   name: user.name,
-    //       //   username: user.username,
-    //       //   password: user.password,
-    //       // });
-    //     } else if (state === "edit") {
-    //       console.log("edit >>>", room);
-    //       // await updateUser(user.id, user.name);
-    //     }
-    //     if (state === "create") {
-    //       // props.onAddItem({
-    //       //   name: user.name,
-    //       //   isActive: user.isActive,
-    //       //   updatedAt: user.updatedAt,
-    //       // });
-    //     } else {
-    //       // props.onEditItem({
-    //       //   id: user.id,
-    //       //   name: user.name,
-    //       // });
-    //     }
-
-    //     cancel();
-    //     // window.location.reload();
-    //   } catch (error) {
-    //     console.error("Error saving user:", error);
-    //   }
-    // }
-  };
 
   const cancel = () => {
     props.onCancel(false);
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("state >>>", state);
+    console.log("room >>>", room);
+    let success = false;
+    if (state === "create") {
+      // console.log("create >>>", room);
+      const arrRoom = room.arrRoom.map((el) => ({
+        nameRoom: el.name,
+        status: el.status,
+        dateOfStay: el.dateOfStay || null,
+        issueDate: el.issueDate || null,
+        rent:
+          el.rent.filter((rent: any) => rent.name).length > 0
+            ? el.rent.map((e: { name: any; price: number }) => ({
+                name: e.name,
+                price: Number(e.price),
+              }))
+            : [],
+        serviceFee:
+          el.serviceFee.filter((serviceFee: any) => serviceFee.name).length > 0
+            ? el.serviceFee.map((e: { name: any; price: number }) => ({
+                name: e.name,
+                price: Number(e.price),
+              }))
+            : [],
+      }));
+      const data = {
+        type: room.type,
+        contact: room.contact,
+        company: room.type !== "person" ? room.company : null,
+        room: arrRoom,
+      };
+      // console.log("data >>>", data);
+      const result = await createRoom(data);
+      if (result?.data && result?.data?.id.length > 0) {
+        success = true;
+      }
+    } else if (state === "edit") {
+      console.log("edit >>>", room);
+      // await updateUser(user.id, user.name);
+    }
+    if (state === "create") {
+      // props.onAddItem({
+      //   name: user.name,
+      //   isActive: user.isActive,
+      //   updatedAt: user.updatedAt,
+      // });
+    } else {
+      // props.onEditItem({
+      //   id: user.id,
+      //   name: user.name,
+      // });
+    }
+    if (success) {
+      window.location.reload();
+    }
+    cancel();
+  };
+
   const handleClick = (state: string, value: any, index: number) => {
-    if (state === "userType") {
+    if (state === "type") {
       setRoom((prev) => ({
         ...prev,
-        userType: value, // เปลี่ยนค่า selected ตาม div ที่คลิก
+        type: value, // เปลี่ยนค่า selected ตาม div ที่คลิก
         roomTotal: value === "person" ? 1 : prev.roomTotal,
         arrRoom:
           value === "person" ? [...prev.arrRoom].slice(0, 1) : prev.arrRoom,
@@ -147,11 +148,10 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
       ...prev,
       contact: {
         ...prev.contact,
-        [e.target.name]: e.target.value,
+        [e.target.name]: e.target.value, // ทำให้การเปลี่ยนแปลงค่า input เปลี่ยน state ได้
       },
     }));
   };
-
   const handleChangeCompany = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -163,7 +163,6 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
       },
     }));
   };
-
   const addBill = (type: string, roomindex: number, index: number) => {
     if (type === "addrent") {
       setRoom((prev) => ({
@@ -174,7 +173,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                 ...room,
                 rent: [
                   ...room.rent.slice(0, index + 1),
-                  { name: "", amount: 0 },
+                  { name: "", price: 0 },
                   ...room.rent.slice(index + 1),
                 ],
               }
@@ -207,7 +206,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                 ...room,
                 serviceFee: [
                   ...room.serviceFee.slice(0, index + 1),
-                  { name: "", amount: 0 },
+                  { name: "", price: 0 },
                   ...room.serviceFee.slice(index + 1),
                 ],
               }
@@ -232,39 +231,36 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
       }));
     }
   };
-
   const handleInputChange = (
     index: number,
     rentIndex: number,
     serviceIndex: number,
-    value: any
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    const { name, value } = e.target;
     const updatedData = room.arrRoom.map((prev, i) => {
-      if (index === i) {
+      if (i === index) {
         if (rentIndex > -1) {
           prev.rent = prev.rent.map((item: any, ii: number) =>
-            ii === rentIndex
-              ? { ...item, [value.target.name]: value.target.value }
-              : item
+            ii === rentIndex ? { ...item, [name]: value } : item
           );
         }
         if (serviceIndex > -1) {
           prev.serviceFee = prev.serviceFee.map((item: any, ii: number) =>
-            ii === serviceIndex
-              ? { ...item, [value.target.name]: value.target.value }
-              : item
+            ii === serviceIndex ? { ...item, [name]: value } : item
           );
         }
         if (rentIndex < 0 && serviceIndex < 0) {
-          prev = {
-            ...prev,
-            [value.target.name]: value.target.value,
-          };
+          prev = { ...prev, [name]: value }; // แก้ไขข้อมูลห้องหลัก
         }
       }
       return prev;
     });
-    setRoom({ ...room, arrRoom: updatedData });
+
+    setRoom((prev) => ({
+      ...prev,
+      arrRoom: updatedData,
+    }));
   };
 
   return (
@@ -272,7 +268,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
         <div className="flex justify-between">
           <h2 className="text-xl font-bold text-end capitalize">
-            {state} Room
+            {state === "create" ? "สร้างห้องเช่า" : "แก้ไขห้องเช่า"}
           </h2>
           <button className="btn !text-dark-base" onClick={() => cancel()}>
             <i className="bi bi-x-lg" />
@@ -280,23 +276,21 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
         </div>
 
         <div className="max-h-[calc(80vh)] overflow-y-auto space-y-2">
-          <form onSubmit={handleSubmit} className="space-y-2">
+          <form className="space-y-2">
             <label className="block mb-2 text-gray-700">ประเภทลูกค้า</label>
             <div className="grid grid-cols-2 gap-2">
               <div
-                className={`div-box ${
-                  room.userType === "person" ? "active" : ""
-                }`}
-                onClick={() => handleClick("userType", "person", 0)}
+                className={`div-box ${room.type === "person" ? "active" : ""}`}
+                onClick={() => handleClick("type", "person", 0)}
               >
                 <RoomIcon item={"person"} />
                 <p>บุคคล</p>
               </div>
               <div
                 className={`div-box ${
-                  room.userType === "legalEntity" ? "active" : ""
+                  room.type === "legalEntity" ? "active" : ""
                 }`}
-                onClick={() => handleClick("userType", "legalEntity", 0)}
+                onClick={() => handleClick("type", "legalEntity", 0)}
               >
                 <RoomIcon item={"legalEntity"} /> <p>นิติบุคคล</p>
               </div>
@@ -349,7 +343,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
               </div>
             </div>
 
-            {room.userType === "legalEntity" && (
+            {room.type === "legalEntity" && (
               <div className="grid grid-cols-2 gap-2">
                 <h1 className="block text-gray-700 col-span-2 font-bold">
                   รายละเอียดข้อมูลบริษัท
@@ -398,7 +392,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
               </div>
             )}
 
-            {room.userType === "legalEntity" && state === "create" && (
+            {room.type === "legalEntity" && state === "create" && (
               <div className="flex space-x-10 items-center">
                 <label className="block mb-2 text-gray-700">จำนวนห้อง</label>
                 <div className="space-x-5 flex items-center">
@@ -469,8 +463,8 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                       </label>
                       <input
                         type="date"
-                        name="checkin"
-                        value={element.checkin}
+                        name="dateOfStay"
+                        value={element.dateOfStay}
                         onChange={(e) => handleInputChange(index, -1, -1, e)}
                         className="input-text"
                       />
@@ -481,8 +475,8 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                       </label>
                       <input
                         type="date"
-                        name="checkout"
-                        value={element.checkout}
+                        name="issueDate"
+                        value={element.issueDate}
                         onChange={(e) => handleInputChange(index, -1, -1, e)}
                         className="input-text"
                       />
@@ -506,20 +500,22 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                             type="text"
                             className="input-text !mb-0"
                             placeholder="จำนวน"
-                            value={rent.amount}
-                            name="amount"
+                            value={rent.price}
+                            name="price"
                             onChange={(e) => handleInputChange(index, i, -1, e)}
                           />
                           <div className="flex space-x-2 ms-2">
                             <button
                               className="btn btn-base"
                               onClick={() => addBill("deleterent", index, i)}
+                              type="button" // เพิ่ม type="button" เพื่อไม่ให้ form ถูก submit
                             >
                               <i className="bi bi-dash-lg" />
                             </button>
                             <button
                               className="btn btn-base"
                               onClick={() => addBill("addrent", index, i)}
+                              type="button" // เพิ่ม type="button"
                             >
                               <i className="bi bi-plus-lg" />
                             </button>
@@ -548,20 +544,22 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                             type="text"
                             className="input-text !mb-0"
                             placeholder="จำนวน"
-                            value={rent.amount}
-                            name="amount"
+                            value={rent.price}
+                            name="price"
                             onChange={(e) => handleInputChange(index, -1, i, e)}
                           />
                           <div className="flex space-x-2 ms-2">
                             <button
                               className="btn btn-base"
                               onClick={() => addBill("deleteservice", index, i)}
+                              type="button" // เพิ่ม type="button" เพื่อไม่ให้ form ถูก submit
                             >
                               <i className="bi bi-dash-lg" />
                             </button>
                             <button
                               className="btn btn-base"
                               onClick={() => addBill("addservice", index, i)}
+                              type="button" // เพิ่ม type="button"
                             >
                               <i className="bi bi-plus-lg" />
                             </button>
@@ -576,7 +574,8 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
 
             <div className="flex gap-2 mt-4">
               <button
-                type="submit"
+                type="button" // ใช้ type="button" แทน type="submit"
+                onClick={handleSubmit} // เรียก handleSubmit เมื่อกดปุ่ม
                 className="flex-1 bg-green-500 text-white p-2 rounded hover:bg-green-600"
               >
                 บันทึก

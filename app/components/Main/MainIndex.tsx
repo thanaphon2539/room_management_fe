@@ -10,6 +10,7 @@ export default function MainIndex() {
     "ห้อง",
     "สถานะ",
     "ประเภทลูกค้า",
+    "ข้อมูลผู้ติดต่อ",
     "ข้อมูลบริษัท",
     "วันที่เข้าพัก",
     "วันที่ออก",
@@ -74,6 +75,7 @@ export default function MainIndex() {
                     <td>
                       <RoomIcon item={element.type} />
                     </td>
+                    <td>{element.roomContact?.name}</td>
                     <td>
                       {element.type === "legalEntity" && element?.roomCompany
                         ? element.roomCompany?.name

@@ -65,6 +65,13 @@ export default function RoomIndex() {
     handleSearch();
   }, []); // โหลดครั้งเดียวตอนแรก
 
+  const handleKeyDown = (event: any) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSearch();
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -78,8 +85,9 @@ export default function RoomIndex() {
           <div className="flex space-x-2 !w-1/2">
             <select
               value={selectedYear}
-              onChange={() => setSelectedYear}
+              onChange={(e) => setSelectedYear(Number(e.target.value))}
               className="input-select"
+              onKeyDown={handleKeyDown} // Add keydown event here
             >
               {years.map((year) => (
                 <option key={year} value={year}>
@@ -91,6 +99,7 @@ export default function RoomIndex() {
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(Number(e.target.value))}
               className="input-select"
+              onKeyDown={handleKeyDown} // Add keydown event here
             >
               {months.map((month, index) => (
                 <option key={index} value={index + 1}>

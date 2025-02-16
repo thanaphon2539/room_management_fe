@@ -21,7 +21,7 @@ export default function RoomIndex() {
   useEffect(() => {
     const fetchSetting = async () => {
       const data = await settingList();
-      console.log("data >>>", data);
+      // console.log("data >>>", data);
       setData(data);
     };
     fetchSetting();

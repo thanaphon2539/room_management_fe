@@ -47,7 +47,6 @@ const userList = async (): Promise<ResponseUser[]> => {
       });
     })
     .catch((error) => {
-      console.error("Axios error:", error);
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);
@@ -88,7 +87,7 @@ const createUser = async (input: {
       return data.id;
     })
     .catch((error) => {
-      console.error("Axios error:", error);
+      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);
@@ -128,7 +127,7 @@ const updateUser = async (
       return data.id;
     })
     .catch((error) => {
-      console.error("Axios error:", error);
+      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);
@@ -164,7 +163,7 @@ const deleteUser = async (id: number): Promise<boolean> => {
         };
       })
       .catch((error) => {
-        console.error("Axios error:", error);
+        
         if (error.response) {
           console.log("Response Data:", error.response.data);
           // console.log("Response Status:", error.response.status);
@@ -179,7 +178,6 @@ const deleteUser = async (id: number): Promise<boolean> => {
     }
     return false;
   } catch (error) {
-    console.error("Error deleting user:", error);
     alert(error); // แสดง alert เมื่อเกิดข้อผิดพลาด
     return false;
   }

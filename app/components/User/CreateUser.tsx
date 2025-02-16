@@ -38,14 +38,14 @@ const CreateUser = (props: { [x: string]: any; data: any; state: string }) => {
     if (user.name || user.username) {
       try {
         if (state === "create") {
-          console.log("create >>>", user);
+          // console.log("create >>>", user);
           await createUser({
             name: user.name,
             username: user.username,
             password: user.password,
           });
         } else if (state === "edit") {
-          console.log("edit >>>", user);
+          // console.log("edit >>>", user);
           await updateUser(user.id, user.name);
         }
         if (state === "create") {

@@ -41,7 +41,7 @@ const settingList = async (): Promise<ResponseSetting> => {
       return data;
     })
     .catch((error) => {
-      console.error("Axios error:", error);
+      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);
@@ -64,7 +64,7 @@ const settingList = async (): Promise<ResponseSetting> => {
       return data;
     })
     .catch((error) => {
-      console.error("Axios error:", error);
+      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);
@@ -105,7 +105,7 @@ const updateUnit = async (input: {
       return data.id;
     })
     .catch((error) => {
-      console.error("Axios error:", error);
+      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);
@@ -146,7 +146,7 @@ const updateContactaddres = async (input: {
       return data.id;
     })
     .catch((error) => {
-      console.error("Axios error:", error);
+      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);

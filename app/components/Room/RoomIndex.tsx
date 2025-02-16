@@ -4,7 +4,14 @@ import ModalDelete from "../ModalDelete";
 import { useEffect, useState } from "react";
 import CreateRoom from "./CreateRoom";
 import { v4 as uuidv4 } from "uuid";
-import { Rent, ResponseRoom, roomList, ServiceFee } from "@/pages/api/room";
+import {
+  deleteRoom,
+  Rent,
+  ResponseRoom,
+  roomList,
+  ServiceFee,
+} from "@/pages/api/room";
+import dayjs from "dayjs";
 
 export default function RoomIndex() {
   const header = [
@@ -12,6 +19,7 @@ export default function RoomIndex() {
     "สถานะ",
     "ประเภทลูกค้า",
     "ข้อมูลผู้ติดต่อ",
+    "ข้อมูลบริษัท",
     "ระบุวันที่เข้าพัก",
     "วันที่ออก",
     "ค่าเช่า",
@@ -21,10 +29,11 @@ export default function RoomIndex() {
   const [showDelete, setShowDelete] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [dataEdit, setDataEdit] = useState();
+  const [dataEdit, setDataEdit] = useState<ResponseRoom>();
   const [loading, setLoading] = useState(true);
   const [items, setItem] = useState<ResponseRoom[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [deleteRoomId, setDeleteRoomId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchRoom = async () => {
@@ -37,16 +46,23 @@ export default function RoomIndex() {
 
   if (loading) return <p>Loading...</p>;
 
-  const onDelete = (value: boolean) => {
-    console.log(value);
-    setShowDelete(false);
+  const onDelete = async () => {
+    console.log("deleteRoomId >>>", deleteRoomId);
+    if (deleteRoomId !== null) {
+      const success = await deleteRoom(deleteRoomId);
+      if (success) {
+        setItem(items.filter((items) => items.id !== deleteRoomId));
+      }
+      setShowDelete(false);
+      setDeleteRoomId(null);
+    }
   };
   const onCreate = (value: boolean) => {
-    console.log(value);
+    console.log("onCreate >>>", value);
     setShowCreate(false);
   };
   const onEdit = (value: boolean) => {
-    console.log(value);
+    console.log("onEdit >>>", value);
     setShowEdit(false);
   };
 
@@ -61,7 +77,6 @@ export default function RoomIndex() {
       const response = await roomList(filter);
       setItem(response.data);
     } catch (error) {
-      console.log("error >>>", error);
       setItem([]);
     }
   };
@@ -128,8 +143,21 @@ export default function RoomIndex() {
                       <RoomIcon item={element.type} />
                     </td>
                     <td>{element?.roomContact?.name}</td>
-                    <td>{element.dateOfStay}</td>
-                    <td>{element.issueDate}</td>
+                    <td>
+                      {element.type === "legalEntity" && element?.roomCompany
+                        ? element.roomCompany?.name
+                        : ""}
+                    </td>
+                    <td>
+                      {element.dateOfStay
+                        ? dayjs(element.dateOfStay).format("DD/MM/YYYY")
+                        : null}
+                    </td>
+                    <td>
+                      {element.issueDate
+                        ? dayjs(element.issueDate).format("DD/MM/YYYY")
+                        : null}
+                    </td>
                     <td>
                       {element?.rent?.map((rent: Rent) => {
                         return <p key={uuidv4()}>{rent.total}</p>;
@@ -146,7 +174,7 @@ export default function RoomIndex() {
                           className="btn btn-warning"
                           onClick={() => {
                             setShowEdit(true);
-                            // setDataEdit(element);
+                            setDataEdit(element);
                           }}
                         >
                           <i className="bi bi-pencil-fill" />
@@ -154,7 +182,10 @@ export default function RoomIndex() {
                         </button>
                         <button
                           className="btn btn-error"
-                          onClick={() => setShowDelete(true)}
+                          onClick={() => {
+                            setShowDelete(true);
+                            setDeleteRoomId(element.id);
+                          }}
                         >
                           <i className="bi bi-trash" />
                           <p>ลบ</p>
@@ -171,8 +202,9 @@ export default function RoomIndex() {
 
         {showDelete && (
           <ModalDelete
-            title="Are you sure you want to delete this Room?"
+            title="คุณแน่ใจหรือไม่ว่าต้องการลบสิ่งนี้?"
             onConfirm={onDelete}
+            onCancel={() => setShowDelete(false)}
           />
         )}
         {showCreate && (
@@ -185,10 +217,10 @@ export default function RoomIndex() {
         )}
         {showEdit && (
           <CreateRoom
-            onAddItem={onEdit}
+            onEditItem={onEdit}
             onCancel={setShowEdit}
             data={dataEdit}
-            state={"Edit"}
+            state={"edit"}
           />
         )}
       </div>

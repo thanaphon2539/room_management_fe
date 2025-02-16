@@ -58,7 +58,6 @@ interface IRoom {
 }
 
 export interface ResponseRoom {
-  pageCount: number;
   id: number;
   nameRoom: string;
   type: typeRoom;
@@ -107,8 +106,7 @@ const roomList = async (params?: {
 
   try {
     const response = await axios.get(`${apiUrl}/room`, config);
-    console.log("response >>> ", response);
-
+    // console.log("response >>> ", response);
     const { meta, data } = response.data;
     return {
       pageCount: Number(meta?.pageCount) || 1, // ป้องกัน undefined
@@ -116,15 +114,14 @@ const roomList = async (params?: {
         data?.map((el: IRoom) => ({
           ...el,
           dateOfStay: el.dateOfStay
-            ? dayjs(el.dateOfStay).format("DD/MM/YYYY")
+            ? dayjs(el.dateOfStay).format("YYYY-MM-DD")
             : "",
           issueDate: el.issueDate
-            ? dayjs(el.issueDate).format("DD/MM/YYYY")
+            ? dayjs(el.issueDate).format("YYYY-MM-DD")
             : "",
         })) || [], // ป้องกัน undefined
     };
   } catch (error: any) {
-    console.error("Axios error:", error);
     if (error?.response) {
       console.log("Response Data:", error?.response?.data);
       alert(error.response.data?.meta?.message || "เกิดข้อผิดพลาด");
@@ -157,7 +154,6 @@ const findWaterUnit = async (params: {
     console.log("response >>> ", response);
     return response.data?.data || [];
   } catch (error: any) {
-    console.error("Axios error:", error);
     if (error?.response) {
       console.log("Response Data:", error?.response?.data);
       alert(error.response.data?.meta?.message || "เกิดข้อผิดพลาด");
@@ -186,7 +182,6 @@ const findElectricityUnit = async (params: {
     console.log("response >>> ", response);
     return response.data?.data || [];
   } catch (error: any) {
-    console.error("Axios error:", error);
     if (error?.response) {
       console.log("Response Data:", error?.response?.data);
       alert(error.response.data?.meta?.message || "เกิดข้อผิดพลาด");
@@ -197,37 +192,65 @@ const findElectricityUnit = async (params: {
 
 const createRoom = async (input: any) => {
   const token = getToken();
-  if (!token) {
-    throw new Error("ไม่พบข้อมูล Token");
+  if (!token) throw new Error("ไม่พบข้อมูล Token");
+
+  const config = {
+    method: "POST",
+    url: `${apiUrl}/room/create`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    data: input,
+  };
+
+  try {
+    const response = await axios(config);
+    return response.data;
+  } catch (error: any) {
+    if (error?.response) {
+      alert(error.response.data?.meta?.message || "เกิดข้อผิดพลาด");
+    }
+    return null; // คืนค่าเริ่มต้น
   }
-  const result = await axios
-    .post(
-      `${apiUrl}/room/create`,
-      input, // Payload goes here
-      {
+};
+
+const deleteRoom = async (id: number) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      throw new Error("ไม่พบข้อมูล Token");
+    }
+    const result = await axios
+      .delete(`${apiUrl}/room/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      }
-    )
-    .then((response) => {
-      console.log(response.data);
-      const { data } = response.data;
-      return data.id;
-    })
-    .catch((error) => {
-      console.error("Axios error:", error);
-      if (error.response) {
-        console.log("Response Data:", error.response.data);
-        // console.log("Response Status:", error.response.status);
-        // console.log("Response Headers:", error.response.headers);
-        const { meta } = error.response.data;
-        alert(meta.message); // แสดง alert เมื่อเกิดข้อผิดพลาด
-      }
-    });
-  // console.log("result >>>", result);
-  return Promise.resolve(result);
+      })
+      .then((response) => {
+        console.log(response.data);
+        const { data } = response.data;
+        return {
+          id: data.id,
+        };
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log("Response Data:", error.response.data);
+          const { meta } = error.response.data;
+          alert(meta.message); // แสดง alert เมื่อเกิดข้อผิดพลาด
+        }
+      });
+    // console.log("result >>>", result);
+    if (result) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    alert(error); // แสดง alert เมื่อเกิดข้อผิดพลาด
+    return false;
+  }
 };
 
-export { roomList, findWaterUnit, findElectricityUnit, createRoom };
+export { roomList, findWaterUnit, findElectricityUnit, createRoom, deleteRoom };
