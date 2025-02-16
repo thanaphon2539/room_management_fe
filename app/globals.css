@@ -7,7 +7,7 @@
 }
 
 .btn {
-  @apply rounded-lg px-3 py-2 m-0.5 flex items-center transition duration-150 ease-in-out space-x-1 text-white hover:scale-[1.02]
+  @apply rounded-lg px-3 py-2 m-0.5 flex items-center justify-center transition duration-150 ease-in-out space-x-1 text-white hover:scale-[1.02]
 }
 .btn-primary {
   @apply bg-primary-base hover:bg-primary-base/85

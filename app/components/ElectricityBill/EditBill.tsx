@@ -3,7 +3,6 @@ import { ResponseRoomWaterUnitAndElectricityUnit } from "@/pages/api/room";
 
 const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
-  console.log("bill", data);
   const state = props.state;
 
   const [bill, setBill] = useState<ResponseRoomWaterUnitAndElectricityUnit[]>(
@@ -59,35 +58,47 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
             {bill.map((item: any, i: number) => {
               return (
                 <div key={`item${i}`} className="grid grid-cols-4 gap-2">
-                  <div className="pb-2 self-end">{item.nameRoom}</div>
+                  <div
+                    className={`pb-2 self-end text-center ${
+                      i === 0 ? "pt-[30px]" : ""
+                    }`}
+                  >
+                    {item.nameRoom}
+                  </div>
                   <div>
-                    <label className="block mb-2 text-gray-700">
-                      ค่าไฟเดือนที่แล้ว
-                    </label>
+                    {i === 0 && (
+                      <label className="block mb-2 text-center">
+                        ค่าไฟเดือนที่แล้ว
+                      </label>
+                    )}
                     <input
                       type="text"
                       disabled
-                      className="input-text text-center"
+                      className="input-text text-center text-dark-light"
                       value={item.unitBefor}
                     />
                   </div>
                   <div>
-                    <label className="block mb-2 text-gray-700">
-                      ค่าไฟเดือนปัจจุบัน
-                    </label>
+                    {i === 0 && (
+                      <label className="block mb-2 text-center">
+                        ค่าไฟเดือนปัจจุบัน
+                      </label>
+                    )}
                     <input
                       type="text"
-                      className="input-text text-center"
+                      className="input-text text-center text-error-base"
                       value={item.unitAfter}
                       name="unitAfter"
                       onChange={(e) => handleInputChange(i, e)}
                     />
                   </div>
                   <div>
-                    <label className="block mb-2 text-gray-700">
-                      หน่วยที่ใช้
-                    </label>
-                    <p className="div-card text-center">
+                    {i === 0 && (
+                      <label className="block mb-2 text-center">
+                        หน่วยที่ใช้
+                      </label>
+                    )}
+                    <p className="div-card text-center text-dark-medium">
                       {item.unitAfter - item.unitBefor}
                     </p>
                   </div>
@@ -99,7 +110,7 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
               <button
                 type="submit"
                 onClick={handleSubmit}
-                className="flex-1 bg-green-500 text-white p-2 rounded hover:bg-green-600"
+                className="w-full btn btn-success"
               >
                 บันทึก
               </button>
