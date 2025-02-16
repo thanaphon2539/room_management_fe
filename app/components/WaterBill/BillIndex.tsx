@@ -18,7 +18,6 @@ export default function RoomIndex() {
     "หน่วยที่ใช้",
   ];
   const [showEdit, setShowEdit] = useState(false);
-  const [dataEdit, setDataEdit] = useState();
   const onEdit = (value: boolean) => {
     console.log(value);
     setShowEdit(false);
@@ -164,7 +163,7 @@ export default function RoomIndex() {
         <EditBill
           onAddItem={onEdit}
           onCancel={setShowEdit}
-          data={dataEdit}
+          data={items}
           state={"Edit"}
         />
       )}

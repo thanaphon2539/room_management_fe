@@ -4,7 +4,9 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function BillIndex() {
-  const header = ["ห้อง", "สถานะ", "ประเภทลูกค้า", "จัดการ"];
+  const header = ["ห้อง", "สถานะ", "ประเภทลูกค้า", "ชื่อบริษัท", "จัดการ"];
+  const headerPerson = ["ห้อง", "สถานะ", "ประเภทลูกค้า", "จัดการ"];
+  const headerLegalEntity = ["ห้อง", "ประเภทลูกค้า", "ชื่อบริษัท", "จัดการ"];
   const items = [
     {
       id: "1",
@@ -139,9 +141,18 @@ export default function BillIndex() {
           <table className="table">
             <thead>
               <tr>
-                {header.map((element: any) => {
-                  return <th key={uuidv4()}>{element}</th>;
-                })}
+                {billType === "" &&
+                  header.map((element: any) => {
+                    return <th key={uuidv4()}>{element}</th>;
+                  })}
+                {billType === "person" &&
+                  headerPerson.map((element: any) => {
+                    return <th key={uuidv4()}>{element}</th>;
+                  })}
+                {billType === "legalEntity" &&
+                  headerLegalEntity.map((element: any) => {
+                    return <th key={uuidv4()}>{element}</th>;
+                  })}
               </tr>
             </thead>
             {items.map((element: any) => {
@@ -149,12 +160,17 @@ export default function BillIndex() {
                 <tbody key={uuidv4()}>
                   <tr>
                     <td>{element.name}</td>
-                    <td>
-                      <RoomIcon item={element.status} />
-                    </td>
+                    {(billType === "" || billType === "person") && (
+                      <td>
+                        <RoomIcon item={element.status} />
+                      </td>
+                    )}
                     <td>
                       <RoomIcon item={element.userType} />
                     </td>
+                    {(billType === "" || billType === "legalEntity") && (
+                      <td>{element.companyName}</td>
+                    )}
                     <td>
                       <div className="flex justify-center">
                         <button className="btn btn-primary">
