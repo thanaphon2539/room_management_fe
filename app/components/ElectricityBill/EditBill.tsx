@@ -1,25 +1,18 @@
-// import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ResponseRoomWaterUnitAndElectricityUnit } from "@/pages/api/room";
 
 const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
+  console.log("bill", data);
   const state = props.state;
-  // const billData = {
-  //   id: "",
-  //   oldBill: "",
-  //   newBill: "",
-  // };
 
-  const bill = {
-    id: data?.id ? data?.id : "",
-    oldBill: data?.bill.old ? data?.bill.old : "",
-    newBill: data?.bill.old ? data?.bill.new : "",
-  };
+  const [bill, setBill] = useState<ResponseRoomWaterUnitAndElectricityUnit[]>(
+    []
+  );
 
-  // const [bill, setBill] = useState({
-  //   id: data?.id ? data?.id : "",
-  //   oldBill: data?.bill.old ? data?.bill.old : "",
-  //   newBill: data?.bill.old ? data?.bill.new : "",
-  // });
+  useEffect(() => {
+    setBill([...data]);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +25,21 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
 
   const cancel = () => {
     props.onCancel(false);
+  };
+
+  const handleInputChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    const updatedData = bill.map((prev, i) => {
+      if (i === index) {
+        prev = { ...prev, [name]: value }; // แก้ไขข้อมูลห้องหลัก
+      }
+      return prev;
+    });
+
+    setBill([...updatedData]);
   };
 
   return (
@@ -47,40 +55,50 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
         </div>
 
         <div className="max-h-[calc(80vh)] overflow-y-auto space-y-2">
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-5 gap-2">
-              <div className="pb-2 self-end col-span-2">ชื่อ</div>
-              <div>
-                <label className="block mb-2 text-gray-700">
-                  ค่าไฟเดือนที่แล้ว
-                </label>
-                <input
-                  type="text"
-                  className="input-text text-center"
-                  value={bill.oldBill}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-gray-700">
-                  ค่าไฟเดือนปัจจุบัน
-                </label>
-                <input
-                  type="text"
-                  className="input-text text-center"
-                  value={bill.newBill}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-gray-700">หน่วยที่ใช้</label>
-                <p className="div-card text-center">
-                  {bill.newBill - bill.oldBill}
-                </p>
-              </div>
-            </div>
+          <form>
+            {bill.map((item: any, i: number) => {
+              return (
+                <div key={`item${i}`} className="grid grid-cols-4 gap-2">
+                  <div className="pb-2 self-end">{item.nameRoom}</div>
+                  <div>
+                    <label className="block mb-2 text-gray-700">
+                      ค่าไฟเดือนที่แล้ว
+                    </label>
+                    <input
+                      type="text"
+                      disabled
+                      className="input-text text-center"
+                      value={item.unitBefor}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-gray-700">
+                      ค่าไฟเดือนปัจจุบัน
+                    </label>
+                    <input
+                      type="text"
+                      className="input-text text-center"
+                      value={item.unitAfter}
+                      name="unitAfter"
+                      onChange={(e) => handleInputChange(i, e)}
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-gray-700">
+                      หน่วยที่ใช้
+                    </label>
+                    <p className="div-card text-center">
+                      {item.unitAfter - item.unitBefor}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
 
             <div className="flex gap-2 mt-4">
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="flex-1 bg-green-500 text-white p-2 rounded hover:bg-green-600"
               >
                 บันทึก
