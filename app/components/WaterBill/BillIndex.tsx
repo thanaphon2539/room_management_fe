@@ -40,8 +40,12 @@ export default function RoomIndex() {
     "ธันวาคม",
   ];
 
-  const [selectedYear, setSelectedYear] = useState(years[0]);
-  const [selectedMonth, setSelectedMonth] = useState(1);
+  // โหลดค่าที่เก็บไว้ใน localStorage
+  const storedYear = Number(localStorage.getItem("selectedYear")) || years[0];
+  const storedMonth = Number(localStorage.getItem("selectedMonth")) || 1;
+
+  const [selectedYear, setSelectedYear] = useState(storedYear);
+  const [selectedMonth, setSelectedMonth] = useState(storedMonth);
   const [items, setItem] = useState<ResponseRoomWaterUnitAndElectricityUnit[]>(
     []
   );
@@ -57,6 +61,9 @@ export default function RoomIndex() {
     });
     setItem(data);
     setLoading(false);
+
+    localStorage.setItem("selectedYear", selectedYear.toString());
+    localStorage.setItem("selectedMonth", selectedMonth.toString());
   };
 
   // โหลดข้อมูลเมื่อ component ถูกสร้างครั้งแรก
@@ -149,7 +156,11 @@ export default function RoomIndex() {
                     <td className="text-primary-base font-bold">
                       {element.unitAfter}
                     </td>
-                    <td>{element.unitAfter - element.unitBefor}</td>
+                    <td>
+                      {element.unitAfter !== 0
+                        ? element.unitAfter - element.unitBefor
+                        : 0}
+                    </td>
                   </tr>
                   <tr className="h-2" />
                 </tbody>
@@ -163,7 +174,11 @@ export default function RoomIndex() {
         <EditBill
           onAddItem={onEdit}
           onCancel={setShowEdit}
-          data={items}
+          data={{
+            year: selectedYear,
+            month: selectedMonth,
+            items: items,
+          }}
           state={"Edit"}
         />
       )}

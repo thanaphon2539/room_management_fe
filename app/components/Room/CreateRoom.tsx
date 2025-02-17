@@ -1,6 +1,7 @@
 import { useState } from "react";
 import RoomIcon from "./RoomIcon";
-import { createRoom } from "@/pages/api/room";
+import { createRoom, updateRoom } from "@/pages/api/room";
+import { type } from "os";
 
 const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
@@ -19,15 +20,19 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
 
   // console.log("data >>>", data);
   const [room, setRoom] = useState({
+    id: data?.id || null,
     roomTotal: 1,
     type: data?.type || "person",
     contact: {
+      id: data?.roomContact?.id || null,
       name: data?.roomContact?.name || "",
       phone: data?.roomContact?.phone || "",
       idCard: data?.roomContact?.idCard || "",
       address: data?.roomContact?.address || "",
+      licensePlate: data?.roomContact?.licensePlate || "",
     },
     company: {
+      id: data?.roomCompany?.id || null,
       name: data?.roomCompany?.name || "",
       phone: data?.roomCompany?.phone || "",
       idTax: data?.roomCompany?.idTax || "",
@@ -54,8 +59,8 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("state >>>", state);
-    console.log("room >>>", room);
+    // console.log("state >>>", state);
+    // console.log("room >>>", room);
     let success = false;
     if (state === "create") {
       // console.log("create >>>", room);
@@ -90,9 +95,43 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
       if (result?.data && result?.data?.id.length > 0) {
         success = true;
       }
-    } else if (state === "edit") {
+    } else if (state === "edit" && room?.id) {
       console.log("edit >>>", room);
-      // await updateUser(user.id, user.name);
+      const arrRoom = room.arrRoom[0];
+      const data = {
+        nameRoom: arrRoom.name,
+        status: arrRoom.status,
+        type: room.type,
+        dateOfStay: arrRoom.dateOfStay || null,
+        issueDate: arrRoom.issueDate || null,
+        contact: room.contact,
+        company: room.type !== "person" ? room.company : null,
+        rent:
+          arrRoom.rent.filter((rent: any) => rent.name).length > 0
+            ? arrRoom.rent.map(
+                (e: { id?: number; name: any; price: number }) => ({
+                  id: e?.id,
+                  name: e.name,
+                  price: Number(e.price),
+                })
+              )
+            : [],
+        serviceFee:
+          arrRoom.serviceFee.filter((serviceFee: any) => serviceFee.name)
+            .length > 0
+            ? arrRoom.serviceFee.map(
+                (e: { id?: number; name: any; price: number }) => ({
+                  id: e?.id,
+                  name: e.name,
+                  price: Number(e.price),
+                })
+              )
+            : [],
+      };
+      const result = await updateRoom(room.id, data);
+      if (result?.data && result?.data?.id) {
+        // success = true;
+      }
     }
     if (state === "create") {
       // props.onAddItem({
@@ -339,6 +378,16 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                   name="address"
                   value={room.contact.address}
                   onChange={handleChangeContact}
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="block mb-2 text-gray-700">ทะเบียนรถ</label>
+                <input
+                  type="text"
+                  name="licensePlate"
+                  value={room.contact.licensePlate}
+                  onChange={handleChangeContact}
+                  className="input-text"
                 />
               </div>
             </div>

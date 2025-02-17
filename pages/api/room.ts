@@ -20,6 +20,7 @@ interface Contact {
   phone: string;
   idCard: string;
   address: string;
+  licensePlate: string;
 }
 
 interface Company {
@@ -215,6 +216,31 @@ const createRoom = async (input: any) => {
   }
 };
 
+const updateRoom = async (id: number, input: any) => {
+  const token = getToken();
+  if (!token) throw new Error("ไม่พบข้อมูล Token");
+
+  const config = {
+    method: "PUT",
+    url: `${apiUrl}/room/update/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    data: input,
+  };
+
+  try {
+    const response = await axios(config);
+    return response.data;
+  } catch (error: any) {
+    if (error?.response) {
+      alert(error.response.data?.meta?.message || "เกิดข้อผิดพลาด");
+    }
+    return null; // คืนค่าเริ่มต้น
+  }
+};
+
 const deleteRoom = async (id: number) => {
   try {
     const token = getToken();
@@ -253,4 +279,63 @@ const deleteRoom = async (id: number) => {
   }
 };
 
-export { roomList, findWaterUnit, findElectricityUnit, createRoom, deleteRoom };
+const updateWaterUnit = async (input: any) => {
+  const token = getToken();
+  if (!token) throw new Error("ไม่พบข้อมูล Token");
+
+  const config = {
+    method: "POST",
+    url: `${apiUrl}/room/update/waterunit`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    data: input,
+  };
+
+  try {
+    const response = await axios(config);
+    return response.data;
+  } catch (error: any) {
+    if (error?.response) {
+      alert(error.response.data?.meta?.message || "เกิดข้อผิดพลาด");
+    }
+    return null; // คืนค่าเริ่มต้น
+  }
+};
+
+const updateElectricityUnit = async (input: any) => {
+  const token = getToken();
+  if (!token) throw new Error("ไม่พบข้อมูล Token");
+
+  const config = {
+    method: "POST",
+    url: `${apiUrl}/room/update/electricityunit`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    data: input,
+  };
+
+  try {
+    const response = await axios(config);
+    return response.data;
+  } catch (error: any) {
+    if (error?.response) {
+      alert(error.response.data?.meta?.message || "เกิดข้อผิดพลาด");
+    }
+    return null; // คืนค่าเริ่มต้น
+  }
+};
+
+export {
+  roomList,
+  findWaterUnit,
+  findElectricityUnit,
+  createRoom,
+  updateRoom,
+  deleteRoom,
+  updateWaterUnit,
+  updateElectricityUnit,
+};

@@ -40,8 +40,12 @@ export default function BillIndex() {
     "ธันวาคม",
   ];
 
-  const [selectedYear, setSelectedYear] = useState(years[0]);
-  const [selectedMonth, setSelectedMonth] = useState(1);
+  // โหลดค่าที่เก็บไว้ใน localStorage
+  const storedYear = Number(localStorage.getItem("selectedYear")) || years[0];
+  const storedMonth = Number(localStorage.getItem("selectedMonth")) || 1;
+
+  const [selectedYear, setSelectedYear] = useState(storedYear);
+  const [selectedMonth, setSelectedMonth] = useState(storedMonth);
   const [items, setItem] = useState<ResponseRoomWaterUnitAndElectricityUnit[]>(
     []
   );
@@ -57,12 +61,22 @@ export default function BillIndex() {
     });
     setItem(data);
     setLoading(false);
+
+    localStorage.setItem("selectedYear", selectedYear.toString());
+    localStorage.setItem("selectedMonth", selectedMonth.toString());
   };
 
   // โหลดข้อมูลเมื่อ component ถูกสร้างครั้งแรก
   useEffect(() => {
     handleSearch();
   }, []); // โหลดครั้งเดียวตอนแรก
+
+  const handleKeyDown = (event: any) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSearch();
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
 
@@ -76,8 +90,9 @@ export default function BillIndex() {
           <div className="flex space-x-2 !w-1/2">
             <select
               value={selectedYear}
-              onChange={() => setSelectedYear}
+              onChange={(e) => setSelectedYear(Number(e.target.value))}
               className="input-select"
+              onKeyDown={handleKeyDown} // Add keydown event here
             >
               {years.map((year) => (
                 <option key={year} value={year}>
@@ -89,6 +104,7 @@ export default function BillIndex() {
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(Number(e.target.value))}
               className="input-select"
+              onKeyDown={handleKeyDown} // Add keydown event here
             >
               {months.map((month, index) => (
                 <option key={index} value={index + 1}>
@@ -139,7 +155,11 @@ export default function BillIndex() {
                     <td className="text-error-base font-bold">
                       {element.unitAfter}
                     </td>
-                    <td>{element.unitAfter - element.unitBefor}</td>
+                    <td>
+                      {element.unitAfter !== 0
+                        ? element.unitAfter - element.unitBefor
+                        : 0}
+                    </td>
                   </tr>
                   <tr className="h-2" />
                 </tbody>

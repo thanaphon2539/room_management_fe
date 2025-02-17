@@ -1,25 +1,33 @@
 import { useEffect, useState } from "react";
-import { ResponseRoomWaterUnitAndElectricityUnit } from "@/pages/api/room";
+import { updateElectricityUnit } from "@/pages/api/room";
 
 const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
   const data = props.data;
-  const state = props.state;
-
-  const [bill, setBill] = useState<ResponseRoomWaterUnitAndElectricityUnit[]>(
-    []
-  );
+  // const state = props.state;
+  const [bill, setBill] = useState<any[]>([]);
 
   useEffect(() => {
     setBill([...data]);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // if (room.name && room.status) {
-    //   props.onAddItem({
-    //     id: Date.now(),
-    //   });
-    // }
+    let success = false;
+    const updateData = bill.map((el) => ({
+      roomId: el.id,
+      year: el.year,
+      month: el.month,
+      unitBefor: Number(el.unitBefor),
+      unitAfter: Number(el.unitAfter),
+    }));
+    const result = await updateElectricityUnit(updateData);
+    // console.log("result >>>", result);
+    if (result && result?.data?.id?.length > 0) {
+      success = true;
+    }
+    if (success) {
+      window.location.reload();
+    }
   };
 
   const cancel = () => {
@@ -33,7 +41,7 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
     const { name, value } = e.target;
     const updatedData = bill.map((prev, i) => {
       if (i === index) {
-        prev = { ...prev, [name]: value }; // แก้ไขข้อมูลห้องหลัก
+        prev = { ...prev, [name]: value };
       }
       return prev;
     });
@@ -45,9 +53,7 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-dark-base">
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
         <div className="flex justify-between">
-          <h2 className="text-xl font-bold text-end capitalize">
-            {state} Bill
-          </h2>
+          <h2 className="text-xl font-bold text-end capitalize">บันทึกค่าไฟ</h2>
           <button className="btn !text-dark-base" onClick={() => cancel()}>
             <i className="bi bi-x-lg" />
           </button>
