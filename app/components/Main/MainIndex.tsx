@@ -90,12 +90,14 @@ export default function MainIndex() {
             })}
           </table>
         </div>
-
-        <Pagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onChangePage={onChangePage}
-        />
+        {/* แสดง Pagination เฉพาะเมื่อมี items */}
+        {items.length > 0 && (
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onChangePage={onChangePage}
+          />
+        )}
       </div>
     </div>
   );
