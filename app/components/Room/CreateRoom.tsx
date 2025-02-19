@@ -9,7 +9,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
   const roomData = {
     id: "",
     name: "",
-    status: "",
+    status: "blank",
     type: "",
     contact: "",
     dateOfStay: "",
@@ -147,8 +147,8 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
     }
     if (success) {
       window.location.reload();
+      cancel();
     }
-    cancel();
   };
 
   const handleClick = (state: string, value: any, index: number) => {
