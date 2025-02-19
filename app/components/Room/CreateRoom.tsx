@@ -130,7 +130,7 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
       };
       const result = await updateRoom(room.id, data);
       if (result?.data && result?.data?.id) {
-        // success = true;
+        success = true;
       }
     }
     if (state === "create") {
@@ -445,13 +445,19 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
               <div className="flex space-x-10 items-center">
                 <label className="block mb-2 text-gray-700">จำนวนห้อง</label>
                 <div className="space-x-5 flex items-center">
-                  <button onClick={() => handleClick("roomTotal", -1, 0)}>
+                  <button
+                    type="button"
+                    onClick={() => handleClick("roomTotal", -1, 0)}
+                  >
                     <i className="bi bi-dash-lg" />
                   </button>
                   <p className="border border-base-border min-w-20 text-center rounded-lg py-1">
                     {room.roomTotal}
                   </p>
-                  <button onClick={() => handleClick("roomTotal", 1, 0)}>
+                  <button
+                    type="button"
+                    onClick={() => handleClick("roomTotal", 1, 0)}
+                  >
                     <i className="bi bi-plus-lg" />
                   </button>
                 </div>

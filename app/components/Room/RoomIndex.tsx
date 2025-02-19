@@ -158,16 +158,8 @@ export default function RoomIndex() {
                         ? dayjs(element.issueDate).format("DD/MM/YYYY")
                         : null}
                     </td>
-                    <td>
-                      {element?.rent?.map((rent: Rent) => {
-                        return <p key={uuidv4()}>{rent.total}</p>;
-                      })}
-                    </td>
-                    <td>
-                      {element?.serviceFee?.map((serviceFee: ServiceFee) => {
-                        return <p key={uuidv4()}>{serviceFee.total}</p>;
-                      })}
-                    </td>
+                    <td>{element?.rentTotal}</td>
+                    <td>{element?.serviceFeeTotal}</td>
                     <td>
                       <div className="flex justify-center">
                         <button

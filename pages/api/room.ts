@@ -56,6 +56,8 @@ interface IRoom {
   roomCompany: Company;
   rent: Rent[];
   serviceFee: ServiceFee[];
+  rentTotal: number;
+  serviceFeeTotal: number;
 }
 
 export interface ResponseRoom {
@@ -69,6 +71,8 @@ export interface ResponseRoom {
   roomCompany: Company;
   rent: Rent[];
   serviceFee: ServiceFee[];
+  rentTotal: number;
+  serviceFeeTotal: number;
 }
 
 export interface ResponseRoomWaterUnitAndElectricityUnit {
