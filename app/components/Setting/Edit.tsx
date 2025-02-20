@@ -14,6 +14,7 @@ const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
       email: data?.contact?.email ? data?.contact?.email : "",
       address: data?.contact?.address ? data?.contact?.address : "",
       company: data?.contact?.company ? data?.contact?.company : "",
+      idTax: data?.contact?.idTax ? data?.contact?.idTax : "",
     },
   });
 
@@ -105,6 +106,18 @@ const EditSetting = (props: { [x: string]: any; data: any; state: string }) => {
                   className="input-text"
                   name="company"
                   value={setting.contact.company}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="block mb-2 text-gray-700">
+                  เลขประจำตัวผู้เสียภาษี
+                </label>
+                <input
+                  type="text"
+                  className="input-text"
+                  name="idTax"
+                  value={setting.contact.idTax}
                   onChange={handleChange}
                 />
               </div>

@@ -107,7 +107,7 @@ export default function RoomIndex() {
               type="text"
               name="search"
               className="input-text !w-2/4"
-              placeholder="ค้นหาห้องเช่า"
+              placeholder="ค้นหาห้องเช่า / ชื่อผู้ติดต่อ / ชื่อบริษัท"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -142,8 +142,16 @@ export default function RoomIndex() {
                     <td>
                       <RoomIcon item={element.type} />
                     </td>
-                    <td>{element?.roomContact?.name}</td>
-                    <td>
+                    <td
+                      className="truncate-cell"
+                      title={element?.roomContact?.name}
+                    >
+                      {element?.roomContact?.name}
+                    </td>
+                    <td
+                      className="truncate-cell"
+                      title={element?.roomCompany?.name}
+                    >
                       {element.type === "legalEntity" && element?.roomCompany
                         ? element.roomCompany?.name
                         : ""}

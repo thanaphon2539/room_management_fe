@@ -75,8 +75,16 @@ export default function MainIndex() {
                     <td>
                       <RoomIcon item={element.type} />
                     </td>
-                    <td>{element.roomContact?.name}</td>
-                    <td>
+                    <td
+                      className="truncate-cell"
+                      title={element?.roomContact?.name}
+                    >
+                      {element?.roomContact?.name}
+                    </td>
+                    <td
+                      className="truncate-cell"
+                      title={element?.roomCompany?.name}
+                    >
                       {element.type === "legalEntity" && element?.roomCompany
                         ? element.roomCompany?.name
                         : ""}

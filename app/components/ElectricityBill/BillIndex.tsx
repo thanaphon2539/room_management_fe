@@ -49,6 +49,7 @@ export default function BillIndex() {
   const [items, setItem] = useState<ResponseRoomWaterUnitAndElectricityUnit[]>(
     []
   );
+  const [selectedMonthCheck, setselectedMonthCheck] = useState(1);
   const [loading, setLoading] = useState(true);
 
   // ฟังก์ชันค้นหา
@@ -61,7 +62,7 @@ export default function BillIndex() {
     });
     setItem(data);
     setLoading(false);
-
+    setselectedMonthCheck(selectedMonth)
     localStorage.setItem("selectedYear", selectedYear.toString());
     localStorage.setItem("selectedMonth", selectedMonth.toString());
   };
@@ -84,7 +85,9 @@ export default function BillIndex() {
     <div className="container">
       <div className="card space-y-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">จัดการค่าไฟ</h2>
+          <h2 className="text-2xl font-bold">
+            จัดการค่าไฟ เดือน: {months[selectedMonthCheck - 1]}
+          </h2>
         </div>
         <div className="flex justify-between">
           <div className="flex space-x-2 !w-1/2">

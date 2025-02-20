@@ -50,6 +50,7 @@ export default function RoomIndex() {
     []
   );
   const [loading, setLoading] = useState(true);
+  const [selectedMonthCheck, setselectedMonthCheck] = useState(1);
 
   // ฟังก์ชันค้นหา
   const handleSearch = async () => {
@@ -62,6 +63,7 @@ export default function RoomIndex() {
     setItem(data);
     setLoading(false);
 
+    setselectedMonthCheck(selectedMonth);
     localStorage.setItem("selectedYear", selectedYear.toString());
     localStorage.setItem("selectedMonth", selectedMonth.toString());
   };
@@ -84,7 +86,9 @@ export default function RoomIndex() {
     <div className="container">
       <div className="card space-y-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">จัดการค่าน้ำ</h2>
+          <h2 className="text-2xl font-bold">
+            จัดการค่าน้ำ เดือน: {months[selectedMonthCheck - 1]}
+          </h2>
         </div>
 
         <div className="flex justify-between">

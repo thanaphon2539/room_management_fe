@@ -10,6 +10,7 @@ export interface Contact {
   address: string;
   company: string;
   position: string;
+  idTax: string;
 }
 
 export interface BillUnit {
@@ -41,7 +42,6 @@ const settingList = async (): Promise<ResponseSetting> => {
       return data;
     })
     .catch((error) => {
-      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);
@@ -64,7 +64,6 @@ const settingList = async (): Promise<ResponseSetting> => {
       return data;
     })
     .catch((error) => {
-      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);
@@ -76,7 +75,7 @@ const settingList = async (): Promise<ResponseSetting> => {
 
   return Promise.resolve({
     billUnit,
-    contact
+    contact,
   });
 };
 
@@ -105,7 +104,6 @@ const updateUnit = async (input: {
       return data.id;
     })
     .catch((error) => {
-      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);
@@ -119,11 +117,11 @@ const updateUnit = async (input: {
 };
 
 const updateContactaddres = async (input: {
-  name: string,
-  phone: string,
-  email: string,
-  address: string,
-  company: string
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  company: string;
 }) => {
   const token = getToken();
   if (!token) {
@@ -146,7 +144,6 @@ const updateContactaddres = async (input: {
       return data.id;
     })
     .catch((error) => {
-      
       if (error.response) {
         console.log("Response Data:", error.response.data);
         // console.log("Response Status:", error.response.status);

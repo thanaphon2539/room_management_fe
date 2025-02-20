@@ -93,8 +93,14 @@ export default function Sidebar({
   ];
 
   const router = useRouter();
+  let menuBefor = "";
   const setQueryMenu = (menu: string) => {
+    if (menuBefor !== menu) {
+      localStorage.removeItem("selectedYear");
+      localStorage.removeItem("selectedMonth");
+    }
     router.push(`/home?menu=${menu}`);
+    menuBefor = menu;
   };
   const setQuerySubMenu = (menu: string, subMenu: string) => {
     router.push(`/home?menu=${menu}&subMenu=${subMenu}`);

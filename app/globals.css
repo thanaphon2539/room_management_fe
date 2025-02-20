@@ -55,3 +55,10 @@
  .table-h {
   @apply max-h-[calc(100vh-300px)] overflow-auto relative
  }
+
+ .truncate-cell {
+  max-width: 150px; /* ปรับขนาดที่เหมาะสม */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
