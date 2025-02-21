@@ -3,6 +3,7 @@ import {
   invoiceBill,
   invoiceBillCopy,
   receiptBill,
+  receiptBillCopy,
   ResponseBillList,
 } from "@/pages/api/bill";
 import "../Room/RoomIndex.css";
@@ -118,54 +119,53 @@ export default function BillIndex() {
   ) => {
     try {
       /** file ใบแจ้งหนี้ ต้นฉบับ*/
-      const responseReceipt: any = await invoiceBill({
+      const responseInv: any = await invoiceBill({
         nameRoom: nameRoom,
         type: type,
         year: selectedYear,
         month: selectedMonth,
       });
-      // console.log("responseReceipt >>>", responseReceipt);
-      if (!responseReceipt.data) throw new Error("Download failed");
+      if (!responseInv.data) throw new Error("Download failed");
       // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
-      const blobReceipt = new Blob([responseReceipt.data], {
+      const blobInv = new Blob([responseInv.data], {
         type: "application/pdf",
       });
-      const urlReceipt = window.URL.createObjectURL(blobReceipt);
+      const urlInv = window.URL.createObjectURL(blobInv);
 
       const b = document.createElement("a");
-      b.href = urlReceipt;
+      b.href = urlInv;
       b.download = `invoice-${contactName}-${dayjs().format(
         "YYYY-MM-DD-HH-mm"
       )}.pdf`;
       document.body.appendChild(b);
       b.click();
 
-      window.URL.revokeObjectURL(urlReceipt);
+      window.URL.revokeObjectURL(urlInv);
       document.body.removeChild(b);
 
       /** file ใบแจ้งหนี้ สำเนา*/
-      const responseReceiptCopy: any = await invoiceBillCopy({
+      const responseInvCopy: any = await invoiceBillCopy({
         nameRoom: nameRoom,
         type: type,
         year: selectedYear,
         month: selectedMonth,
       });
-      if (!responseReceiptCopy.data) throw new Error("Download failed");
+      if (!responseInvCopy.data) throw new Error("Download failed");
       // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
-      const blobReceiptCopy = new Blob([responseReceiptCopy.data], {
+      const blobInvCopy = new Blob([responseInvCopy.data], {
         type: "application/pdf",
       });
-      const urlReceiptCopy = window.URL.createObjectURL(blobReceiptCopy);
+      const urlInvCopy = window.URL.createObjectURL(blobInvCopy);
 
       const bCopy = document.createElement("a");
-      bCopy.href = urlReceiptCopy;
+      bCopy.href = urlInvCopy;
       bCopy.download = `invoice-copy-${contactName}-${dayjs().format(
         "YYYY-MM-DD-HH-mm"
       )}.pdf`;
       document.body.appendChild(bCopy);
       bCopy.click();
 
-      window.URL.revokeObjectURL(urlReceiptCopy);
+      window.URL.revokeObjectURL(urlInvCopy);
       document.body.removeChild(bCopy);
     } catch (error) {
       console.log("Error downloading bill:", error);
@@ -179,7 +179,7 @@ export default function BillIndex() {
     contactName: string
   ) => {
     try {
-      /** file ใบเสร็จ */
+      /** file ใบเสร็จ ต้นฉบับ*/
       const responseReceipt: any = await receiptBill({
         nameRoom: nameRoom,
         type: type,
@@ -197,13 +197,38 @@ export default function BillIndex() {
       const b = document.createElement("a");
       b.href = urlReceipt;
       b.download = `receipt-${contactName}-${dayjs().format(
-        "YYYY-MM-DD-HH-mm-ss"
+        "YYYY-MM-DD-HH-mm"
       )}.pdf`;
       document.body.appendChild(b);
       b.click();
 
       window.URL.revokeObjectURL(urlReceipt);
       document.body.removeChild(b);
+
+      /** file ใบเสร็จ สำเนา*/
+      const responseReceiptCopy: any = await receiptBillCopy({
+        nameRoom: nameRoom,
+        type: type,
+        year: selectedYear,
+        month: selectedMonth,
+      });
+      if (!responseReceiptCopy.data) throw new Error("Download failed");
+      // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
+      const blobReceiptCopy = new Blob([responseReceiptCopy.data], {
+        type: "application/pdf",
+      });
+      const urlReceiptCopy = window.URL.createObjectURL(blobReceiptCopy);
+
+      const bCopy = document.createElement("a");
+      bCopy.href = urlReceiptCopy;
+      bCopy.download = `receipt-copy-${contactName}-${dayjs().format(
+        "YYYY-MM-DD-HH-mm"
+      )}.pdf`;
+      document.body.appendChild(bCopy);
+      bCopy.click();
+
+      window.URL.revokeObjectURL(urlReceiptCopy);
+      document.body.removeChild(bCopy);
     } catch (error) {
       console.log("Error downloading bill:", error);
       alert(`Download failed`);

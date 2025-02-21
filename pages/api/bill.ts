@@ -145,4 +145,37 @@ const receiptBill = async (input: {
   }
 };
 
-export { billList, invoiceBill, invoiceBillCopy, receiptBill };
+const receiptBillCopy = async (input: {
+  nameRoom: string;
+  year: number;
+  month: number;
+  type: any;
+}) => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("ไม่พบข้อมูล Token");
+  }
+
+  try {
+    const response = await axios.post(`${apiUrl}/bill/receipt/copy`, input, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      responseType: "blob", // รองรับการดาวน์โหลดไฟล์
+    });
+    // console.log("response >>> ", response);
+    return response;
+  } catch (error: any) {
+    if (error?.response) {
+      console.log("Response Data:", error?.response?.data);
+      alert(error.response.data?.meta?.message || "เกิดข้อผิดพลาด");
+    }
+    // คืนค่าเริ่มต้น เพื่อให้ไม่เป็น undefined
+    return {
+      data: false,
+    };
+  }
+};
+
+export { billList, invoiceBill, invoiceBillCopy, receiptBill, receiptBillCopy };
