@@ -1,4 +1,10 @@
-import { billList, invoiceBill, receiptBill, ResponseBillList } from "@/pages/api/bill";
+import {
+  billList,
+  invoiceBill,
+  invoiceBillCopy,
+  receiptBill,
+  ResponseBillList,
+} from "@/pages/api/bill";
 import "../Room/RoomIndex.css";
 import RoomIcon from "./../Room/RoomIcon";
 import { useEffect, useState } from "react";
@@ -111,7 +117,7 @@ export default function BillIndex() {
     contactName: string
   ) => {
     try {
-      /** file ใบแจ้งหนี้ */
+      /** file ใบแจ้งหนี้ ต้นฉบับ*/
       const responseReceipt: any = await invoiceBill({
         nameRoom: nameRoom,
         type: type,
@@ -136,6 +142,31 @@ export default function BillIndex() {
 
       window.URL.revokeObjectURL(urlReceipt);
       document.body.removeChild(b);
+
+      /** file ใบแจ้งหนี้ สำเนา*/
+      const responseReceiptCopy: any = await invoiceBillCopy({
+        nameRoom: nameRoom,
+        type: type,
+        year: selectedYear,
+        month: selectedMonth,
+      });
+      if (!responseReceiptCopy.data) throw new Error("Download failed");
+      // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
+      const blobReceiptCopy = new Blob([responseReceiptCopy.data], {
+        type: "application/pdf",
+      });
+      const urlReceiptCopy = window.URL.createObjectURL(blobReceiptCopy);
+
+      const bCopy = document.createElement("a");
+      bCopy.href = urlReceiptCopy;
+      bCopy.download = `invoice-copy-${contactName}-${dayjs().format(
+        "YYYY-MM-DD-HH-mm"
+      )}.pdf`;
+      document.body.appendChild(bCopy);
+      bCopy.click();
+
+      window.URL.revokeObjectURL(urlReceiptCopy);
+      document.body.removeChild(bCopy);
     } catch (error) {
       console.log("Error downloading bill:", error);
       alert(`Download failed`);
