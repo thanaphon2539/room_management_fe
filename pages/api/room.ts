@@ -124,6 +124,11 @@ const roomList = async (params?: {
           issueDate: el.issueDate
             ? dayjs(el.issueDate).format("YYYY-MM-DD")
             : "",
+          rent: el.rent.length > 0 ? el.rent : [{ name: "ค่าเช่า", price: 0 }],
+          serviceFee:
+            el.serviceFee.length > 0
+              ? el.serviceFee
+              : [{ name: "ค่าบริการ", price: 0 }],
         })) || [], // ป้องกัน undefined
     };
   } catch (error: any) {
