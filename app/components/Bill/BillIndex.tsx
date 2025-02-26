@@ -2,6 +2,7 @@ import {
   billList,
   invoiceBill,
   invoiceBillCopy,
+  invoiceBillDetail,
   receiptBill,
   receiptBillCopy,
   ResponseBillList,
@@ -167,6 +168,33 @@ export default function BillIndex() {
 
       window.URL.revokeObjectURL(urlInvCopy);
       document.body.removeChild(bCopy);
+
+      if (type === "legalEntity") {
+        /** file รายละเอียด ใบแจ้งหนี้ */
+        const responseInvDetail: any = await invoiceBillDetail({
+          nameRoom: nameRoom,
+          type: type,
+          year: selectedYear,
+          month: selectedMonth,
+        });
+        if (!responseInvDetail.data) throw new Error("Download failed");
+        // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
+        const blobInvDetail = new Blob([responseInvDetail.data], {
+          type: "application/pdf",
+        });
+        const urlInvDetail = window.URL.createObjectURL(blobInvDetail);
+
+        const bDetail = document.createElement("a");
+        bDetail.href = urlInvDetail;
+        bDetail.download = `invoice-detail-${contactName}-${dayjs().format(
+          "YYYY-MM-DD-HH-mm"
+        )}.pdf`;
+        document.body.appendChild(bDetail);
+        bDetail.click();
+
+        window.URL.revokeObjectURL(urlInvDetail);
+        document.body.removeChild(bDetail);
+      }
     } catch (error) {
       console.log("Error downloading bill:", error);
       alert(`Download failed`);
