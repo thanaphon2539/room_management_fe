@@ -169,14 +169,21 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
       }));
     }
     if (state === "roomTotal") {
-      setRoom((prev) => ({
-        ...prev,
-        roomTotal: prev.roomTotal > 0 ? prev.roomTotal + value : 1, // เปลี่ยนค่า selected ตาม div ที่คลิก
-        arrRoom:
-          prev.roomTotal > 0 && value > 0
-            ? [...prev.arrRoom, roomData]
-            : [...prev.arrRoom].slice(0, prev.arrRoom.length - 1),
-      }));
+      setRoom((prev) => {
+        // ตรวจสอบค่าปัจจุบันของ roomTotal ก่อนทำการเปลี่ยนแปลง
+        if (prev[state] <= index && value === -1) {
+          return prev; // หากเป็น 0 และพยายามลดค่า จะไม่ทำการอัปเดต
+        } else {
+          return {
+            ...prev,
+            roomTotal: prev.roomTotal > 0 ? prev.roomTotal + value : 1, // เปลี่ยนค่า selected ตาม div ที่คลิก
+            arrRoom:
+              prev.roomTotal > 0 && value > 0
+                ? [...prev.arrRoom, roomData]
+                : [...prev.arrRoom].slice(0, prev.arrRoom.length - 1),
+          };
+        }
+      });
     }
     if (state === "roomStatus") {
       setRoom((prev) => ({
@@ -347,6 +354,43 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
       arrRoom: updatedData,
     }));
   };
+  const handleChange = (field: any, value: any) => {
+    // แปลงค่า value ที่ได้รับเป็นตัวเลข
+    const numericValue = Number(value);
+    console.log(numericValue);
+    // ตรวจสอบว่าค่าที่กรอกเข้าไปเป็นตัวเลขที่ถูกต้อง
+    if (!isNaN(numericValue)) {
+      setRoom((prevRoom) => {
+        const prevRoomTotal = prevRoom.roomTotal;
+        // อัปเดตจำนวนห้อง (roomTotal)
+        const updatedRoomTotal = numericValue;
+        // เพิ่มห้องหรือลบห้องตามค่าที่เปลี่ยนแปลง
+        let updatedArrRoom = [...prevRoom.arrRoom];
+        // ถ้าจำนวนห้องเพิ่มขึ้น
+        if (updatedRoomTotal > prevRoomTotal) {
+          // เพิ่มห้องตามจำนวนที่เพิ่มขึ้น
+          for (let i = prevRoomTotal; i < updatedRoomTotal; i++) {
+            updatedArrRoom.push(roomData); // เพิ่มห้องใหม่
+          }
+        }
+        // ถ้าจำนวนห้องลดลง
+        else if (updatedRoomTotal < prevRoomTotal) {
+          // ลบห้องตามจำนวนที่ลดลง
+          updatedArrRoom = updatedArrRoom.slice(0, updatedRoomTotal); // ตัดห้องออกจากอาร์เรย์
+        }
+        // อัปเดต state ด้วยจำนวนห้องและ arrRoom ที่อัปเดตแล้ว
+        return {
+          ...prevRoom,
+          roomTotal: updatedRoomTotal,
+          arrRoom: updatedArrRoom,
+        };
+      });
+    } else {
+      setRoom((prevRoom) => ({
+        ...prevRoom,
+      }));
+    }
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-dark-base">
@@ -493,13 +537,18 @@ const CreateRoom = (props: { [x: string]: any; data: any; state: string }) => {
                 <div className="space-x-5 flex items-center">
                   <button
                     type="button"
-                    onClick={() => handleClick("roomTotal", -1, 0)}
+                    onClick={() => handleClick("roomTotal", -1, 1)} // ห้ามลดค่าถ้า roomTotal = 0
                   >
                     <i className="bi bi-dash-lg" />
                   </button>
-                  <p className="border border-base-border min-w-20 text-center rounded-lg py-1">
-                    {room.roomTotal}
-                  </p>
+                  <input
+                    type="number"
+                    value={room.roomTotal}
+                    onChange={(e) =>
+                      handleChange("roomTotal", Number(e.target.value))
+                    } // แก้ไขให้แปลงเป็นตัวเลข
+                    className="border border-base-border min-w-20 text-center rounded-lg py-1"
+                  />
                   <button
                     type="button"
                     onClick={() => handleClick("roomTotal", 1, 0)}
