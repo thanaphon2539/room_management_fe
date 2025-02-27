@@ -119,7 +119,7 @@ export default function BillIndex() {
     contactName: string
   ) => {
     try {
-      /** file ใบแจ้งหนี้ ต้นฉบับ*/
+      /** file ใบแจ้งหนี้ */
       const responseInv: any = await invoiceBill({
         nameRoom: nameRoom,
         type: type,
@@ -144,57 +144,57 @@ export default function BillIndex() {
       window.URL.revokeObjectURL(urlInv);
       document.body.removeChild(b);
 
-      /** file ใบแจ้งหนี้ สำเนา*/
-      const responseInvCopy: any = await invoiceBillCopy({
-        nameRoom: nameRoom,
-        type: type,
-        year: selectedYear,
-        month: selectedMonth,
-      });
-      if (!responseInvCopy.data) throw new Error("Download failed");
-      // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
-      const blobInvCopy = new Blob([responseInvCopy.data], {
-        type: "application/pdf",
-      });
-      const urlInvCopy = window.URL.createObjectURL(blobInvCopy);
+      // /** file ใบแจ้งหนี้ สำเนา*/
+      // const responseInvCopy: any = await invoiceBillCopy({
+      //   nameRoom: nameRoom,
+      //   type: type,
+      //   year: selectedYear,
+      //   month: selectedMonth,
+      // });
+      // if (!responseInvCopy.data) throw new Error("Download failed");
+      // // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
+      // const blobInvCopy = new Blob([responseInvCopy.data], {
+      //   type: "application/pdf",
+      // });
+      // const urlInvCopy = window.URL.createObjectURL(blobInvCopy);
 
-      const bCopy = document.createElement("a");
-      bCopy.href = urlInvCopy;
-      bCopy.download = `invoice-copy-${contactName}-${dayjs().format(
-        "YYYY-MM-DD-HH-mm"
-      )}.pdf`;
-      document.body.appendChild(bCopy);
-      bCopy.click();
+      // const bCopy = document.createElement("a");
+      // bCopy.href = urlInvCopy;
+      // bCopy.download = `invoice-copy-${contactName}-${dayjs().format(
+      //   "YYYY-MM-DD-HH-mm"
+      // )}.pdf`;
+      // document.body.appendChild(bCopy);
+      // bCopy.click();
 
-      window.URL.revokeObjectURL(urlInvCopy);
-      document.body.removeChild(bCopy);
+      // window.URL.revokeObjectURL(urlInvCopy);
+      // document.body.removeChild(bCopy);
 
-      if (type === "legalEntity") {
-        /** file รายละเอียด ใบแจ้งหนี้ */
-        const responseInvDetail: any = await invoiceBillDetail({
-          nameRoom: nameRoom,
-          type: type,
-          year: selectedYear,
-          month: selectedMonth,
-        });
-        if (!responseInvDetail.data) throw new Error("Download failed");
-        // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
-        const blobInvDetail = new Blob([responseInvDetail.data], {
-          type: "application/pdf",
-        });
-        const urlInvDetail = window.URL.createObjectURL(blobInvDetail);
+      // if (type === "legalEntity") {
+      //   /** file รายละเอียด ใบแจ้งหนี้ */
+      //   const responseInvDetail: any = await invoiceBillDetail({
+      //     nameRoom: nameRoom,
+      //     type: type,
+      //     year: selectedYear,
+      //     month: selectedMonth,
+      //   });
+      //   if (!responseInvDetail.data) throw new Error("Download failed");
+      //   // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
+      //   const blobInvDetail = new Blob([responseInvDetail.data], {
+      //     type: "application/pdf",
+      //   });
+      //   const urlInvDetail = window.URL.createObjectURL(blobInvDetail);
 
-        const bDetail = document.createElement("a");
-        bDetail.href = urlInvDetail;
-        bDetail.download = `invoice-detail-${contactName}-${dayjs().format(
-          "YYYY-MM-DD-HH-mm"
-        )}.pdf`;
-        document.body.appendChild(bDetail);
-        bDetail.click();
+      //   const bDetail = document.createElement("a");
+      //   bDetail.href = urlInvDetail;
+      //   bDetail.download = `invoice-detail-${contactName}-${dayjs().format(
+      //     "YYYY-MM-DD-HH-mm"
+      //   )}.pdf`;
+      //   document.body.appendChild(bDetail);
+      //   bDetail.click();
 
-        window.URL.revokeObjectURL(urlInvDetail);
-        document.body.removeChild(bDetail);
-      }
+      //   window.URL.revokeObjectURL(urlInvDetail);
+      //   document.body.removeChild(bDetail);
+      // }
     } catch (error) {
       console.log("Error downloading bill:", error);
       alert(`Download failed`);
