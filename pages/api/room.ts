@@ -45,6 +45,13 @@ export interface ServiceFee {
   total: number;
 }
 
+export interface Other {
+  id: number;
+  name: string;
+  price: number;
+  total: number;
+}
+
 interface IRoom {
   id: number;
   nameRoom: string;
@@ -56,8 +63,10 @@ interface IRoom {
   roomCompany: Company;
   rent: Rent[];
   serviceFee: ServiceFee[];
+  serviceOther: Other[];
   rentTotal: number;
   serviceFeeTotal: number;
+  otherTotal: number;
 }
 
 export interface ResponseRoom {
@@ -73,6 +82,7 @@ export interface ResponseRoom {
   serviceFee: ServiceFee[];
   rentTotal: number;
   serviceFeeTotal: number;
+  otherTotal: number;
 }
 
 export interface ResponseRoomWaterUnitAndElectricityUnit {
@@ -124,11 +134,16 @@ const roomList = async (params?: {
           issueDate: el.issueDate
             ? dayjs(el.issueDate).format("YYYY-MM-DD")
             : "",
-          rent: el.rent.length > 0 ? el.rent : [{ name: "ค่าเช่า", price: 0 }],
+          rent:
+            el?.rent?.length > 0 ? el.rent : [{ name: "ค่าเช่า", price: 0 }],
           serviceFee:
-            el.serviceFee.length > 0
+            el?.serviceFee?.length > 0
               ? el.serviceFee
               : [{ name: "ค่าบริการ", price: 0 }],
+          other:
+            el?.serviceOther?.length > 0
+              ? el.serviceOther
+              : [{ name: "ค่าอื่นๆ", price: 0 }],
         })) || [], // ป้องกัน undefined
     };
   } catch (error: any) {
