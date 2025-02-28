@@ -12,6 +12,7 @@ import RoomIcon from "./../Room/RoomIcon";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import ModalDateBill from "./ModalDateBill";
 
 export default function BillIndex() {
   const header = ["ห้อง", "สถานะ", "ประเภทลูกค้า", "ชื่อบริษัท", "จัดการ"];
@@ -46,6 +47,14 @@ export default function BillIndex() {
     "พฤศจิกายน",
     "ธันวาคม",
   ];
+
+  const [showModal, setShowModal] = useState(false);
+  const [dataGetBill, setdataGetBill] = useState({
+    nameRoom: "",
+    type: "",
+    contactName: "",
+  });
+  const [date, setDate] = useState<string>("");
 
   // โหลดค่าที่เก็บไว้ใน localStorage
   const storedYear = Number(localStorage.getItem("selectedYear")) || years[0];
@@ -201,11 +210,14 @@ export default function BillIndex() {
     }
   };
 
+  const onSubmitDate = (date: string) => {};
+
   const handleDownloadReceiptBill = async (
     nameRoom: string,
     type: string,
     contactName: string
   ) => {
+    console.log("date form modal", date);
     try {
       /** file ใบเสร็จ ต้นฉบับ*/
       const responseReceipt: any = await receiptBill({
@@ -213,6 +225,7 @@ export default function BillIndex() {
         type: type,
         year: selectedYear,
         month: selectedMonth,
+        // date: date
       });
       // console.log("responseReceipt >>>", responseReceipt);
       if (!responseReceipt.data) throw new Error("Download failed");
@@ -381,15 +394,16 @@ export default function BillIndex() {
                         </button>
                         <button
                           className="btn btn-success"
-                          onClick={() =>
-                            handleDownloadReceiptBill(
-                              element.nameRoom,
-                              element.type,
-                              element.companyName
+                          onClick={() => {
+                            setShowModal(true);
+                            setdataGetBill({
+                              nameRoom: element.nameRoom,
+                              type: element.type,
+                              contactName: element.companyName
                                 ? element.companyName
-                                : element.contactName
-                            )
-                          }
+                                : element.contactName,
+                            });
+                          }}
                         >
                           <i className="bi bi-receipt-cutoff" />
                           <p>ใบเสร็จ</p>
@@ -404,6 +418,21 @@ export default function BillIndex() {
           </table>
         </div>
       </div>
+
+      {showModal && (
+        <ModalDateBill
+          onCancel={setShowModal}
+          onSubmit={(e: any) => {
+            setDate(e);
+            setShowModal(false);
+            handleDownloadReceiptBill(
+              dataGetBill.nameRoom,
+              dataGetBill.type,
+              dataGetBill.contactName
+            );
+          }}
+        />
+      )}
     </div>
   );
 }
