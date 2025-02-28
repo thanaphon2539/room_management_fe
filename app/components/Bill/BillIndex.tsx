@@ -233,30 +233,30 @@ export default function BillIndex() {
       window.URL.revokeObjectURL(urlReceipt);
       document.body.removeChild(b);
 
-      /** file ใบเสร็จ สำเนา*/
-      const responseReceiptCopy: any = await receiptBillCopy({
-        nameRoom: nameRoom,
-        type: type,
-        year: selectedYear,
-        month: selectedMonth,
-      });
-      if (!responseReceiptCopy.data) throw new Error("Download failed");
-      // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
-      const blobReceiptCopy = new Blob([responseReceiptCopy.data], {
-        type: "application/pdf",
-      });
-      const urlReceiptCopy = window.URL.createObjectURL(blobReceiptCopy);
+      // /** file ใบเสร็จ สำเนา*/
+      // const responseReceiptCopy: any = await receiptBillCopy({
+      //   nameRoom: nameRoom,
+      //   type: type,
+      //   year: selectedYear,
+      //   month: selectedMonth,
+      // });
+      // if (!responseReceiptCopy.data) throw new Error("Download failed");
+      // // สร้าง Blob URL เพื่อให้ผู้ใช้สามารถดาวน์โหลดไฟล์
+      // const blobReceiptCopy = new Blob([responseReceiptCopy.data], {
+      //   type: "application/pdf",
+      // });
+      // const urlReceiptCopy = window.URL.createObjectURL(blobReceiptCopy);
 
-      const bCopy = document.createElement("a");
-      bCopy.href = urlReceiptCopy;
-      bCopy.download = `receipt-copy-${contactName}-${dayjs().format(
-        "YYYY-MM-DD-HH-mm"
-      )}.pdf`;
-      document.body.appendChild(bCopy);
-      bCopy.click();
+      // const bCopy = document.createElement("a");
+      // bCopy.href = urlReceiptCopy;
+      // bCopy.download = `receipt-copy-${contactName}-${dayjs().format(
+      //   "YYYY-MM-DD-HH-mm"
+      // )}.pdf`;
+      // document.body.appendChild(bCopy);
+      // bCopy.click();
 
-      window.URL.revokeObjectURL(urlReceiptCopy);
-      document.body.removeChild(bCopy);
+      // window.URL.revokeObjectURL(urlReceiptCopy);
+      // document.body.removeChild(bCopy);
     } catch (error) {
       console.log("Error downloading bill:", error);
       alert(`Download failed`);
@@ -370,7 +370,9 @@ export default function BillIndex() {
                             handleDownloadInvoiceBill(
                               element.nameRoom,
                               element.type,
-                              element.contactName
+                              element.companyName
+                                ? element.companyName
+                                : element.contactName
                             )
                           }
                         >
@@ -383,7 +385,9 @@ export default function BillIndex() {
                             handleDownloadReceiptBill(
                               element.nameRoom,
                               element.type,
-                              element.contactName
+                              element.companyName
+                                ? element.companyName
+                                : element.contactName
                             )
                           }
                         >
