@@ -100,7 +100,10 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
                     )}
                     <input
                       type="text"
-                      className="input-text text-center text-primary-base"
+                      className={`${
+                        item.unitBefor < item.unitAfter ||
+                        "!border-error-base focus:outline-none focus:ring-error-base"
+                      } input-text text-center text-primary-base`}
                       value={item.unitAfter}
                       name="unitAfter"
                       onChange={(e) => handleInputChange(i, e)}
