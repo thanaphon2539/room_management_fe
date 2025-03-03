@@ -1,3 +1,11 @@
+import {
+  generateBusyRoomExcel,
+  generateCheckInExcel,
+  generateCheckOutExcel,
+  generateElectricityExcel,
+  generateRentExcel,
+  generateWaterExcel,
+} from "@/pages/api/report";
 import "../Room/RoomIndex.css";
 import { useState } from "react";
 
@@ -52,7 +60,80 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
   ];
 
   const [selectedYear, setSelectedYear] = useState(years[0]);
-  const [selectedMonth, setSelectedMonth] = useState(months[0]);
+  const [selectedMonth, setSelectedMonth] = useState(1);
+
+  const handleDownloadReport = async () => {
+    try {
+      console.log("handleDownloadReport >>>", selectedSubMenu);
+      console.log("selectedYear >>>", selectedYear);
+      console.log("selectedMonth >>>", selectedMonth);
+      let response: any;
+      if (selectedSubMenu) {
+        if (selectedSubMenu === subMenuReport[0].name) {
+          response = await generateRentExcel({
+            type: selectedSubMenu,
+            year: selectedYear,
+            month: selectedMonth,
+          });
+        } else if (selectedSubMenu === subMenuReport[1].name) {
+          response = await generateCheckInExcel({
+            type: selectedSubMenu,
+            year: selectedYear,
+            month: selectedMonth,
+          });
+        } else if (selectedSubMenu === subMenuReport[2].name) {
+          response = await generateCheckOutExcel({
+            type: selectedSubMenu,
+            year: selectedYear,
+            month: selectedMonth,
+          });
+        } else if (selectedSubMenu === subMenuReport[3].name) {
+          response = await generateBusyRoomExcel({
+            type: selectedSubMenu,
+            year: selectedYear,
+            month: selectedMonth,
+          });
+        } else if (selectedSubMenu === subMenuReport[4].name) {
+          response = await generateElectricityExcel({
+            type: selectedSubMenu,
+            year: selectedYear,
+            month: selectedMonth,
+          });
+        } else if (selectedSubMenu === subMenuReport[5].name) {
+          response = await generateWaterExcel({
+            type: selectedSubMenu,
+            year: selectedYear,
+            month: selectedMonth,
+          });
+        }
+      }
+      if (!response.data) throw new Error("Download failed");
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      // ดึงค่า filename จาก headers
+      const contentDisposition = response.headers["content-disposition"];
+      let filename = "download.xlsx"; // Default filename
+
+      if (contentDisposition) {
+        const match = contentDisposition.match(/filename="(.+?)"/);
+        if (match) {
+          filename = match[1]; // ดึงชื่อไฟล์จาก API
+        }
+      }
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename; // กำหนดชื่อไฟล์
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.log("Error downloading bill:", error);
+      alert(`Download failed`);
+    }
+  };
   return (
     <div className="container">
       <div className="card space-y-4">
@@ -65,7 +146,7 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
           <div className="flex space-x-2">
             <select
               value={selectedYear}
-              onChange={() => setSelectedYear}
+              onChange={(e) => setSelectedYear(Number(e.target.value))}
               className="input-select"
             >
               {years.map((year) => (
@@ -76,20 +157,19 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
             </select>
             <select
               value={selectedMonth}
-              onChange={() => setSelectedMonth}
+              onChange={(e) => setSelectedMonth(Number(e.target.value))}
               className="input-select"
             >
               {months.map((month, index) => (
-                <option key={index} value={month}>
+                <option key={index} value={index + 1}>
                   {month}
                 </option>
               ))}
             </select>
-            <button className="btn btn-dark text-nowrap h-fit">
-              <i className="bi bi-search" />
-              <p>ค้นหา</p>
-            </button>
-            <button className="btn btn-primary text-nowrap h-fit">
+            <button
+              className="btn btn-primary text-nowrap h-fit"
+              onClick={() => handleDownloadReport()}
+            >
               <i className="bi bi-file-earmark-arrow-down" />
               <p>Download</p>
             </button>

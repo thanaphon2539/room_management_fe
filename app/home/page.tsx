@@ -6,7 +6,7 @@ import Content from "../components/Content";
 import { useRouter } from "next/navigation";
 
 const HomePage = () => {
-  const [selectedMenu, setSelectedMenu] = useState("home"); 
+  const [selectedMenu, setSelectedMenu] = useState(""); 
   const [selectedSubMenu, setSelectedSubMenu] = useState("report-rent"); 
   const [menuOpen, setMenuOpen] = useState(false); 
   const [isClient, setIsClient] = useState(false); // State to check if it's the client side
