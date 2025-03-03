@@ -109,7 +109,7 @@ const generateBlankRoomExcel = async (input: {
   }
 
   try {
-    const response = await axios.post(`${apiUrl}/report/busyroom`, input, {
+    const response = await axios.post(`${apiUrl}/report/blank`, input, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
