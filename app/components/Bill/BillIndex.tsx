@@ -217,7 +217,7 @@ export default function BillIndex() {
     type: string,
     contactName: string
   ) => {
-    console.log("date form modal", date);
+    // console.log("date form modal", date);
     try {
       /** file ใบเสร็จ ต้นฉบับ*/
       const responseReceipt: any = await receiptBill({
@@ -225,7 +225,7 @@ export default function BillIndex() {
         type: type,
         year: selectedYear,
         month: selectedMonth,
-        // date: date
+        date: date
       });
       // console.log("responseReceipt >>>", responseReceipt);
       if (!responseReceipt.data) throw new Error("Download failed");

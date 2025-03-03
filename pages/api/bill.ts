@@ -150,6 +150,7 @@ const receiptBill = async (input: {
   year: number;
   month: number;
   type: any;
+  date: string
 }) => {
   const token = getToken();
   if (!token) {
