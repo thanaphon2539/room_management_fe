@@ -225,7 +225,7 @@ export default function BillIndex() {
         type: type,
         year: selectedYear,
         month: selectedMonth,
-        date: date
+        date: date,
       });
       // console.log("responseReceipt >>>", responseReceipt);
       if (!responseReceipt.data) throw new Error("Download failed");
@@ -421,9 +421,9 @@ export default function BillIndex() {
 
       {showModal && (
         <ModalDateBill
+          onChangeDate={setDate}
           onCancel={setShowModal}
-          onSubmit={(e: any) => {
-            setDate(e);
+          onSubmit={() => {
             setShowModal(false);
             handleDownloadReceiptBill(
               dataGetBill.nameRoom,

@@ -6,7 +6,7 @@ const ModalDateBill = (props: { [x: string]: any }) => {
   const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
 
   const handleSubmit = async () => {
-    props.onSubmit(date);
+    props.onSubmit();
   };
 
   const cancel = () => {
@@ -15,6 +15,7 @@ const ModalDateBill = (props: { [x: string]: any }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
+    props.onChangeDate(e.target.value);
   };
 
   return (
