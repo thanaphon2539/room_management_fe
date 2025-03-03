@@ -98,7 +98,7 @@ const generateCheckOutExcel = async (input: {
   }
 };
 
-const generateBusyRoomExcel = async (input: {
+const generateBlankRoomExcel = async (input: {
   type: string;
   year: number;
   month: number;
@@ -197,7 +197,7 @@ export {
   generateRentExcel,
   generateCheckInExcel,
   generateCheckOutExcel,
-  generateBusyRoomExcel,
+  generateBlankRoomExcel,
   generateElectricityExcel,
   generateWaterExcel,
 };

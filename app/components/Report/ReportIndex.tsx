@@ -1,5 +1,5 @@
 import {
-  generateBusyRoomExcel,
+  generateBlankRoomExcel,
   generateCheckInExcel,
   generateCheckOutExcel,
   generateElectricityExcel,
@@ -88,7 +88,7 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
             month: selectedMonth,
           });
         } else if (selectedSubMenu === subMenuReport[3].name) {
-          response = await generateBusyRoomExcel({
+          response = await generateBlankRoomExcel({
             type: selectedSubMenu,
             year: selectedYear,
             month: selectedMonth,
