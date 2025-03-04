@@ -82,7 +82,7 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
                   <div>
                     {i === 0 && (
                       <label className="block mb-2 text-center">
-                        ค่าไฟเดือนที่แล้ว
+                        ค่าน้ำเดือนที่แล้ว
                       </label>
                     )}
                     <input
@@ -95,7 +95,7 @@ const EditBill = (props: { [x: string]: any; data: any; state: string }) => {
                   <div>
                     {i === 0 && (
                       <label className="block mb-2 text-center">
-                        ค่าไฟเดือนปัจจุบัน
+                        ค่าน้ำเดือนปัจจุบัน
                       </label>
                     )}
                     <input
