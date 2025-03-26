@@ -7,6 +7,7 @@ import {
   findWaterUnit,
   ResponseRoomWaterUnitAndElectricityUnit,
 } from "@/pages/api/room";
+import dayjs from "dayjs";
 
 export default function RoomIndex() {
   const header = [
@@ -40,9 +41,10 @@ export default function RoomIndex() {
     "ธันวาคม",
   ];
 
+  const monthNow = Number(dayjs().format("MM"));
   // โหลดค่าที่เก็บไว้ใน localStorage
   const storedYear = Number(localStorage.getItem("selectedYear")) || years[0];
-  const storedMonth = Number(localStorage.getItem("selectedMonth")) || 1;
+  const storedMonth = Number(localStorage.getItem("selectedMonth")) || monthNow;
 
   const [selectedYear, setSelectedYear] = useState(storedYear);
   const [selectedMonth, setSelectedMonth] = useState(storedMonth);

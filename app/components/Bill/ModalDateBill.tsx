@@ -13,7 +13,9 @@ const ModalDateBill = (props: { [x: string]: any }) => {
     props.onCancel(false);
   };
 
+  console.log('date >>>', date);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('e.target.value >>>', e.target.value);
     setDate(e.target.value);
     props.onChangeDate(e.target.value);
   };

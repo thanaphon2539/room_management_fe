@@ -54,11 +54,12 @@ export default function BillIndex() {
     type: "",
     contactName: "",
   });
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
 
+  const monthNow = Number(dayjs().format("MM"));
   // โหลดค่าที่เก็บไว้ใน localStorage
   const storedYear = Number(localStorage.getItem("selectedYear")) || years[0];
-  const storedMonth = Number(localStorage.getItem("selectedMonth")) || 1;
+  const storedMonth = Number(localStorage.getItem("selectedMonth")) || monthNow;
 
   const [selectedYear, setSelectedYear] = useState(storedYear);
   const [selectedMonth, setSelectedMonth] = useState(storedMonth);
@@ -171,7 +172,7 @@ export default function BillIndex() {
     type: string,
     contactName: string
   ) => {
-    // console.log("date form modal", date);
+    console.log("date form modal", date);
     try {
       /** file ใบเสร็จ ต้นฉบับ*/
       const responseReceipt: any = await receiptBill({
