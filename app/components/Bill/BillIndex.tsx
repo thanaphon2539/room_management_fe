@@ -212,10 +212,6 @@ export default function BillIndex() {
     }
   };
 
-  useEffect(() => {
-    if (!showModal) setDate(dayjs().format("YYYY-MM-DD"));
-  }, [showModal]);
-
   return (
     <div className="container">
       <div className="card space-y-4">
@@ -363,6 +359,7 @@ export default function BillIndex() {
         <ModalDateBill
           onChangeDate={setDate}
           onCancel={setShowModal}
+          state={showModal}
           onSubmit={() => {
             setShowModal(false);
             handleDownloadReceiptBill(

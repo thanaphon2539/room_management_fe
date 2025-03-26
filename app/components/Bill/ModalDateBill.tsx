@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { updateElectricityUnit } from "@/pages/api/room";
 import dayjs from "dayjs";
 
-const ModalDateBill = (props: { [x: string]: any }) => {
+const ModalDateBill = (props: { [x: string]: any; state: any }) => {
   const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
+  const state = props.state;
 
   const handleSubmit = async () => {
     props.onSubmit();
@@ -13,12 +14,19 @@ const ModalDateBill = (props: { [x: string]: any }) => {
     props.onCancel(false);
   };
 
-  console.log('date >>>', date);
+  console.log("date >>>", date);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('e.target.value >>>', e.target.value);
+    console.log("e.target.value >>>", e.target.value);
     setDate(e.target.value);
     props.onChangeDate(e.target.value);
   };
+
+  useEffect(() => {
+    if (state) {
+      setDate(dayjs().format("YYYY-MM-DD"));
+      props.onChangeDate(date);
+    }
+  }, [state]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-dark-base">
