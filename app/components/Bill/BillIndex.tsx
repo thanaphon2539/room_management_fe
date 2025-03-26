@@ -54,7 +54,7 @@ export default function BillIndex() {
     type: "",
     contactName: "",
   });
-  const [date, setDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+  const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
 
   const monthNow = Number(dayjs().format("MM"));
   // โหลดค่าที่เก็บไว้ใน localStorage
@@ -211,6 +211,10 @@ export default function BillIndex() {
       alert(`Download failed`);
     }
   };
+
+  useEffect(() => {
+    if (!showModal) setDate(dayjs().format("YYYY-MM-DD"));
+  }, [showModal]);
 
   return (
     <div className="container">
