@@ -8,6 +8,7 @@ import {
 } from "@/pages/api/report";
 import "../Room/RoomIndex.css";
 import { useState } from "react";
+import dayjs from "dayjs";
 
 export default function ReportIndex(props: { selectedSubMenu: string }) {
   const selectedSubMenu = props.selectedSubMenu;
@@ -59,8 +60,9 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
     "ธันวาคม",
   ];
 
+  const monthNow = Number(dayjs().format("MM"));
   const [selectedYear, setSelectedYear] = useState(years[0]);
-  const [selectedMonth, setSelectedMonth] = useState(1);
+  const [selectedMonth, setSelectedMonth] = useState(monthNow);
 
   const handleDownloadReport = async () => {
     try {
@@ -160,11 +162,16 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
               onChange={(e) => setSelectedMonth(Number(e.target.value))}
               className="input-select"
             >
-              {months.map((month, index) => (
-                <option key={index} value={index + 1}>
-                  {month}
-                </option>
-              ))}
+              {months
+                .slice(
+                  0,
+                  selectedYear === currentYear ? monthNow : months.length
+                )
+                .map((month, index) => (
+                  <option key={index} value={index + 1}>
+                    {month}
+                  </option>
+                ))}
             </select>
             <button
               className="btn btn-primary text-nowrap h-fit"

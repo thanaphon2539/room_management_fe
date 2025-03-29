@@ -113,11 +113,16 @@ export default function RoomIndex() {
               className="input-select"
               onKeyDown={handleKeyDown} // Add keydown event here
             >
-              {months.map((month, index) => (
-                <option key={index} value={index + 1}>
-                  {month}
-                </option>
-              ))}
+              {months
+                .slice(
+                  0,
+                  selectedYear === currentYear ? monthNow : months.length
+                )
+                .map((month, index) => (
+                  <option key={index} value={index + 1}>
+                    {month}
+                  </option>
+                ))}
             </select>
             <button
               className="btn btn-dark text-nowrap h-fit"
