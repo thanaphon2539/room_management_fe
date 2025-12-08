@@ -56,7 +56,7 @@ export default function BillIndex() {
   });
   const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
 
-  const monthNow = Number(dayjs().add(1, "month").format("MM"));
+  const monthNow = Number(dayjs().format("MM"));
   // โหลดค่าที่เก็บไว้ใน localStorage
   const storedYear = Number(localStorage.getItem("selectedYear")) || years[0];
   const storedMonth = Number(localStorage.getItem("selectedMonth")) || monthNow;
