@@ -6,9 +6,9 @@ import { ResponseSetting, settingList } from "@/pages/api/setting";
 export default function RoomIndex() {
   const [showEdit, setShowEdit] = useState(false);
   const [showEditUnit, setShowEditUnit] = useState(false);
-  const [dataEdit, setDataEdit] = useState<ResponseSetting>();
-  const [dataEditUnit, setDataEditUnit] = useState<ResponseSetting>();
-  const [data, setData] = useState<ResponseSetting>();
+  const [dataEdit, setDataEdit] = useState<ResponseSetting | any>();
+  const [dataEditUnit, setDataEditUnit] = useState<ResponseSetting | any>();
+  const [data, setData] = useState<ResponseSetting | any>();
 
   const onEdit = (value: boolean) => {
     setShowEdit(value); // Set to true or false based on the value passed
