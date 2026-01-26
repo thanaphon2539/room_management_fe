@@ -49,7 +49,7 @@ export default function BillIndex() {
   const [selectedYear, setSelectedYear] = useState(storedYear);
   const [selectedMonth, setSelectedMonth] = useState(storedMonth);
   const [items, setItem] = useState<ResponseRoomWaterUnitAndElectricityUnit[]>(
-    []
+    [],
   );
   const [selectedMonthCheck, setselectedMonthCheck] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -58,6 +58,12 @@ export default function BillIndex() {
   const handleSearch = async () => {
     setLoading(true);
     console.log("ค้นหาข้อมูลของเดือน:", selectedMonth, "ปี:", selectedYear);
+    const maxMonth = selectedYear === currentYear ? monthNow : 12;
+    // ถ้าเดือนเกิน (เช่นเลือก ธ.ค. แล้วเปลี่ยนมาเป็นปีนี้ที่ยังเป็น ม.ค.)
+    if (selectedMonth > maxMonth) {
+      setSelectedMonth(maxMonth);
+      return; // ✅ หยุดไว้ก่อน ไม่ต้อง search รอบนี้ เดี๋ยวเดือนใหม่ set แล้วค่อยยิง
+    }
     const data = await findElectricityUnit({
       month: selectedMonth,
       year: selectedYear,
@@ -114,7 +120,7 @@ export default function BillIndex() {
               {months
                 .slice(
                   0,
-                  selectedYear === currentYear ? monthNow : months.length
+                  selectedYear === currentYear ? monthNow : months.length,
                 )
                 .map((month, index) => (
                   <option key={index} value={index + 1}>
