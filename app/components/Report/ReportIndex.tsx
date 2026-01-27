@@ -66,74 +66,88 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
 
   const handleDownloadReport = async () => {
     try {
+      if (!selectedSubMenu) {
+        alert("กรุณาเลือกรายงานก่อน");
+        return;
+      }
+
+      // ✅ คำนวณค่าที่จะใช้จริงทันที (กัน state ยังไม่อัปเดต)
+      const yearToUse = selectedYear;
+      const maxMonth = yearToUse === currentYear ? monthNow : 12;
+      const monthToUse = Math.min(selectedMonth, maxMonth);
+      const month2 = String(monthToUse).padStart(2, "0");
+
+      // ✅ sync state เฉย ๆ (ไม่เอามาเป็นตัวหลักในการยิง)
+      if (monthToUse !== selectedMonth) setSelectedMonth(monthToUse);
       console.log("handleDownloadReport >>>", selectedSubMenu);
       console.log("selectedYear >>>", selectedYear);
-      console.log("selectedMonth >>>", selectedMonth);
+      console.log("month2 >>>", Number(month2));
       let response: any;
-      if (selectedSubMenu) {
-        if (selectedSubMenu === subMenuReport[0].name) {
-          response = await generateRentExcel({
-            type: selectedSubMenu,
-            year: selectedYear,
-            month: selectedMonth,
-          });
-        } else if (selectedSubMenu === subMenuReport[1].name) {
-          response = await generateCheckInExcel({
-            type: selectedSubMenu,
-            year: selectedYear,
-            month: selectedMonth,
-          });
-        } else if (selectedSubMenu === subMenuReport[2].name) {
-          response = await generateCheckOutExcel({
-            type: selectedSubMenu,
-            year: selectedYear,
-            month: selectedMonth,
-          });
-        } else if (selectedSubMenu === subMenuReport[3].name) {
-          response = await generateBlankRoomExcel({
-            type: selectedSubMenu,
-            year: selectedYear,
-            month: selectedMonth,
-          });
-        } else if (selectedSubMenu === subMenuReport[4].name) {
-          response = await generateElectricityExcel({
-            type: selectedSubMenu,
-            year: selectedYear,
-            month: selectedMonth,
-          });
-        } else if (selectedSubMenu === subMenuReport[5].name) {
-          response = await generateWaterExcel({
-            type: selectedSubMenu,
-            year: selectedYear,
-            month: selectedMonth,
-          });
-        }
+
+      if (selectedSubMenu === subMenuReport[0].name) {
+        response = await generateRentExcel({
+          type: selectedSubMenu,
+          year: yearToUse,
+          month: Number(month2),
+        });
+      } else if (selectedSubMenu === subMenuReport[1].name) {
+        response = await generateCheckInExcel({
+          type: selectedSubMenu,
+          year: yearToUse,
+          month: Number(month2),
+        });
+      } else if (selectedSubMenu === subMenuReport[2].name) {
+        response = await generateCheckOutExcel({
+          type: selectedSubMenu,
+          year: yearToUse,
+          month: Number(month2),
+        });
+      } else if (selectedSubMenu === subMenuReport[3].name) {
+        response = await generateBlankRoomExcel({
+          type: selectedSubMenu,
+          year: yearToUse,
+          month: Number(month2),
+        });
+      } else if (selectedSubMenu === subMenuReport[4].name) {
+        response = await generateElectricityExcel({
+          type: selectedSubMenu,
+          year: yearToUse,
+          month: Number(month2),
+        });
+      } else if (selectedSubMenu === subMenuReport[5].name) {
+        response = await generateWaterExcel({
+          type: selectedSubMenu,
+          year: yearToUse,
+          month: Number(month2),
+        });
+      } else {
+        throw new Error(`Unknown report type: ${selectedSubMenu}`);
       }
-      if (!response.data) throw new Error("Download failed");
+
+      if (!response?.data) throw new Error("Download failed");
+
       const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      // ดึงค่า filename จาก headers
-      const contentDisposition = response.headers["content-disposition"];
-      let filename = "download.xlsx"; // Default filename
 
+      const contentDisposition = response.headers?.["content-disposition"];
+      let filename = "download.xlsx";
       if (contentDisposition) {
         const match = contentDisposition.match(/filename="(.+?)"/);
-        if (match) {
-          filename = match[1]; // ดึงชื่อไฟล์จาก API
-        }
+        if (match?.[1]) filename = match[1];
       }
+
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = filename; // กำหนดชื่อไฟล์
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a);
+      a.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.log("Error downloading bill:", error);
-      alert(`Download failed`);
+      console.log("Error downloading report:", error);
+      alert("Download failed");
     }
   };
   return (
@@ -165,7 +179,7 @@ export default function ReportIndex(props: { selectedSubMenu: string }) {
               {months
                 .slice(
                   0,
-                  selectedYear === currentYear ? monthNow : months.length
+                  selectedYear === currentYear ? monthNow : months.length,
                 )
                 .map((month, index) => (
                   <option key={index} value={index + 1}>

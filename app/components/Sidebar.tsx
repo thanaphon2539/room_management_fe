@@ -123,7 +123,8 @@ export default function Sidebar({
               <button
                 key={element.name}
                 onClick={() => (
-                  setSelectedMenu(element.name), setQueryMenu(element.name)
+                  setSelectedMenu(element.name),
+                  setQueryMenu(element.name)
                 )}
                 className={`menu-nav ${
                   selectedMenu === element.name ? "active" : ""

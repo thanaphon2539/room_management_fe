@@ -9,6 +9,7 @@ export interface ResponseBillList {
   type: string;
   contactName: string;
   companyName: string;
+  total: string;
 }
 const billList = async (params: {
   year: string;
@@ -150,7 +151,7 @@ const receiptBill = async (input: {
   year: number;
   month: number;
   type: any;
-  date: string
+  date: string;
 }) => {
   const token = getToken();
   if (!token) {

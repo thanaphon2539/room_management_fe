@@ -69,8 +69,20 @@ export default function MainIndex() {
                 <tbody key={uuidv4()}>
                   <tr>
                     <td>{element.nameRoom}</td>
-                    <td>
-                      <RoomIcon item={element.status} />
+                    <td className="px-3 py-2">
+                      <div
+                        className={`inline-flex items-center gap-2 rounded-md px-2 py-1 leading-relaxed font-medium
+                          ${
+                            element.statusBill
+                              ? 'bg-green-50 text-green-700'
+                              : 'bg-red-50 text-red-600'
+                          }`}
+                      >
+                        <RoomIcon item={element.status} />
+                        <span>
+                          {element.statusBill ? 'ชำระเงินแล้ว' : 'ยังไม่ได้ชำระเงิน'}
+                        </span>
+                      </div>
                     </td>
                     <td>
                       <RoomIcon item={element.type} />

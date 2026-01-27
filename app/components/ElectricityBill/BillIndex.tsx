@@ -57,22 +57,22 @@ export default function BillIndex() {
   // ฟังก์ชันค้นหา
   const handleSearch = async () => {
     setLoading(true);
-    console.log("ค้นหาข้อมูลของเดือน:", selectedMonth, "ปี:", selectedYear);
     const maxMonth = selectedYear === currentYear ? monthNow : 12;
-    // ถ้าเดือนเกิน (เช่นเลือก ธ.ค. แล้วเปลี่ยนมาเป็นปีนี้ที่ยังเป็น ม.ค.)
-    if (selectedMonth > maxMonth) {
-      setSelectedMonth(maxMonth);
-      return; // ✅ หยุดไว้ก่อน ไม่ต้อง search รอบนี้ เดี๋ยวเดือนใหม่ set แล้วค่อยยิง
+    // ใช้เดือนที่จะค้นหา “ทันที” ไม่รอ state update
+    const monthToSearch = Math.min(selectedMonth, maxMonth);
+    // sync state ให้ UI เปลี่ยนตาม (แต่ไม่เอามาเป็นเงื่อนไขหลักของการยิง)
+    if (monthToSearch !== selectedMonth) {
+      setSelectedMonth(monthToSearch);
     }
     const data = await findElectricityUnit({
-      month: selectedMonth,
+      month: Number(monthToSearch),
       year: selectedYear,
     });
     setItem(data);
-    setLoading(false);
     setselectedMonthCheck(selectedMonth);
     localStorage.setItem("selectedYear", selectedYear.toString());
     localStorage.setItem("selectedMonth", selectedMonth.toString());
+    setLoading(false);
   };
 
   // โหลดข้อมูลเมื่อ component ถูกสร้างครั้งแรก

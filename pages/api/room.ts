@@ -83,6 +83,7 @@ export interface ResponseRoom {
   rentTotal: number;
   serviceFeeTotal: number;
   otherTotal: number;
+  statusBill?: boolean;
 }
 
 export interface ResponseRoomWaterUnitAndElectricityUnit {

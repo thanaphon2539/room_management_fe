@@ -21,6 +21,7 @@ export default function BillIndex() {
     "สถานะ",
     "ประเภทลูกค้า",
     "ข้อมูลผู้ติดต่อ",
+    "ราคา",
     "จัดการ",
   ];
   const headerLegalEntity = [
@@ -28,6 +29,7 @@ export default function BillIndex() {
     "ประเภทลูกค้า",
     "ข้อมูลผู้ติดต่อ",
     "ข้อมูลบริษัท",
+    "ราคา",
     "จัดการ",
   ];
 
@@ -71,25 +73,25 @@ export default function BillIndex() {
   // ฟังก์ชันค้นหา
   const handleSearch = async () => {
     setLoading(true);
-    console.log(
-      "ค้นหาข้อมูลของเดือน:",
-      selectedMonth,
-      "ปี:",
-      selectedYear,
-      "type:",
-      billType
-    );
+    const maxMonth = selectedYear === currentYear ? monthNow : 12;
+    // ใช้เดือนที่จะค้นหา “ทันที” ไม่รอ state update
+    const monthToSearch = Math.min(selectedMonth, maxMonth);
+    // sync state ให้ UI เปลี่ยนตาม (แต่ไม่เอามาเป็นเงื่อนไขหลักของการยิง)
+    if (monthToSearch !== selectedMonth) {
+      setSelectedMonth(monthToSearch);
+    }
     const response = await billList({
       year: selectedYear.toString(),
-      month: selectedMonth < 9 ? "0" + selectedMonth : selectedMonth.toString(),
+      month: String(monthToSearch).padStart(2, "0"),
       type: billType,
     });
-    console.log("handleSearch response >>>", response);
+    console.log("handleSearch response >>>", response.data);
     setItem(response.data);
-    setLoading(false);
-    setselectedMonthCheck(selectedMonth);
+    setselectedMonthCheck(monthToSearch);
     localStorage.setItem("selectedYear", selectedYear.toString());
-    localStorage.setItem("selectedMonth", selectedMonth.toString());
+    localStorage.setItem("selectedMonth", monthToSearch.toString());
+
+    setLoading(false);
   };
 
   const handleKeyDown = (event: any) => {
@@ -106,19 +108,31 @@ export default function BillIndex() {
 
   // โหลดข้อมูลเมื่อ component ถูกสร้างครั้งแรก
   useEffect(() => {
-    handleSearch();
-    const fetchBill = async () => {
+    let alive = true;
+
+    const fetchBills = async () => {
+      setLoading(true);
+      const maxMonth = selectedYear === currentYear ? monthNow : 12;
+      const monthToSearch = Math.min(selectedMonth, maxMonth);
+
       const response = await billList({
         year: selectedYear.toString(),
-        month:
-          selectedMonth < 9 ? "0" + selectedMonth : selectedMonth.toString(),
+        month: String(monthToSearch).padStart(2, "0"),
         type: billType,
       });
-      console.log("fetchBill response >>>", response);
+
+      if (!alive) return;
+
       setItem(response.data);
+      setselectedMonthCheck(monthToSearch);
       setLoading(false);
     };
-    fetchBill();
+
+    fetchBills();
+
+    return () => {
+      alive = false; // กัน setState จาก request เก่า
+    };
   }, [billType]); // โหลดครั้งเดียวตอนแรก
 
   if (loading) return <p>Loading...</p>;
@@ -126,7 +140,7 @@ export default function BillIndex() {
   const handleDownloadInvoiceBill = async (
     nameRoom: string,
     type: string,
-    contactName: string
+    contactName: string,
   ) => {
     try {
       /** file ใบแจ้งหนี้ */
@@ -147,11 +161,11 @@ export default function BillIndex() {
       b.href = urlInv;
       if (type === "person") {
         b.download = `invoice-${dayjs().format(
-          "YYYY-MM-DD-HH-mm"
+          "YYYY-MM-DD-HH-mm",
         )}-${nameRoom}.pdf`;
       } else {
         b.download = `invoice-${contactName}-${dayjs().format(
-          "YYYY-MM-DD-HH-mm"
+          "YYYY-MM-DD-HH-mm",
         )}.pdf`;
       }
       document.body.appendChild(b);
@@ -170,7 +184,7 @@ export default function BillIndex() {
   const handleDownloadReceiptBill = async (
     nameRoom: string,
     type: string,
-    contactName: string
+    contactName: string,
   ) => {
     console.log("date form modal", date);
     try {
@@ -194,11 +208,11 @@ export default function BillIndex() {
       b.href = urlReceipt;
       if (type === "person") {
         b.download = `receipt-${dayjs().format(
-          "YYYY-MM-DD-HH-mm"
+          "YYYY-MM-DD-HH-mm",
         )}-${nameRoom}.pdf`;
       } else {
         b.download = `receipt-${contactName}-${dayjs().format(
-          "YYYY-MM-DD-HH-mm"
+          "YYYY-MM-DD-HH-mm",
         )}.pdf`;
       }
       document.body.appendChild(b);
@@ -244,7 +258,7 @@ export default function BillIndex() {
               {months
                 .slice(
                   0,
-                  selectedYear === currentYear ? monthNow : months.length
+                  selectedYear === currentYear ? monthNow : months.length,
                 )
                 .map((month, index) => (
                   <option key={index} value={index + 1}>
@@ -260,7 +274,7 @@ export default function BillIndex() {
               <p>ค้นหา</p>
             </button>
           </div>
-          <div className="border mx-3" />
+          <div className="border mx-4" />
           <button
             className={`btn text-nowrap h-fit ${
               billType === "person" ? "btn-success" : "btn-gray"
@@ -271,11 +285,20 @@ export default function BillIndex() {
           </button>
           <button
             className={`btn text-nowrap h-fit ${
-              billType === "legalEntity" ? "btn-warning" : "btn-gray"
+              billType === "legalEntity" ? "btn-success" : "btn-gray"
             }`}
             onClick={() => handleBillTypeChange("legalEntity")}
           >
             <p>นิติบุคคล</p>
+          </button>
+          {/* divider */}
+          <div className="border mx-4" />
+          <button className="btn text-nowrap h-fit btn-primary">
+            พิมพ์ใบแจ้งหนี้
+          </button>
+
+          <button className="btn text-nowrap h-fit btn-success">
+            พิมพ์ใบเสร็จ
           </button>
         </div>
 
@@ -316,6 +339,11 @@ export default function BillIndex() {
                         {element.companyName}
                       </td>
                     )}
+                    <td className="text-right">
+                      <span className="px-3 py-1 rounded bg-yellow-400 inline-block min-w-[110px] text-center">
+                        {element.total ?? '-'}
+                      </span>
+                    </td>
                     <td>
                       <div className="flex justify-center">
                         <button
@@ -326,7 +354,7 @@ export default function BillIndex() {
                               element.type,
                               element.companyName
                                 ? element.companyName
-                                : element.contactName
+                                : element.contactName,
                             )
                           }
                         >
@@ -370,7 +398,7 @@ export default function BillIndex() {
             handleDownloadReceiptBill(
               dataGetBill.nameRoom,
               dataGetBill.type,
-              dataGetBill.contactName
+              dataGetBill.contactName,
             );
           }}
         />
