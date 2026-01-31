@@ -70,6 +70,32 @@ export default function BillIndex() {
   const [loading, setLoading] = useState(true);
   const [selectedMonthCheck, setselectedMonthCheck] = useState(1);
 
+  // ✅ ย้ายมาไว้ตรงนี้ (ก่อน early return)
+  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
+  const [bulkReceiptMode, setBulkReceiptMode] = useState(false);
+
+  const makeRowKey = (el: ResponseBillList) => `${el.type}::${el.nameRoom}`;
+
+  const toggleRow = (key: string) => {
+    setSelectedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const toggleAllVisible = (checked: boolean) => {
+    setSelectedKeys(() => {
+      if (!checked) return new Set();
+      const next = new Set<string>();
+      items.forEach((el) => next.add(makeRowKey(el)));
+      return next;
+    });
+  };
+
+  const isAllSelected = items.length > 0 && selectedKeys.size === items.length;
+
   // ฟังก์ชันค้นหา
   const handleSearch = async () => {
     setLoading(true);
@@ -226,6 +252,115 @@ export default function BillIndex() {
     }
   };
 
+  const handlePrintSelectedInvoices = async () => {
+    try {
+      const selectedItems = items.filter((el) =>
+        selectedKeys.has(makeRowKey(el)),
+      );
+      if (selectedItems.length === 0) {
+        alert("กรุณาเลือกรายการก่อนพิมพ์");
+        return;
+      }
+
+      // ดาวน์โหลดทีละใบ
+      for (const el of selectedItems) {
+        const contactOrCompany = el.companyName
+          ? el.companyName
+          : el.contactName;
+
+        const res: any = await invoiceBill({
+          nameRoom: el.nameRoom,
+          type: el.type,
+          year: selectedYear,
+          month: selectedMonth,
+        });
+
+        if (!res.data) continue;
+
+        const blob = new Blob([res.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+
+        // ตั้งชื่อไฟล์แบบเดียวกับของเดิม
+        if (el.type === "person") {
+          a.download = `invoice-${dayjs().format("YYYY-MM-DD-HH-mm")}-${el.nameRoom}.pdf`;
+        } else {
+          a.download = `invoice-${contactOrCompany}-${dayjs().format("YYYY-MM-DD-HH-mm")}.pdf`;
+        }
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        // กันโหลดถี่เกิน (บาง browser บล็อก)
+        await new Promise((r) => setTimeout(r, 150));
+      }
+    } catch (e) {
+      console.log(e);
+      alert("พิมพ์ใบแจ้งหนี้ไม่สำเร็จ");
+    }
+  };
+
+  const handlePrintSelectedReceipts = async () => {
+    try {
+      const selectedItems = items.filter((el) =>
+        selectedKeys.has(makeRowKey(el)),
+      );
+      if (selectedItems.length === 0) {
+        alert("กรุณาเลือกรายการก่อนพิมพ์");
+        return;
+      }
+
+      // ดาวน์โหลดทีละใบ
+      for (const el of selectedItems) {
+        const contactOrCompany = el.companyName
+          ? el.companyName
+          : el.contactName;
+
+        const res: any = await receiptBill({
+          nameRoom: el.nameRoom,
+          type: el.type,
+          year: selectedYear,
+          month: selectedMonth,
+          date: date,
+        });
+
+        if (!res.data) continue;
+
+        const blob = new Blob([res.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+
+        // ตั้งชื่อไฟล์แบบเดียวกับของเดิม
+        if (el.type === "person") {
+          a.download = `receipt-${dayjs().format(
+            "YYYY-MM-DD-HH-mm", 
+          )}-${el.nameRoom}.pdf`;
+        } else {
+          a.download = `receipt-${contactOrCompany}-${dayjs().format(
+            "YYYY-MM-DD-HH-mm",
+          )}.pdf`;
+        }
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        // กันโหลดถี่เกิน (บาง browser บล็อก)
+        await new Promise((r) => setTimeout(r, 150));
+      }
+    } catch (e) {
+      console.log(e);
+      alert("พิมพ์ใบแจ้งหนี้ไม่สำเร็จ");
+    }
+  };
+
   return (
     <div className="container">
       <div className="card space-y-4">
@@ -293,12 +428,20 @@ export default function BillIndex() {
           </button>
           {/* divider */}
           <div className="border mx-4" />
-          <button className="btn text-nowrap h-fit btn-primary">
-            พิมพ์ใบแจ้งหนี้
+          <button
+            className="btn text-nowrap h-fit btn-primary"
+            disabled={selectedKeys.size === 0}
+            onClick={handlePrintSelectedInvoices}
+          >
+            พิมพ์ใบแจ้งหนี้ ({selectedKeys.size})
           </button>
 
-          <button className="btn text-nowrap h-fit btn-success">
-            พิมพ์ใบเสร็จ
+          <button
+            className="btn text-nowrap h-fit btn-success"
+            disabled={selectedKeys.size === 0}
+            onClick={handlePrintSelectedReceipts}
+          >
+            พิมพ์ใบเสร็จ ({selectedKeys.size})
           </button>
         </div>
 
@@ -306,20 +449,38 @@ export default function BillIndex() {
           <table className="table">
             <thead>
               <tr>
+                <th className="w-[40px] text-center">
+                  <input
+                    type="checkbox"
+                    checked={isAllSelected}
+                    onChange={(e) => toggleAllVisible(e.target.checked)}
+                  />
+                </th>
+
                 {billType === "person" &&
-                  headerPerson.map((element: any) => {
-                    return <th key={uuidv4()}>{element}</th>;
-                  })}
+                  headerPerson.map((element: any) => (
+                    <th key={element}>{element}</th>
+                  ))}
+
                 {billType === "legalEntity" &&
-                  headerLegalEntity.map((element: any) => {
-                    return <th key={uuidv4()}>{element}</th>;
-                  })}
+                  headerLegalEntity.map((element: any) => (
+                    <th key={element}>{element}</th>
+                  ))}
               </tr>
             </thead>
             {items.map((element: ResponseBillList) => {
+              const rowKey = makeRowKey(element);
+              const checked = selectedKeys.has(rowKey);
               return (
-                <tbody key={uuidv4()}>
+                <tbody key={rowKey}>
                   <tr>
+                    <td className="text-center">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => toggleRow(rowKey)}
+                      />
+                    </td>
                     <td className="truncate-cell" title={element.nameRoom}>
                       {element.nameRoom}
                     </td>
@@ -341,7 +502,7 @@ export default function BillIndex() {
                     )}
                     <td className="text-right">
                       <span className="px-3 py-1 rounded bg-yellow-400 inline-block min-w-[110px] text-center">
-                        {element.total ?? '-'}
+                        {element.total ?? "-"}
                       </span>
                     </td>
                     <td>
