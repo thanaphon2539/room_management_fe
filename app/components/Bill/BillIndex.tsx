@@ -58,10 +58,17 @@ export default function BillIndex() {
   });
   const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
 
-  const monthNow = Number(dayjs().format("MM"));
+  const monthNow = Number(dayjs().add(1, "months").format("MM"));
+  const maxMonthThisYear = Math.min(monthNow + 1, 12);
   // โหลดค่าที่เก็บไว้ใน localStorage
   const storedYear = Number(localStorage.getItem("selectedYear")) || years[0];
-  const storedMonth = Number(localStorage.getItem("selectedMonth")) || monthNow;
+  // const storedMonth = Number(localStorage.getItem("selectedMonth")) || monthNow;
+  const rawStoredMonth =
+    Number(localStorage.getItem("selectedMonth")) || monthNow;
+  const storedMonth =
+    storedYear === currentYear
+      ? Math.min(rawStoredMonth, maxMonthThisYear)
+      : rawStoredMonth;
 
   const [selectedYear, setSelectedYear] = useState(storedYear);
   const [selectedMonth, setSelectedMonth] = useState(storedMonth);
@@ -339,7 +346,7 @@ export default function BillIndex() {
         // ตั้งชื่อไฟล์แบบเดียวกับของเดิม
         if (el.type === "person") {
           a.download = `receipt-${dayjs().format(
-            "YYYY-MM-DD-HH-mm", 
+            "YYYY-MM-DD-HH-mm",
           )}-${el.nameRoom}.pdf`;
         } else {
           a.download = `receipt-${contactOrCompany}-${dayjs().format(
